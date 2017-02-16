@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="670.0" prefWidth="1024.0" style="-fx-background-color: #f4f4f3;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.ConfiguracoesServicoController">
+   <children>
+      <ComboBox fx:id="comboBoxCooperativas" layoutX="135.0" layoutY="319.0" prefHeight="39.0" prefWidth="360.0" promptText="Selecione" AnchorPane.leftAnchor="135.0" AnchorPane.rightAnchor="524.0" />
+      <TextField layoutX="135.0" layoutY="422.0" prefHeight="39.0" prefWidth="365.0" />
+      <TextField layoutX="135.0" layoutY="520.0" prefHeight="39.0" prefWidth="365.0" />
+      <PasswordField layoutX="531.0" layoutY="422.0" prefHeight="39.0" prefWidth="360.0" />
+      <Label layoutX="135.0" layoutY="268.0" prefHeight="51.0" prefWidth="194.0" text="COOPERATIVA" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="135.0" layoutY="372.0" prefHeight="51.0" prefWidth="194.0" text="USUÁRIO/LOGIN" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="530.0" layoutY="372.0" prefHeight="51.0" prefWidth="72.0" text="SENHA" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="135.0" layoutY="469.0" prefHeight="51.0" prefWidth="194.0" text="EMAIL DA NOTIFICAÇÃO" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="530.0" layoutY="469.0" prefHeight="51.0" prefWidth="223.0" text="FORMATO DA REMESSA" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <Line endX="700.0" layoutX="212.0" layoutY="236.0" startX="-100.0" AnchorPane.leftAnchor="111.5" AnchorPane.rightAnchor="111.5" />
+      <ComboBox layoutX="530.0" layoutY="520.0" prefHeight="39.0" prefWidth="360.0" />
+      <JFXButton buttonType="RAISED" layoutX="721.0" layoutY="586.0" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="GRAVAR" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
+      <Label layoutX="172.0" layoutY="185.0" prefHeight="51.0" prefWidth="470.0" text="CONFIGURAÇÂO PARA INICIALIZAR O SERVIÇO" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="172.0" layoutY="123.0" prefHeight="51.0" prefWidth="95.0" text="VOLTAR" textFill="#323031" AnchorPane.topAnchor="123.0">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="112.0" layoutY="185.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../resources/icone_configuracao.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="116.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../resources/voltar.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="82.0" fitWidth="217.0" layoutX="111.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../resources/logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="766.0" layoutY="48.0" prefHeight="25.0" prefWidth="95.0" text="SERVICOS" textFill="#323031">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </Label>
+      <JFXToggleButton layoutX="855.0" layoutY="32.0" prefHeight="56.0" prefWidth="0.0" text=" " />
+   </children>
+</AnchorPane>
