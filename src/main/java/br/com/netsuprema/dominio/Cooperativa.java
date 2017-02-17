@@ -1,7 +1,18 @@
 package br.com.netsuprema.dominio;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+@Entity(name = "cooperativa")
 public class Cooperativa {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+
 	private int key;
 	private String nome;
 	private String webservice;

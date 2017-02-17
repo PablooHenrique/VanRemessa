@@ -3,6 +3,7 @@ package br.com.netsuprema;
 import java.io.IOException;
 
 import br.com.netsuprema.controller.MainAppController;
+import br.com.netsuprema.utils.ConfigUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -36,9 +37,9 @@ public class MainApp extends Application{
 			this.setRootLayout((BorderPane) loader.load());
 			
 			Scene scene = new Scene(getRootLayout());
+			scene.getStylesheets().add(ConfigUtils.PATH_RESOURCE_PADRAO+"css/style.css");
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

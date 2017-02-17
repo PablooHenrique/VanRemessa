@@ -1,0 +1,8 @@
+.floating {
+	-fx-background-radius:50px;
+}
+
+.mensagem-usuario-sucess {
+	-fx-background-radius:50px;
+	-fx-background-color:#5bc0de;
+}
