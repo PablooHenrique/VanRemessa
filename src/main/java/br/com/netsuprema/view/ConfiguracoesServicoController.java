@@ -12,7 +12,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXButton.ButtonType;
 
 import br.com.netsuprema.application.ParametrosApplication;
-import br.com.netsuprema.controller.MainAppController;
 import br.com.netsuprema.dominio.Cooperativa;
 import br.com.netsuprema.dominio.Parametros;
 import br.com.netsuprema.dominio.enuns.FormatoRemessa;
@@ -20,13 +19,13 @@ import br.com.netsuprema.utils.ConfigUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
 public class ConfiguracoesServicoController extends AbstractController{
 	
@@ -52,10 +51,6 @@ public class ConfiguracoesServicoController extends AbstractController{
 	private ImageView imgConfiguracoes;
 	@FXML
 	private ImageView imgLogo;
-	@FXML
-	private Pane panelMensagem;
-	@FXML
-	private Label msgAvisoUsuario;
 	
 	ObservableList<String> cooperativas = FXCollections.observableArrayList();
 	ObservableList<String> formatoRemessa = FXCollections.observableArrayList();
@@ -67,10 +62,57 @@ public class ConfiguracoesServicoController extends AbstractController{
 	@FXML
 	public void initialize(){
 		initializeComponents();
+		carregarInformacoesIniciais();
 	}
 	
-	public void initializeComponents(){
+	public void carregarInformacoesIniciais() {
+		Parametros parametros = application.consultarParametros();
+		if (parametros != null) {
+			preencherInformacoesParametros(parametros);
+		}
+	}
+
+	public void preencherInformacoesParametros(Parametros parametros) {
+		edtEmail.setText(parametros.getEmail());
+		edtUsuario.setText(parametros.getLogin());
+		edtSenha.setText(parametros.getSenha());
 		
+		preencherInformacoesComboCooperativa(parametros);
+		preencherInformacoesComboFormatoRemessa(parametros);
+	}
+
+	public void preencherInformacoesComboFormatoRemessa(Parametros parametros) {
+		SingleSelectionModel<String> selectionModel = comboBoxFormatoRemessa.getSelectionModel();
+		
+		for (int i = 0; i < formatoRemessa.size(); i++) {
+			if (!formatoRemessa.get(i).trim().isEmpty()) {
+				String[] itens = formatoRemessa.get(i).split("-");
+				
+				if (Integer.valueOf(itens[0]) == parametros.getFormatoRemessa().getCodigo()) {
+					selectionModel.select(formatoRemessa.get(i));
+					break;
+				}
+			}
+		}
+	}
+
+	public void preencherInformacoesComboCooperativa(Parametros parametros) {
+		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
+		
+		for (int i = 0; i < cooperativas.size(); i++) {
+			if (!cooperativas.get(i).trim().isEmpty()) {
+				String[] itens = cooperativas.get(i).split("-");
+				
+				if (Integer.valueOf(itens[0]) == parametros.getCooperativa().getKey()) {
+					selectionModel.select(cooperativas.get(i));
+					break;
+				}
+			}
+		}
+	}
+
+	public void initializeComponents(){
+		inicializarCooperativas();
 		carregarComboCooperativa();
 		carregarComboFormatoRemessa();
 		
@@ -87,8 +129,24 @@ public class ConfiguracoesServicoController extends AbstractController{
 		imgConfiguracoes.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO +"icone_configuracao.png"));
 	}
 	
+	public void inicializarCooperativas() {
+		List<Cooperativa> cooperativas;
+		
+		cooperativas = obterCooperativasBanco();
+		
+		if (cooperativas.isEmpty()) {
+			cooperativas = obterCooperativasViaWebService();
+			application.salvarCooperativas(cooperativas);
+		}
+	}
+
+	public List<Cooperativa> obterCooperativasBanco() {
+		List<Cooperativa> cooperativas = application.consultarCooperativas();
+		return cooperativas;
+	}
+
 	public void carregarComboCooperativa(){
-		List<Cooperativa> cooperativas = obterCooperativas();
+		List<Cooperativa> cooperativas = obterCooperativasViaWebService();
 		cooperativas.stream().forEach(x-> this.cooperativas.add(x.getKey() +"-"+x.getNome().toUpperCase()));
 		comboBoxCooperativas.setItems(this.cooperativas);
 	}
@@ -99,24 +157,26 @@ public class ConfiguracoesServicoController extends AbstractController{
 		comboBoxFormatoRemessa.setItems(this.formatoRemessa);
 	}
 	
-	public List<Cooperativa> obterCooperativas(){
+	public List<Cooperativa> obterCooperativasViaWebService(){
 		List<Cooperativa> cooperativas = new ArrayList<Cooperativa>();
 		try {
 			cooperativas = getApplication().consultarCooperativasWebService();
 		} catch (URISyntaxException | JSONException e) {
 			logger.error("ObterCooperativa: " + e.getMessage());
-			//TODO : Colocar uma forma de devolver o erro pro usuario    
+			exibirMensagem("Falha ao realizar a consultar de cooperativas no servidor.", true);    
 		}
 		return cooperativas;
 	}
 	
 	@FXML
-	public void handleVoltar(){
-		MainAppController controller = getMainApp().getController();
-		controller.showMenuPrincipal(getMainApp(), getMainApp().getRootLayout());
-	}
-	
 	public void handleSalvar(){
+		if (dadosSaoValidos()) {
+			salvarParametros();
+			exibirMensagem("Parametros Salvos Com sucesso", false);
+		}
+	}
+
+	public void salvarParametros() {
 		Parametros parametros = getParametros();
 		getApplication().salvar(parametros);
 	}
@@ -128,13 +188,14 @@ public class ConfiguracoesServicoController extends AbstractController{
 		parametros.setLogin(edtUsuario.getText());
 		parametros.setSenha(edtSenha.getText());
 		
-		parametros.setCooperativa(getCriarCooperativa());
-		parametros.setFormatoRemessa(getFormatoRemessa());
+		parametros.setCooperativa(null);
+		parametros.setCooperativa(criarCooperativa());
+		parametros.setFormatoRemessa(criarFormatoRemessa());
 		
 		return parametros;
 	}
 
-	public FormatoRemessa getFormatoRemessa() {
+	public FormatoRemessa criarFormatoRemessa() {
 		SingleSelectionModel<String> selectionModel = comboBoxFormatoRemessa.getSelectionModel();
 		String item = selectionModel.getSelectedItem();
 		
@@ -152,13 +213,12 @@ public class ConfiguracoesServicoController extends AbstractController{
 		return null;
 	}
 
-	public Cooperativa getCriarCooperativa() {
+	public Cooperativa criarCooperativa() {
 		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
 		String item = selectionModel.getSelectedItem();
 		
 		if (!item.trim().isEmpty()) {
 			String[] itens = item.split("-");
-			System.out.println(itens[0]);
 			Cooperativa cooperativa = getApplication().consultarCooperativaPorKey(Integer.valueOf(itens[0]));
 			return cooperativa;
 		}
@@ -166,14 +226,52 @@ public class ConfiguracoesServicoController extends AbstractController{
 		return null;
 	}
 	
-	public void escreverMensagem(String mensagem, Boolean erro){
-		msgAvisoUsuario.setText(mensagem);
+	public void salvarCooperativas(List<Cooperativa> cooperativas){
+		application.salvarCooperativas(cooperativas);
 	}
 	
-	public void handleTesteExecucao(){
-		panelMensagem.getStyleClass().add("mensagem-usuario-sucess");
-		escreverMensagem("TesteExecucao", false);
+	public boolean dadosSaoValidos(){
+		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
+		int index = selectionModel.getSelectedIndex();
+		
+		if (index == -1) {
+			exibirMensagem("selecione uma cooperativa", true);
+			return false;
+		}
+		
+		selectionModel = comboBoxFormatoRemessa.getSelectionModel();
+		index = selectionModel.getSelectedIndex();
+		
+		if (index == -1) {
+			exibirMensagem("Selecione um formato", true);
+			return false;
+		}
+		
+		if (edtEmail.getText().trim().equals("")) {
+			exibirMensagem("Digite um email valido", true);
+			return false;
+		}
+		
+		if (edtSenha.getText().trim().equals("")) {
+			exibirMensagem("Digite uma senha valida", true);
+			return false;
+		}
+		
+		if (edtUsuario.getText().trim().equals("")) {
+			exibirMensagem("Digite um usuario valido", true);
+			return false;
+		}
+		
+		return true;
 	}
+	
+	public void exibirMensagem(String mensagem, boolean erro){
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Informacao");
+		alert.setContentText(mensagem);
+		alert.showAndWait();
+	}
+	
 
 	public ParametrosApplication getApplication() {
 		return application;

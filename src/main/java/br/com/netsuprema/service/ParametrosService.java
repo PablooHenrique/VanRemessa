@@ -19,19 +19,48 @@ public class ParametrosService {
 	}
 	
 	public void salvar(Parametros parametros){
-		Session session = this.sessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
-		
-		ParametrosRepository repository = new ParametrosRepository(session);
-		repository.salvar(parametros);
-		
-		transaction.commit();
-		System.out.println("Parametros gravados com sucesso");
+		Session session = null;
+		try {
+			session = this.sessionFactory.openSession();
+			ParametrosRepository repository = new ParametrosRepository(session);
+			
+			List<Parametros> parametrosBanco = repository.listar();
+			Transaction transaction = session.beginTransaction();
+			
+			if (!parametrosBanco.isEmpty()) {
+				atualizarParametros(parametrosBanco.get(0), parametros);
+				repository.atualizar(parametrosBanco.get(0));
+			}else{
+				repository.salvar(parametros);
+			}
+			transaction.commit();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
 	}
 	
-	public List<Parametros> buscarParametros(){
-		ParametrosRepository repository = new ParametrosRepository(this.sessionFactory.openSession());
-		List<Parametros> parametros = repository.listar();
-		return parametros;
+	public void atualizarParametros(Parametros parametrosBanco, Parametros parametros){
+		parametrosBanco.setCooperativa(parametros.getCooperativa());
+		parametrosBanco.setFormatoRemessa(parametros.getFormatoRemessa());
+		parametrosBanco.setEmail(parametros.getEmail());
+		parametrosBanco.setLogin(parametros.getLogin());
+		parametrosBanco.setSenha(parametros.getSenha());
+	}
+	
+	public List<Parametros> consultarParametros(){
+		Session session = null;
+		try {
+			session = this.sessionFactory.openSession();
+			ParametrosRepository repository = new ParametrosRepository(session);
+			List<Parametros> parametros = repository.listar();
+			return parametros;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+		
 	}
 }

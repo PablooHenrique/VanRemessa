@@ -49,6 +49,4 @@ public class Cooperativa {
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
 	}
-	
-	
 }

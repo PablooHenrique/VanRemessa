@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.json.JSONException;
 
 import br.com.netsuprema.dominio.Cooperativa;
@@ -29,6 +30,49 @@ public class CooperativaService {
 			session = this.sessionFactory.openSession();
 			Cooperativa cooperativa = new CooperativaRepository(session).selectByKey(key);
 			return cooperativa;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+	
+	public void salvar(Cooperativa cooperativa){
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
+			new CooperativaRepository(session).salvar(cooperativa);
+			transaction.commit();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	public void salvarListaCooperativas(List<Cooperativa> cooperativas) {
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			CooperativaRepository repository = new CooperativaRepository(session);
+			
+			Transaction transaction = session.beginTransaction();
+			cooperativas.stream().forEach(x-> repository.salvar(x));
+			transaction.commit();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	public List<Cooperativa> consultarCooperativas() {
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			CooperativaRepository repository = new CooperativaRepository(session);
+			return repository.listar();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				session.close();

@@ -19,8 +19,31 @@ public class ParametrosApplication {
 	public Cooperativa consultarCooperativaPorKey(int key){
 		return new CooperativaService().consultarCooperativaPorKey(key);
 	}
+	
+	public List<Cooperativa> consultarCooperativas(){
+		List<Cooperativa> cooperativas = new CooperativaService().consultarCooperativas();
+		return cooperativas;
+	}
 
 	public void salvar(Parametros parametros) {
 		new ParametrosService().salvar(parametros);
+	}
+	
+	public Parametros consultarParametros(){
+		List<Parametros> parametros = new ParametrosService().consultarParametros();
+		if (!parametros.isEmpty()) {
+			return parametros.get(0);
+		}
+		return null;
+	}
+
+	public void salvarCooperativa(Cooperativa cooperativa) {
+		CooperativaService service = new CooperativaService();
+		service.salvar(cooperativa);
+	}
+
+	public void salvarCooperativas(List<Cooperativa> cooperativas) {
+		CooperativaService service = new CooperativaService();
+		service.salvarListaCooperativas(cooperativas);
 	}
 }
