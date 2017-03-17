@@ -15,17 +15,18 @@ public class ParametrosService {
 	private SessionFactory sessionFactory;
 	
 	public ParametrosService() {
-		this.sessionFactory = Application.getInstance().getSessionFactory();
+		this.setSessionFactory(Application.getInstance().getSessionFactory());
 	}
 	
 	public void salvar(Parametros parametros){
 		Session session = null;
+		Transaction transaction = null;
 		try {
-			session = this.sessionFactory.openSession();
+			session = this.getSessionFactory().openSession();
 			ParametrosRepository repository = new ParametrosRepository(session);
 			
 			List<Parametros> parametrosBanco = repository.listar();
-			Transaction transaction = session.beginTransaction();
+			transaction = session.beginTransaction();
 			
 			if (!parametrosBanco.isEmpty()) {
 				atualizarParametros(parametrosBanco.get(0), parametros);
@@ -36,6 +37,9 @@ public class ParametrosService {
 			transaction.commit();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
+				if (transaction.isActive()) {
+					transaction.rollback();
+				}
 				session.close();
 			}
 		}
@@ -52,7 +56,7 @@ public class ParametrosService {
 	public List<Parametros> consultarParametros(){
 		Session session = null;
 		try {
-			session = this.sessionFactory.openSession();
+			session = this.getSessionFactory().openSession();
 			ParametrosRepository repository = new ParametrosRepository(session);
 			List<Parametros> parametros = repository.listar();
 			return parametros;
@@ -62,5 +66,13 @@ public class ParametrosService {
 			}
 		}
 		
+	}
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 }

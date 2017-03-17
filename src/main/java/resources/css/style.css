@@ -20,4 +20,13 @@
 	-fx-border-width: 4px;	
 }
 
+.floatingOn {
+	-fx-background-radius:50px;
+	-fx-background-color:#3CB371;
+}
+
+.floatingOff {
+	-fx-background-radius:50px;
+	-fx-background-color:#FF6347;
+}
 

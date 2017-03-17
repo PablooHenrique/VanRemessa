@@ -25,7 +25,6 @@
       <ImageView fx:id="imgResumo" fitHeight="39.0" fitWidth="39.0" layoutX="134.0" layoutY="195.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="134.0" AnchorPane.topAnchor="195.0" />
       <JFXButton fx:id="btnVoltar" layoutX="128.0" layoutY="127.0" onAction="#handleVoltar" prefHeight="34.0" prefWidth="34.0" ripplerFill="#bc9347" style="-fx-background-color: #e5b250;" text="v" AnchorPane.leftAnchor="128.0" AnchorPane.topAnchor="127.0" />
       <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="122.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="23.0" />
-      <JFXButton fx:id="btnExpandirFiltrosPesquisa" layoutX="842.0" layoutY="125.0" prefHeight="39.0" prefWidth="52.0" text="Button" />
       <JFXTabPane layoutX="112.0" layoutY="255.0" prefHeight="377.0" prefWidth="801.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0">
          <tabs>
             <Tab text="Filtros Pesquisa">

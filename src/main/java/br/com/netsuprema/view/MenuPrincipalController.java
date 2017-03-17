@@ -41,4 +41,9 @@ public class MenuPrincipalController extends AbstractController{
 		MainAppController controller = getMainApp().getController();
 		controller.showDiretoriosEnvio(getMainApp(), getMainApp().getRootLayout());
 	}
+	
+	public void handleShowStatusServico(){
+		MainAppController controller = getMainApp().getController();
+		controller.showStatusServico(getMainApp(), getMainApp().getRootLayout());
+	}
 }

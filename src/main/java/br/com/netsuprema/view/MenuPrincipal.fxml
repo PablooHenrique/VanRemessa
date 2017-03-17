@@ -7,9 +7,10 @@
 
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.MenuPrincipalController">
    <children>
-      <JFXButton fx:id="btnConfiguracoes" buttonType="RAISED" layoutX="14.0" layoutY="194.0" onAction="#handleShowConfiguracoesServico" prefHeight="109.0" prefWidth="153.0" style="-fx-background-color: E5B250;" text="Configurações" />
-      <JFXButton fx:id="btnResumoEnvio" buttonType="RAISED" layoutX="178.0" layoutY="194.0" onAction="#handleShowResumoEnvio" prefHeight="109.0" prefWidth="153.0" style="-fx-background-color: E5B250;" text="Resumo Envio" />
-      <JFXButton fx:id="btnEnviosDetalhados" buttonType="RAISED" layoutX="341.0" layoutY="194.0" onAction="#handleShowEnviosDetalhados" prefHeight="109.0" prefWidth="145.0" style="-fx-background-color: E5B250;" text="Envios Detalhados" />
-      <JFXButton fx:id="btnDiretoriosEnvio" buttonType="RAISED" layoutX="500.0" layoutY="194.0" onAction="#handleShowDiretoriosEnvio" prefHeight="109.0" prefWidth="145.0" style="-fx-background-color: E5B250;" text="Diretorios Envio" />
+      <JFXButton fx:id="btnConfiguracoes" buttonType="RAISED" layoutX="105.0" layoutY="192.0" onAction="#handleShowConfiguracoesServico" prefHeight="109.0" prefWidth="153.0" style="-fx-background-color: E5B250;" text="Configurações" />
+      <JFXButton fx:id="btnResumoEnvio" buttonType="RAISED" layoutX="269.0" layoutY="192.0" onAction="#handleShowResumoEnvio" prefHeight="109.0" prefWidth="153.0" style="-fx-background-color: E5B250;" text="Resumo Envio" />
+      <JFXButton fx:id="btnEnviosDetalhados" buttonType="RAISED" layoutX="432.0" layoutY="192.0" onAction="#handleShowEnviosDetalhados" prefHeight="109.0" prefWidth="145.0" style="-fx-background-color: E5B250;" text="Envios Detalhados" />
+      <JFXButton fx:id="btnDiretoriosEnvio" buttonType="RAISED" layoutX="591.0" layoutY="192.0" onAction="#handleShowDiretoriosEnvio" prefHeight="109.0" prefWidth="145.0" style="-fx-background-color: E5B250;" text="Diretorios Envio" />
+      <JFXButton fx:id="btnStatusServico" buttonType="RAISED" layoutX="752.0" layoutY="192.0" onAction="#handleShowStatusServico" prefHeight="109.0" prefWidth="145.0" style="-fx-background-color: E5B250;" text="Status Serviço" />
    </children>
 </AnchorPane>

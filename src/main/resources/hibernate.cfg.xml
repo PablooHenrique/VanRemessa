@@ -21,5 +21,7 @@
     
     <mapping class="br.com.netsuprema.dominio.Parametros"/>
     <mapping class="br.com.netsuprema.dominio.Cooperativa"/>
+    <mapping class="br.com.netsuprema.dominio.Cedente"/>
+    <mapping class="br.com.netsuprema.dominio.Conta"/>
   </session-factory>
 </hibernate-configuration>

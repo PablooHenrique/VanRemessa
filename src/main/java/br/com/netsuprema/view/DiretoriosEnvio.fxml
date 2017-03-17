@@ -11,36 +11,56 @@
 
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.DiretoriosEnvioController">
    <children>
-      <JFXButton buttonType="RAISED" layoutX="743.0" layoutY="196.0" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="Buscar" textFill="#323031">
+      <JFXButton fx:id="btnBuscar" buttonType="RAISED" layoutX="743.0" layoutY="196.0" onAction="#handleBuscarCedentes" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="Buscar" textFill="#323031">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
       </JFXButton>
       <JFXButton fx:id="btnVoltar" layoutX="128.0" layoutY="127.0" onAction="#handleVoltar" prefHeight="34.0" prefWidth="34.0" ripplerFill="#bc9347" style="-fx-background-color: #e5b250;" text="v" />
       <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="112.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="23.0" />
-      <ImageView fx:id="imgDiretorioEnvio" fitHeight="39.0" fitWidth="39.0" layoutX="134.0" layoutY="195.0" pickOnBounds="true" preserveRatio="true" />
       <Label layoutX="190.0" layoutY="127.0" prefHeight="51.0" prefWidth="95.0" text="VOLTAR" textFill="#323031">
          <font>
             <Font name="Arial" size="22.0" />
          </font>
       </Label>
-      <Label layoutX="190.0" layoutY="197.0" prefHeight="25.0" prefWidth="231.0" text="DIRETÓRIOS DE ENVIO" textFill="#323031">
+      <Label layoutX="128.0" layoutY="202.0" prefHeight="25.0" prefWidth="231.0" text="DIRETÓRIOS DE ENVIO" textFill="#323031">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
       </Label>
       <Line endX="700.0" layoutX="212.5" layoutY="240.0" startX="-100.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="111.0" />
-      <TableView layoutX="112.0" layoutY="253.0" prefHeight="317.0" prefWidth="801.0">
+      <TableView fx:id="cedentesTable" layoutX="112.0" layoutY="253.0" prefHeight="317.0" prefWidth="801.0">
         <columns>
-          <TableColumn prefWidth="170.0" text="Código Cedente" />
-          <TableColumn minWidth="0.0" prefWidth="225.0" text="Conta Corrente" />
-            <TableColumn prefWidth="75.0" text="Diretório" />
-            <TableColumn prefWidth="75.0" text="Ações" />
+          <TableColumn fx:id="codigoCedenteColumn" prefWidth="170.0" text="Código Cedente" />
+          <TableColumn fx:id="nomeColumn" minWidth="0.0" prefWidth="225.0" text="Nome" />
+            <TableColumn fx:id="diretorioColumn" prefWidth="75.0" text="Diretório" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <JFXButton fx:id="btnAdicionarDiretorio" layoutX="874.0" layoutY="534.0" prefHeight="39.0" prefWidth="52.0" text="Button" />
+      <JFXButton fx:id="btnAdicionarDiretorio" layoutX="874.0" layoutY="534.0" onAction="#handleAdicionarDiretorioEnvio" prefHeight="39.0" prefWidth="52.0" text="Button" />
+      <JFXButton fx:id="btnRemover" buttonType="RAISED" layoutX="112.0" layoutY="581.0" onAction="#handleExcluirCedente" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: #FF6347;" text="Remover" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnAbrirDiretorio" buttonType="RAISED" layoutX="294.0" layoutY="581.0" onAction="#handleAbrirDiretorio" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="Abrir Diretorio" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
+      <TextField fx:id="edtCodigo" layoutX="504.0" layoutY="142.0" prefHeight="39.0" prefWidth="137.0" />
+      <Label layoutX="504.0" layoutY="106.0" prefHeight="25.0" prefWidth="74.0" text="CÓDIGO" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="653.0" layoutY="106.0" prefHeight="25.0" prefWidth="74.0" text="NOME" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="edtNome" layoutX="653.0" layoutY="142.0" prefHeight="39.0" prefWidth="260.0" />
    </children>
 </AnchorPane>

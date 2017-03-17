@@ -20,11 +20,11 @@ public class MainApp extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		this.setController(new MainAppController());
 		
-		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("Van SIG Cobrança - Envio de Remessa");
-		this.primaryStage.setResizable(false);
-		this.primaryStage.setWidth(1024);
-		this.primaryStage.setHeight(670);
+		this.setPrimaryStage(primaryStage);
+		this.getPrimaryStage().setTitle("Van SIG Cobrança - Envio de Remessa");
+		this.getPrimaryStage().setResizable(false);
+		this.getPrimaryStage().setWidth(1024);
+		this.getPrimaryStage().setHeight(670);
 		
 		initRootLayout();
 		getController().showMenuPrincipal(this, getRootLayout());
@@ -38,8 +38,8 @@ public class MainApp extends Application{
 			
 			Scene scene = new Scene(getRootLayout());
 			scene.getStylesheets().add(ConfigUtils.PATH_RESOURCE_PADRAO+"css/style.css");
-			primaryStage.setScene(scene);
-			primaryStage.show();
+			getPrimaryStage().setScene(scene);
+			getPrimaryStage().show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -63,5 +63,13 @@ public class MainApp extends Application{
 
 	public void setRootLayout(BorderPane rootLayout) {
 		this.rootLayout = rootLayout;
+	}
+
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
+	public void setPrimaryStage(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 	}
 }
