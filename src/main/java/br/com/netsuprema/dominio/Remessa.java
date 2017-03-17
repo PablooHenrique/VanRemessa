@@ -1,5 +1,7 @@
 package br.com.netsuprema.dominio;
 
+import java.io.File;
+
 import br.com.netsuprema.dominio.enuns.FormatoRemessa;
 
 public class Remessa {
@@ -13,6 +15,10 @@ public class Remessa {
 	private FormatoRemessa formato;
 	private String nomeArquivo;
 	private String conteudoArquivo;
+	
+	public Remessa(Cedente cedente, Conta conta, int digitoVerificadorConta, File file) {
+		
+	}
 	
 	public String getUsuario() {
 		return usuario;

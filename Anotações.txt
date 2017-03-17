@@ -1,0 +1,1 @@
+https://sig.netsuprema.com.br/secovicred/webservice_remessa_titulo.php?wsdl

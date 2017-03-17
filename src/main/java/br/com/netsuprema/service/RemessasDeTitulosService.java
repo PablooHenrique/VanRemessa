@@ -33,11 +33,15 @@ public class RemessasDeTitulosService {
 			String path = conta.getDiretorio();
 			FileService fileService = new FileService();
 			File[] files = fileService.getArquivosDiretorio(path);
+			List<File> arquivosPorMineType = fileService.filtrarArquivosPorMineType(files);
+			Remessa remessa;
 			
-			if (files.length > 0) {
-				for (File file : files) {
-					String mimiType = URLConnection.guessContentTypeFromName(file.getName());
-					System.out.println("Nome: " + cedente.getNome() +" Conta: "+conta.getNumeroConta()+ " File: "+ file.getName() +" MimiType: "+ mimiType);
+			if (arquivosPorMineType.size() > 0) {
+				for (File file : arquivosPorMineType) {
+					 String mimiType = URLConnection.guessContentTypeFromName(file.getName());
+					 remessa = new Remessa(parametros);
+					 remessa.processar();
+					 System.out.println("Nome: " + cedente.getNome() +" Conta: "+conta.getNumeroConta()+ " File: "+ file.getName() +" MimiType: "+ mimiType);
 				}
 			}else{
 				System.out.println("Nome: " + cedente.getNome() +" Conta: "+conta.getNumeroConta()+ " File: "+ "Sem arquivo");
