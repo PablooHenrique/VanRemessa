@@ -3,26 +3,24 @@ package br.com.netsuprema.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FileService {
 	
+	public List<File> obterArquivosParaEnvioDiretorio(String diretorio) throws IOException{
+		List<File> files = filtrarArquivosPorMineType(Arrays.asList(getArquivosDiretorio(diretorio)));
+		return files;
+	}
+	
 	public File[] getArquivosDiretorio(String diretorio) throws IOException{
 		File file = new File(diretorio);
 		if(file.isDirectory()){		
-			FilenameFilter filter = new FilenameFilter() {
-				@Override
-				public boolean accept(File dir, String name) {
-					return name.toLowerCase().endsWith(".txt");
-				}
-			};
-			
 			return file.listFiles();
 		}else{
 			throw new IOException("Diretorio: " +diretorio+ "." +" Não e um diretório valido");
@@ -56,7 +54,7 @@ public class FileService {
        }
    }
 
-	public List<File> filtrarArquivosPorMineType(File[] files) {
+	public List<File> filtrarArquivosPorMineType(List<File> files) {
 		List<File> filesFiltrados = new ArrayList<File>();
 		for (File arq : files) {
 			String mimiType = URLConnection.guessContentTypeFromName(arq.getName());

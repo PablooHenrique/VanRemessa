@@ -9,11 +9,10 @@ import javax.persistence.Id;
 public class Conta {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String numeroConta;
+	private int numeroConta;
 	private String digitoVerificador; 
-	private String agencia;
 	private String diretorio;
 	
 	public long getId() {
@@ -22,28 +21,22 @@ public class Conta {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getNumeroConta() {
-		return numeroConta;
-	}
-	public void setNumeroConta(String numeroConta) {
-		this.numeroConta = numeroConta;
-	}
 	public String getDigitoVerificador() {
 		return digitoVerificador;
 	}
 	public void setDigitoVerificador(String digitoVerificador) {
 		this.digitoVerificador = digitoVerificador;
 	}
-	public String getAgencia() {
-		return agencia;
-	}
-	public void setAgencia(String agencia) {
-		this.agencia = agencia;
-	}
 	public String getDiretorio() {
 		return diretorio;
 	}
 	public void setDiretorio(String diretorio) {
 		this.diretorio = diretorio;
+	}
+	public int getNumeroConta() {
+		return numeroConta;
+	}
+	public void setNumeroConta(int numeroConta) {
+		this.numeroConta = numeroConta;
 	}
 }

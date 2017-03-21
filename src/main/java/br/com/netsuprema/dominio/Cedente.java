@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,7 +19,6 @@ import br.com.netsuprema.repository.CedenteRepository;
 public class Cedente {
 	
 	@Id
-	@GeneratedValue (strategy=GenerationType.IDENTITY)
 	private long id;
 	private String nome;
 	private int codigo;
@@ -41,7 +38,7 @@ public class Cedente {
 			throw new IllegalArgumentException("Objeto cedente não possui as informações necessarias para realizar a verificação se existe.");
 		}
 	}
-
+	
 	private boolean verificaSeCedenteExistePorCodigo(Session session) {
 		Cedente cedente = new CedenteRepository(session).listarPorCodigo(getCodigo());
 		return cedente != null;

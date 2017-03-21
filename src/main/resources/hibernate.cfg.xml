@@ -13,7 +13,7 @@
     <property name="connection.password">net@123</property>
 
     <property name="hbm2ddl.auto">update</property>
-    <property name="show_sql">false</property>
+    <property name="show_sql">true</property>
     <property name="format_sql">true</property>
 
     <!--Persistencia com o banco de dados-->
@@ -23,5 +23,10 @@
     <mapping class="br.com.netsuprema.dominio.Cooperativa"/>
     <mapping class="br.com.netsuprema.dominio.Cedente"/>
     <mapping class="br.com.netsuprema.dominio.Conta"/>
+    <mapping class="br.com.netsuprema.dominio.remessa.Remessa"/>
+    <mapping class="br.com.netsuprema.dominio.remessa.LogEnvioRemessa"/>
+    <mapping class="br.com.netsuprema.testes.ClasseA"/>
+    <mapping class="br.com.netsuprema.testes.ClasseB"/>
+    
   </session-factory>
 </hibernate-configuration>

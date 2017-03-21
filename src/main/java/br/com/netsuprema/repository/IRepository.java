@@ -1,9 +1,10 @@
 package br.com.netsuprema.repository;
 
+import java.io.Serializable;
 import java.util.List;
 
 public interface IRepository<T> {
-    public void salvar(T t);
+    public Serializable salvar(T t);
 
     public void atualizar(T t);
 

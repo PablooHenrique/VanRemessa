@@ -3,6 +3,7 @@ package br.com.netsuprema.repository;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,9 @@ public abstract class AbstractRepository<T> implements IRepository<T> {
     }
 
     @Override
-    public void salvar(T t) {
-        session.save(t);
+    public Serializable salvar(T t) {
+        Serializable retorno = session.save(t);
+		return retorno;
     }
 
     @Override

@@ -75,4 +75,12 @@ public class ParametrosService {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+	
+	public static void main(String[] args) {
+		SessionFactory sessionFactory2 = Application.getInstance().getSessionFactory();
+		Session openSession = sessionFactory2.openSession();
+		Transaction beginTransaction = openSession.beginTransaction();
+		new ParametrosRepository(openSession).limparTabela();
+		beginTransaction.commit();
+	}
 }
