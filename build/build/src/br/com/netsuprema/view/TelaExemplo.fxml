@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="670.0" prefWidth="1024.0" style="-fx-background-color: #f4f4f3;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.EnviosDetalhadosController">
+   <children>
+      <TextField fx:id="edtUsuario" layoutX="130.0" layoutY="570.0" prefHeight="39.0" prefWidth="360.0" />
+      <PasswordField fx:id="edtSenha" layoutX="531.0" layoutY="570.0" prefHeight="39.0" prefWidth="360.0" />
+      <TextField fx:id="edtUsuario2" layoutX="110.0" layoutY="570.0" prefHeight="39.0" prefWidth="20.0" />
+      <TextField fx:id="edtUsuario21" layoutX="891.0" layoutY="570.0" prefHeight="39.0" prefWidth="20.0" />
+      <TextField fx:id="edtUsuario211" layoutX="490.0" layoutY="570.0" prefHeight="39.0" prefWidth="41.0" />
+      <Line endX="700.0" layoutX="212.5" layoutY="240.0" startX="-100.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0" />
+      <Label layoutX="190.0" layoutY="197.0" prefHeight="25.0" prefWidth="211.0" text="RESUMO DE ENVIOS" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="190.0" layoutY="127.0" prefHeight="51.0" prefWidth="95.0" text="VOLTAR" textFill="#323031">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="imgConfiguracoes" fitHeight="39.0" fitWidth="39.0" layoutX="134.0" layoutY="195.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="134.0" />
+      <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="112.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="23.0" />
+      <JFXButton fx:id="btnVoltar" layoutX="128.0" layoutY="127.0" onAction="#handleVoltar" prefHeight="34.0" prefWidth="34.0" ripplerFill="#bc9347" style="-fx-background-color: #e5b250;" text="v" />
+      <JFXButton fx:id="btnsalvar" buttonType="RAISED" layoutX="743.0" layoutY="196.0" onAction="#handleSalvar" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="Buscar" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

@@ -12,14 +12,13 @@
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" style="-fx-background-color: #f4f4f3;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.ConfiguracoesServicoController">
    <children>
       <JFXButton fx:id="btnVoltar" layoutX="128.0" layoutY="127.0" onAction="#handleVoltar" prefHeight="34.0" prefWidth="34.0" ripplerFill="#bc9347" style="-fx-background-color: #e5b250;" text="v" AnchorPane.leftAnchor="128.0" AnchorPane.topAnchor="127.0" />
-      <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="112.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="23.0" />
-      <ImageView fx:id="imgConfiguracoes" fitHeight="39.0" fitWidth="39.0" layoutX="134.0" layoutY="195.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="134.0" AnchorPane.topAnchor="195.0" />
+      <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="112.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="23.0" />
       <Label layoutX="190.0" layoutY="127.0" prefHeight="51.0" prefWidth="95.0" text="VOLTAR" textFill="#323031" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="127.0">
          <font>
             <Font name="Arial" size="22.0" />
          </font>
       </Label>
-      <Label layoutX="190.0" layoutY="189.0" prefHeight="51.0" prefWidth="470.0" text="CONFIGURAÇÂO PARA INICIALIZAR O SERVIÇO" textFill="#323031" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="189.0">
+      <Label layoutX="190.0" layoutY="189.0" prefHeight="51.0" prefWidth="481.0" text="CONFIGURAÇÕES PARA INICIALIZAR O SERVIÇO" textFill="#323031" AnchorPane.leftAnchor="128.0" AnchorPane.topAnchor="189.0">
          <font>
             <Font name="Arial" size="20.0" />
          </font>

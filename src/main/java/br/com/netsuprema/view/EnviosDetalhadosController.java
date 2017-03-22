@@ -17,8 +17,6 @@ public class EnviosDetalhadosController extends AbstractController{
 	private JFXButton btnVoltar;
 	@FXML
 	private ImageView imgLogo;
-	@FXML
-	private ImageView imgResumo;
 	
 	public EnviosDetalhadosController() {
 		
@@ -32,7 +30,6 @@ public class EnviosDetalhadosController extends AbstractController{
 	public void initializeComponents(){
 		initializeComponenteBtnVoltar();
 		imgLogo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO+"imagens/logo.png"));
-		imgResumo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO +"icone_resumo.png"));
 	}
 
 	private void initializeComponenteBtnVoltar() {

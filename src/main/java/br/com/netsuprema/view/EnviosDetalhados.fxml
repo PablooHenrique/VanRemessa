@@ -12,7 +12,7 @@
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.EnviosDetalhadosController">
    <children>
       <Line endX="700.0" layoutX="252.0" layoutY="250.0" startX="-100.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="239.5" />
-      <Label layoutX="190.0" layoutY="189.0" prefHeight="51.0" prefWidth="470.0" text="PESQUISA DE ENVIOS DETALHADOS" textFill="#323031" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="189.0">
+      <Label layoutX="190.0" layoutY="189.0" prefHeight="51.0" prefWidth="470.0" text="PESQUISA DE ENVIOS DETALHADOS" textFill="#323031" AnchorPane.leftAnchor="128.0" AnchorPane.topAnchor="189.0">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
@@ -22,7 +22,6 @@
             <Font name="Arial" size="22.0" />
          </font>
       </Label>
-      <ImageView fx:id="imgResumo" fitHeight="39.0" fitWidth="39.0" layoutX="134.0" layoutY="195.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="134.0" AnchorPane.topAnchor="195.0" />
       <JFXButton fx:id="btnVoltar" layoutX="128.0" layoutY="127.0" onAction="#handleVoltar" prefHeight="34.0" prefWidth="34.0" ripplerFill="#bc9347" style="-fx-background-color: #e5b250;" text="v" AnchorPane.leftAnchor="128.0" AnchorPane.topAnchor="127.0" />
       <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="122.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="23.0" />
       <JFXTabPane layoutX="112.0" layoutY="255.0" prefHeight="377.0" prefWidth="801.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0">

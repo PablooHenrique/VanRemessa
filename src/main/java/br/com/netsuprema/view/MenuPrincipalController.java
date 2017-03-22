@@ -3,7 +3,10 @@ package br.com.netsuprema.view;
 import com.jfoenix.controls.JFXButton;
 
 import br.com.netsuprema.controller.MainAppController;
+import br.com.netsuprema.utils.ConfigUtils;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class MenuPrincipalController extends AbstractController{
@@ -16,10 +19,12 @@ public class MenuPrincipalController extends AbstractController{
 	private JFXButton btnResumoEnvio;
 	@FXML
 	private JFXButton btnEnviosDetalhados;
+	@FXML
+	private ImageView imgLogo;
 	
 	@FXML
 	private void initialize(){
-		
+		imgLogo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO+"imagens/logo.png"));
 	}
 	
 	public void handleShowConfiguracoesServico(){

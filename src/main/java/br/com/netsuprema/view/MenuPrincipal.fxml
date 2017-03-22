@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -7,10 +9,16 @@
 
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.MenuPrincipalController">
    <children>
-      <JFXButton fx:id="btnConfiguracoes" buttonType="RAISED" layoutX="105.0" layoutY="192.0" onAction="#handleShowConfiguracoesServico" prefHeight="109.0" prefWidth="153.0" style="-fx-background-color: E5B250;" text="Configurações" />
-      <JFXButton fx:id="btnResumoEnvio" buttonType="RAISED" layoutX="269.0" layoutY="192.0" onAction="#handleShowResumoEnvio" prefHeight="109.0" prefWidth="153.0" style="-fx-background-color: E5B250;" text="Resumo Envio" />
-      <JFXButton fx:id="btnEnviosDetalhados" buttonType="RAISED" layoutX="432.0" layoutY="192.0" onAction="#handleShowEnviosDetalhados" prefHeight="109.0" prefWidth="145.0" style="-fx-background-color: E5B250;" text="Envios Detalhados" />
-      <JFXButton fx:id="btnDiretoriosEnvio" buttonType="RAISED" layoutX="591.0" layoutY="192.0" onAction="#handleShowDiretoriosEnvio" prefHeight="109.0" prefWidth="145.0" style="-fx-background-color: E5B250;" text="Diretorios Envio" />
-      <JFXButton fx:id="btnStatusServico" buttonType="RAISED" layoutX="752.0" layoutY="192.0" onAction="#handleShowStatusServico" prefHeight="109.0" prefWidth="145.0" style="-fx-background-color: E5B250;" text="Status Serviço" />
+      <JFXButton fx:id="btnConfiguracoes" buttonType="RAISED" layoutX="20.0" layoutY="238.0" onAction="#handleShowConfiguracoesServico" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <JFXButton fx:id="btnResumoEnvio" buttonType="RAISED" layoutX="220.0" layoutY="238.0" onAction="#handleShowResumoEnvio" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <JFXButton fx:id="btnEnviosDetalhados" buttonType="RAISED" layoutX="420.0" layoutY="238.0" onAction="#handleShowEnviosDetalhados" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <JFXButton fx:id="btnDiretoriosEnvio" buttonType="RAISED" layoutX="620.0" layoutY="238.0" onAction="#handleShowDiretoriosEnvio" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <JFXButton fx:id="btnStatusServico" buttonType="RAISED" layoutX="820.0" layoutY="238.0" onAction="#handleShowStatusServico" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="112.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="23.0" />
+      <Label layoutX="63.0" layoutY="389.0" text="CONFIGURAÇÔES" />
+      <Label layoutX="267.0" layoutY="389.0" text="RESUMO ENVIO" />
+      <Label layoutX="456.0" layoutY="389.0" text="ENVIO DETALHADOS" />
+      <Label layoutX="658.0" layoutY="389.0" text="DIRETÓRIOS ENVIO" />
+      <Label layoutX="864.0" layoutY="389.0" text="STATUS SERVICO" />
    </children>
 </AnchorPane>

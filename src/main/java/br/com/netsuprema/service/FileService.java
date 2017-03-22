@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import br.com.netsuprema.service.cedente.DiretoriosEnvioService;
+
 public class FileService {
 	
 	public List<File> obterArquivosParaEnvioDiretorio(String diretorio) throws IOException{
@@ -32,6 +34,11 @@ public class FileService {
 		return file.mkdirs();
 	}
 	
+	public boolean criarArquivo(String path, String conteudo) throws IOException{
+		File file = new File(path);
+		return file.createNewFile();
+	}
+	
 	public boolean diretorioExists(String path){
 		return new File(path).exists();
 	}
@@ -40,6 +47,9 @@ public class FileService {
 	public void copyFile(File origem, File destino) throws IOException {
         if (destino.exists())
             destino.delete();
+        
+       destino.createNewFile();
+        
         FileChannel sourceChannel = null;
         FileChannel destinationChannel = null;
         try {
@@ -51,7 +61,7 @@ public class FileService {
                 sourceChannel.close();
             if (destinationChannel != null && destinationChannel.isOpen())
                 destinationChannel.close();
-       }
+        }
    }
 
 	public List<File> filtrarArquivosPorMineType(List<File> files) {
@@ -63,5 +73,17 @@ public class FileService {
 			}
 		}
 		return filesFiltrados;
+	}
+
+	public File abrirArquivoLog() throws IOException {
+		String nomeArquivo = DiretoriosEnvioService.DIRETORIO_PADRAO + "log.txt";
+		FileService fileService = new FileService();
+		if(fileService.diretorioExists(nomeArquivo)){
+			return new File(nomeArquivo);
+		}else{
+			 File file = new File(nomeArquivo);
+			 file.createNewFile();
+			 return file;
+		}
 	}
 }

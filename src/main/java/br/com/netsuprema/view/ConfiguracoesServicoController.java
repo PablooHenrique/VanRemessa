@@ -12,9 +12,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXButton.ButtonType;
 
 import br.com.netsuprema.application.ParametrosApplication;
-import br.com.netsuprema.dominio.Cooperativa;
-import br.com.netsuprema.dominio.Parametros;
 import br.com.netsuprema.dominio.enuns.FormatoRemessa;
+import br.com.netsuprema.dominio.parametros.Cooperativa;
+import br.com.netsuprema.dominio.parametros.Parametros;
 import br.com.netsuprema.utils.ConfigUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,8 +47,6 @@ public class ConfiguracoesServicoController extends AbstractController{
 	private JFXButton btnVoltar;
 	@FXML
 	private JFXButton btnsalvar;
-	@FXML
-	private ImageView imgConfiguracoes;
 	@FXML
 	private ImageView imgLogo;
 	
@@ -103,7 +101,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 			if (!cooperativas.get(i).trim().isEmpty()) {
 				String[] itens = cooperativas.get(i).split("-");
 				
-				if (Integer.valueOf(itens[0]) == parametros.getCooperativa().getKey()) {
+				if (Integer.valueOf(itens[0]) == parametros.getCooperativa().getKeyCop()) {
 					selectionModel.select(cooperativas.get(i));
 					break;
 				}
@@ -126,7 +124,6 @@ public class ConfiguracoesServicoController extends AbstractController{
 		btnVoltar.getStyleClass().add("floating");
 		
 		imgLogo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO+"imagens/logo.png"));
-		imgConfiguracoes.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO +"icone_configuracao.png"));
 	}
 	
 	public void inicializarCooperativas() {
@@ -147,7 +144,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 
 	public void carregarComboCooperativa(){
 		List<Cooperativa> cooperativas = obterCooperativasViaWebService();
-		cooperativas.stream().forEach(x-> this.cooperativas.add(x.getKey() +"-"+x.getNome().toUpperCase()));
+		cooperativas.stream().forEach(x-> this.cooperativas.add(x.getKeyCop() +"-"+x.getNome().toUpperCase()));
 		comboBoxCooperativas.setItems(this.cooperativas);
 	}
 	

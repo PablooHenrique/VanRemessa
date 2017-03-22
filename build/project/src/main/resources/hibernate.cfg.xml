@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.url">jdbc:mysql://localhost/vanremessa</property>
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+
+    <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+
+    <property name="connection.username">root</property>
+    <property name="connection.password">net@123</property>
+
+    <property name="hbm2ddl.auto">update</property>
+    <property name="show_sql">true</property>
+    <property name="format_sql">true</property>
+    
+    <mapping class="br.com.netsuprema.dominio.parametros.Cooperativa"/>
+    <mapping class="br.com.netsuprema.dominio.parametros.Parametros"/>
+    <mapping class="br.com.netsuprema.dominio.cedente.Cedente"/>
+    <mapping class="br.com.netsuprema.dominio.cedente.Conta"/>
+    <mapping class="br.com.netsuprema.dominio.remessa.Remessa"/>
+    <mapping class="br.com.netsuprema.dominio.remessa.LogEnvioRemessa"/>
+  </session-factory>
+</hibernate-configuration>

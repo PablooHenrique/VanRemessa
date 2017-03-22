@@ -3,6 +3,7 @@ package br.com.netsuprema;
 import java.io.IOException;
 
 import br.com.netsuprema.controller.MainAppController;
+import br.com.netsuprema.service.ScannerFilesThread;
 import br.com.netsuprema.utils.ConfigUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,18 +19,25 @@ public class MainApp extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		startBanco();
 		this.setController(new MainAppController());
 		
 		this.setPrimaryStage(primaryStage);
-		this.getPrimaryStage().setTitle("Van SIG Cobrança - Envio de Remessa");
+		this.getPrimaryStage().setTitle("Sistema SIG Cobrança - Envio de Remessa");
 		this.getPrimaryStage().setResizable(false);
 		this.getPrimaryStage().setWidth(1024);
 		this.getPrimaryStage().setHeight(670);
 		
 		initRootLayout();
 		getController().showMenuPrincipal(this, getRootLayout());
+		
+		new ScannerFilesThread().run();
 	}
 	
+	private void startBanco() {
+		br.com.netsuprema.repository.Application.getInstance().getSessionFactory();
+	}
+
 	public void initRootLayout(){
 		try {
 			FXMLLoader loader = new FXMLLoader();

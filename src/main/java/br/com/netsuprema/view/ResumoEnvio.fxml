@@ -13,7 +13,7 @@
    <children>
       <TextField layoutX="130.0" layoutY="296.0" prefHeight="39.0" prefWidth="360.0" AnchorPane.topAnchor="296.0" />
       <Line endX="700.0" layoutX="212.5" layoutY="240.0" startX="-100.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0" />
-      <Label layoutX="190.0" layoutY="202.0" prefHeight="25.0" prefWidth="211.0" text="RESUMO DE ENVIOS" textFill="#323031">
+      <Label layoutX="190.0" layoutY="202.0" prefHeight="25.0" prefWidth="211.0" text="RESUMO DE ENVIOS" textFill="#323031" AnchorPane.leftAnchor="128.0">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
@@ -23,7 +23,6 @@
             <Font name="Arial" size="22.0" />
          </font>
       </Label>
-      <ImageView fx:id="imgResumo" fitHeight="39.0" fitWidth="39.0" layoutX="134.0" layoutY="195.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="134.0" />
       <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="112.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="23.0" />
       <JFXButton fx:id="btnVoltar" layoutX="128.0" layoutY="127.0" onAction="#handleVoltar" prefHeight="34.0" prefWidth="34.0" ripplerFill="#bc9347" style="-fx-background-color: #e5b250;" text="v" />
       <DatePicker layoutX="522.0" layoutY="153.0" />

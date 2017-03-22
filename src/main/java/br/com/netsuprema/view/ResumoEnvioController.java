@@ -16,9 +16,7 @@ public class ResumoEnvioController extends AbstractController{
 	private JFXButton btnExpandirFiltros;
 	@FXML
 	private ImageView imgLogo;
-	@FXML
-	private ImageView imgResumo;
-
+	
 	public ResumoEnvioController(){
 
 	}
@@ -39,6 +37,5 @@ public class ResumoEnvioController extends AbstractController{
 		btnVoltar.getStyleClass().add("floating");
 		
 		imgLogo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO+"imagens/logo.png"));
-		imgResumo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO +"icone_resumo.png"));
 	}
 }
