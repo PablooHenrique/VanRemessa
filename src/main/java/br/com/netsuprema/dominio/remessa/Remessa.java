@@ -1,9 +1,6 @@
 package br.com.netsuprema.dominio.remessa;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +28,8 @@ import br.com.netsuprema.dominio.cedente.Cedente;
 import br.com.netsuprema.dominio.cedente.Conta;
 import br.com.netsuprema.dominio.parametros.Parametros;
 import br.com.netsuprema.repository.RemessaRepository;
+import br.com.netsuprema.service.FileService;
+import br.com.netsuprema.service.ScannerFilesThread;
 
 @Entity(name="remessa")
 public class Remessa {
@@ -67,22 +66,46 @@ public class Remessa {
 		this.numeroConta = numeroConta;
 	}
 
-	public long processar(Session session) throws IOException {
-		Solicitacao solicitacao = enviarRemessa();
-		long id = salvarDadosLogEnvio(solicitacao, session);
-		return id;
+	public long processar(Session session) throws Exception{
+		try {
+			
+			Solicitacao solicitacao = enviarRemessa();
+			long id = salvarDadosLogEnvio(solicitacao, session);
+			
+			return id;
+			
+		} catch (Exception e) {
+			
+			StringBuilder builder = new StringBuilder();
+			builder.append("--Processar--");
+			builder.append("Falha ao realizar o processamento. Motivo: " + e.getMessage());
+			builder.append("Causa: " + e.getCause().getMessage());
+			ScannerFilesThread.logErros.add(builder.toString());
+			
+			throw new Exception("Falha ao realizar o processamento. Motivo: " + e.getMessage());
+			
+		}
 	}
 
-	private long salvarDadosLogEnvio(Solicitacao solicitacao, Session session){
-		nomeDoArquivo = file.getName();
-		log = criarLogEnvioRemessa(solicitacao);
-		long id = 0;
+	private long salvarDadosLogEnvio(Solicitacao solicitacao, Session session) throws Exception {
 		try {
+			
+			nomeDoArquivo = file.getName();
+			log = criarLogEnvioRemessa(solicitacao);
 			new RemessaRepository(session).salvar(this);
+			return this.id;
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			
+			StringBuilder builder = new StringBuilder();
+			builder.append("--salvarDadosLogEnvio--");
+			builder.append("Falha ao salvar os dados do logEnvio. Motivo: " + e.getMessage());
+			builder.append("Causa: " + e.getCause().getMessage());
+			ScannerFilesThread.logErros.add(builder.toString());
+			
+			throw new Exception("Falha ao salvar os dados do logEnvio. Motivo: " + e.getMessage());
+			
 		}
-		return id;
 	}
 
 	private LogEnvioRemessa criarLogEnvioRemessa(Solicitacao solicitacao){
@@ -100,22 +123,52 @@ public class Remessa {
 		return log;
 	}
 
-	private Solicitacao enviarRemessa() throws IOException {
-		Servico servico = criarDadosEnvioRemessa();
-		Solicitacao solicitacao = criarSolicitacaoWebService();
-		
-		RegistrosDoWSDLPortTypeProxy registro = new RegistrosDoWSDLPortTypeProxy();
-		solicitacao = registro.REMESSA_TITULO(servico);
-		return solicitacao;
+	private Solicitacao enviarRemessa() throws Exception{
+		try {
+			
+			Servico servico = criarDadosEnvioRemessa();
+			Solicitacao solicitacao = criarSolicitacaoWebService();
+			
+			RegistrosDoWSDLPortTypeProxy registro = new RegistrosDoWSDLPortTypeProxy();
+			solicitacao = registro.REMESSA_TITULO(servico);
+			
+			return solicitacao;
+			
+		} catch (Exception e) {
+			
+			StringBuilder builder = new StringBuilder();
+			builder.append("--enviarRemessa--");
+			builder.append("Erro ao a remessa. Motivo: " + e.getMessage());
+			builder.append("Causa: " + e.getCause().getMessage());
+			
+			ScannerFilesThread.logErros.add(builder.toString());
+			
+			throw new Exception("Erro ao a remessa. Motivo: " + e.getMessage());
+		}
 	}
 
-	private Servico criarDadosEnvioRemessa() throws IOException {
-		NetSupremaRemessa.server.Cedente cedente = criarCedenteWebService();
-		Autenticacao autenticacao = criarAutenticacaoWebService();
-		Dados dados = criarDadosWebService();
-		Solicitacao solicitacao = criarSolicitacaoWebService();
-		Servico servico = criarServicoWebService(cedente, autenticacao, dados, solicitacao);
-		return servico;
+	private Servico criarDadosEnvioRemessa() throws Exception{
+		try {
+			
+			NetSupremaRemessa.server.Cedente cedente = criarCedenteWebService();
+			Autenticacao autenticacao = criarAutenticacaoWebService();
+			Dados dados = criarDadosWebService();
+			Solicitacao solicitacao = criarSolicitacaoWebService();
+			Servico servico = criarServicoWebService(cedente, autenticacao, dados, solicitacao);
+			
+			return servico;
+			
+		} catch (Exception e) {
+			
+			StringBuilder builder = new StringBuilder();
+			builder.append("--criarDadosEnvioRemessa--");
+			builder.append("Erro ao criar os dados de envio de remessa. Motivo: " + e.getMessage());
+			builder.append("Causa: " + e.getCause().getMessage());
+			
+			ScannerFilesThread.logErros.add(builder.toString());
+			
+			throw new Exception("Erro ao criar os dados de envio de remessa. Motivo: " + e.getMessage());
+		}
 	}
 
 	private Servico criarServicoWebService(NetSupremaRemessa.server.Cedente cedente,
@@ -145,25 +198,54 @@ public class Remessa {
 		return solicitacao;
 	}
 
-	private Dados criarDadosWebService() throws IOException {
-		Dados dados = new Dados();
-		dados.setEMAIL_NOTIFICACAO(this.parametros.getEmail());
-		dados.setFORMATO(String.valueOf(this.parametros.getFormatoRemessa().getCodigo()));
-		dados.setNOME_ARQUIVO(this.file.getName());
-		dados.setREMESSA(obterConteudoArquivo());
-		return dados;
-	}
-
-	private String obterConteudoArquivo() throws IOException {
-		StringBuilder conteudo = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new FileReader(this.file));
-		while (reader.ready()) {
-			conteudo.append(reader.readLine());
+	private Dados criarDadosWebService() throws Exception{
+		try {
+			
+			Dados dados = new Dados();
+			
+			dados.setEMAIL_NOTIFICACAO(this.parametros.getEmail());
+			dados.setFORMATO(String.valueOf(this.parametros.getFormatoRemessa().getCodigo()));
+			dados.setNOME_ARQUIVO(this.file.getName());
+			dados.setREMESSA(obterConteudoArquivo());
+			
+			return dados;
+			
+		} catch (Exception e) {
+			
+			StringBuilder builder = new StringBuilder();
+			builder.append("--criarDadosWebService--");
+			builder.append("Erro ao criar os dados do webService. Motivo: " + e.getMessage());
+			builder.append("Causa: " + e.getCause().getMessage());
+			
+			ScannerFilesThread.logErros.add(builder.toString());
+			
+			throw new Exception("Erro ao criar os dados do webService. Motivo: " + e.getMessage());
 		}
-		return conteudo.toString();
 	}
 
-	private Autenticacao criarAutenticacaoWebService() {
+	private String obterConteudoArquivo() throws Exception{
+		try {
+			
+			FileService service = new FileService();
+			String conteudo;
+			conteudo = service.obterConteudoDoArquivo(this.file);
+			
+			return conteudo;
+			
+		} catch (Exception e) {
+			
+			StringBuilder builder = new StringBuilder();
+			builder.append("--obterConteudoArquivo--");
+			builder.append("Erro ao tentar obter o conteudo do arquivo. Motivo: " + e.getMessage());
+			builder.append("Causa: " + e.getCause().getMessage());
+			
+			ScannerFilesThread.logErros.add(builder.toString());
+			
+			throw new Exception("Erro ao tentar obter o conteudo do arquivo. Motivo: " + e.getMessage());
+		}
+	}
+
+	private Autenticacao criarAutenticacaoWebService(){
 		Autenticacao autenticacao = new Autenticacao();
 		autenticacao.setUSUARIO(this.parametros.getLogin());
 		autenticacao.setSENHA_MD5(this.parametros.getSenha());
@@ -172,13 +254,14 @@ public class Remessa {
 
 	private NetSupremaRemessa.server.Cedente criarCedenteWebService() {
 		NetSupremaRemessa.server.Cedente cedenteWs = new NetSupremaRemessa.server.Cedente();
+		
 		cedenteWs.setCODIGO_CEDENTE(String.valueOf(this.cedente.getCodigo()));
 		cedenteWs.setCODIGO_CEDENTE_DV(String.valueOf(this.cedente.getDigitoVerificador()));
 		cedenteWs.setCONTA_CORRENTE(String.valueOf(obterConta().getNumeroConta()));
 		cedenteWs.setCONTA_CORRENTE_DV(String.valueOf(obterConta().getDigitoVerificador()));
 		return cedenteWs;
 	}
-
+	
 	private Conta obterConta() {
 		List<Conta> contas = cedente.getContas().stream().filter(x->x.getNumeroConta() == this.numeroConta).collect(Collectors.toList());
 		if (!contas.isEmpty()) {

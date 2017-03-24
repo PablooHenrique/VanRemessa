@@ -31,7 +31,8 @@ public class MainApp extends Application{
 		initRootLayout();
 		getController().showMenuPrincipal(this, getRootLayout());
 		
-		new ScannerFilesThread().run();
+		ScannerFilesThread instance = ScannerFilesThread.getInstance();
+		instance.startProcessamento();
 	}
 	
 	private void startBanco() {

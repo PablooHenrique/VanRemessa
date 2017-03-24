@@ -20,6 +20,10 @@ public class MenuPrincipalController extends AbstractController{
 	@FXML
 	private JFXButton btnEnviosDetalhados;
 	@FXML
+	private JFXButton btnDiretoriosEnvio;
+	@FXML
+	private JFXButton btnStatusServico;
+	@FXML
 	private ImageView imgLogo;
 	
 	@FXML

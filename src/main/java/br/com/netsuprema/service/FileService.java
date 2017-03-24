@@ -1,14 +1,20 @@
 package br.com.netsuprema.service;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.security.AccessControlException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import br.com.netsuprema.service.cedente.DiretoriosEnvioService;
@@ -85,5 +91,50 @@ public class FileService {
 			 file.createNewFile();
 			 return file;
 		}
+	}
+
+	public String obterConteudoDoArquivo(File file) throws Exception {
+		try {
+			StringBuilder conteudo 	= new StringBuilder();
+			FileReader fileReader 	= new FileReader(file);
+			BufferedReader bufferReader = new BufferedReader(fileReader);
+			
+			while (bufferReader.ready()) {
+				conteudo.append(bufferReader.readLine());
+			}
+			
+			bufferReader.close();
+			fileReader.close();
+			
+			return conteudo.toString();
+			
+		} catch (IOException e) {
+			throw new Exception("Erro ao tentar obter o conteudo do arquivo. Motivo: " + e.getMessage());
+		}
+	}
+
+	public void salvarLog(List<String> logErros) throws IOException {
+		
+		Date data = new Date(System.currentTimeMillis());  
+		SimpleDateFormat formatarDate = new SimpleDateFormat("yyyy-MM-dd"); 
+		String format = formatarDate.format(data);
+		
+		File file = new File(DiretoriosEnvioService.DIRETORIO_PADRAO + "log-"+format+".txt");
+		FileWriter fileW = new FileWriter (file, true);
+        BufferedWriter buffW = new BufferedWriter (fileW);
+        buffW.newLine();
+        
+        logErros.stream().forEach(x-> {
+			try {
+				buffW.newLine();
+				buffW.write(x);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+    
+        buffW.close();
+        fileW.close();
+		
 	}
 }
