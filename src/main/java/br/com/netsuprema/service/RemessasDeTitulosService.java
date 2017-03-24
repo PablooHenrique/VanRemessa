@@ -64,6 +64,24 @@ public class RemessasDeTitulosService {
 		}
 	}
 	
+	public void reprocessarRemessasEnviadasAoServidor() throws Exception{
+		List<Remessa> remessas = new RemessasDeTitulosService().listarRemessasComAguardoProcessamento();
+		RelatoriosWebService serviceRelatorios = new RelatoriosWebService();
+		for (Remessa remessa : remessas) {
+			serviceRelatorios.reprocessarRemessaEnviadasAoServidor(remessa);
+			Session session = factory.openSession();
+			Transaction transaction = session.beginTransaction();
+			new RemessaRepository(session).atualizar(remessa);
+			transaction.commit();
+		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		new RemessasDeTitulosService().reprocessarRemessasEnviadasAoServidor();
+		
+	}
+	
 	private boolean processamentoEValido() {
 		return parametrosSaoValidos();
 	}
@@ -74,6 +92,7 @@ public class RemessasDeTitulosService {
 			carregarParametros(session);
 			return true;
 		} catch (Exception e) {
+			ScannerFilesThread.errosUsuario.add("Parametros não cadastrados. Não e possivel conectar com o serviço.");
 			return false;
 		}
 	}
@@ -338,6 +357,19 @@ public class RemessasDeTitulosService {
 			
 		}
 	}
+	
+	public List<Remessa> listarRemessasComAguardoProcessamento() {
+		Session session = null;
+		try {
+			session = factory.openSession();
+			List<Remessa> remessas = new RemessaRepository(session).listarRemessasComAguardoProcessamento();
+			return remessas;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
 
 	public SessionFactory getFactory() {
 		return factory;
@@ -346,4 +378,5 @@ public class RemessasDeTitulosService {
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
 	}
+
 }

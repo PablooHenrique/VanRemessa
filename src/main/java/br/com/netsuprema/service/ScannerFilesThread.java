@@ -10,6 +10,7 @@ import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
 public class ScannerFilesThread implements Runnable{
 	
 	public static List<String> logErros = new ArrayList<String>();
+	public static List<String> errosUsuario = new ArrayList<String>();
 	private static ScannerFilesThread ScannerFilesThread;
 	private Thread thread;
 	

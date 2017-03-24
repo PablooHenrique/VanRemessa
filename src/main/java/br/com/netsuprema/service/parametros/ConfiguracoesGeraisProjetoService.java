@@ -29,7 +29,6 @@ public class ConfiguracoesGeraisProjetoService {
 		try {
 			
 			try {
-				
 			
 				ConfiguracoesGeraisProjeto config;
 				
@@ -60,14 +59,6 @@ public class ConfiguracoesGeraisProjetoService {
 		}
 	}
 	
-	public SessionFactory getFactory() {
-		return factory;
-	}
-
-	public void setFactory(SessionFactory factory) {
-		this.factory = factory;
-	}
-
 	public ConfiguracoesGeraisProjeto listarConfig() {
 		Session session = null;
 		try {
@@ -84,4 +75,13 @@ public class ConfiguracoesGeraisProjetoService {
 			}
 		}
 	}
+	
+	public SessionFactory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(SessionFactory factory) {
+		this.factory = factory;
+	}
+
 }

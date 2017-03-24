@@ -32,4 +32,18 @@ public class RemessaRepository extends AbstractRepository<Remessa>{
 		
 		return remessas;
 	}
+
+	public List<Remessa> listarRemessasComAguardoProcessamento() {
+		
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select a from remessa a ")
+			.append("inner join a.log l on a.log.id = l.id ")
+			.append("where UPPER(l.situacao) like :situacaook ");
+		
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("situacaook", "%"+"OK"+"%");
+		List<Remessa> remessas = select(jpql.toString(), parametros);
+		
+		return remessas;
+	}
 }

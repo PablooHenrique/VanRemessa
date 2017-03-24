@@ -32,7 +32,7 @@ public class MainApp extends Application{
 		getController().showMenuPrincipal(this, getRootLayout());
 		
 		ScannerFilesThread instance = ScannerFilesThread.getInstance();
-		instance.startProcessamento();
+		instance.startProcessamento();	
 	}
 	
 	private void startBanco() {

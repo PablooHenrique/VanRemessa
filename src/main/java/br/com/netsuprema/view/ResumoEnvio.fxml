@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" style="-fx-background-color: #f4f4f3;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.ResumoEnvioController">
    <children>
-      <TextField layoutX="130.0" layoutY="296.0" prefHeight="39.0" prefWidth="360.0" AnchorPane.topAnchor="296.0" />
+      <TextField fx:id="edtDataHoraUltimaVerificacaoEnvio" layoutX="130.0" layoutY="296.0" prefHeight="39.0" prefWidth="360.0" AnchorPane.topAnchor="296.0" />
       <Line endX="700.0" layoutX="212.5" layoutY="240.0" startX="-100.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0" />
       <Label layoutX="190.0" layoutY="202.0" prefHeight="25.0" prefWidth="211.0" text="RESUMO DE ENVIOS" textFill="#323031" AnchorPane.leftAnchor="128.0">
          <font>
@@ -27,7 +27,7 @@
       <JFXButton fx:id="btnVoltar" layoutX="128.0" layoutY="127.0" onAction="#handleVoltar" prefHeight="34.0" prefWidth="34.0" ripplerFill="#bc9347" style="-fx-background-color: #e5b250;" text="v" />
       <DatePicker layoutX="522.0" layoutY="153.0" />
       <DatePicker layoutX="720.0" layoutY="153.0" />
-      <JFXButton buttonType="RAISED" layoutX="724.0" layoutY="196.0" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="Buscar" textFill="#323031">
+      <JFXButton buttonType="RAISED" layoutX="724.0" layoutY="196.0" onAction="#handlePesquisar" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="Buscar" textFill="#323031">
          <font>
             <Font name="Arial" size="20.0" />
          </font>

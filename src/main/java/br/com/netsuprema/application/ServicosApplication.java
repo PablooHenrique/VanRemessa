@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import br.com.netsuprema.dominio.parametros.ConfiguracoesGeraisProjeto;
+import br.com.netsuprema.service.ScannerFilesThread;
 import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
 
 public class ServicosApplication {
@@ -23,5 +24,16 @@ public class ServicosApplication {
 
 	public boolean verificarServicoAcompanhamentoLog() {
 		return false;
+	}
+
+	public String obterErrosProcessamento() {
+		if (!ScannerFilesThread.errosUsuario.isEmpty()) {
+			return ScannerFilesThread.errosUsuario.get(0);
+		}
+		return "";
+	}
+
+	public void limparErroProcessamento() {
+		ScannerFilesThread.errosUsuario.clear();
 	}
 }

@@ -17,6 +17,10 @@ public class LogEnvioRemessa {
 	private String situacao ;
 	private String detalheErro;
 	private LocalDateTime dataHoraEnvio;
+	private StatusProcessamento statusProcessamento;
+	private String detalheSituacao;
+	private String logProcessamento;
+	private String dhProcessamento;
 	
 	public int getId() {
 		return id;
@@ -47,5 +51,29 @@ public class LogEnvioRemessa {
 	}
 	public void setDataHoraEnvio(LocalDateTime dataHoraEnvio) {
 		this.dataHoraEnvio = dataHoraEnvio;
+	}
+	public StatusProcessamento getStatusProcessamento() {
+		return statusProcessamento;
+	}
+	public void setStatusProcessamento(StatusProcessamento statusProcessamento) {
+		this.statusProcessamento = statusProcessamento;
+	}
+	public String getDetalheSituacao() {
+		return detalheSituacao;
+	}
+	public void setDetalheSituacao(String detalheSituacao) {
+		this.detalheSituacao = detalheSituacao;
+	}
+	public String getLogProcessamento() {
+		return logProcessamento;
+	}
+	public void setLogProcessamento(String logProcessamento) {
+		this.logProcessamento = logProcessamento;
+	}
+	public String getDhProcessamento() {
+		return dhProcessamento;
+	}
+	public void setDhProcessamento(String dhProcessamento) {
+		this.dhProcessamento = dhProcessamento;
 	}
 }
