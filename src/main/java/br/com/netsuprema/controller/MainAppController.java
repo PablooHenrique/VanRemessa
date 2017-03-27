@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import br.com.netsuprema.MainApp;
 import br.com.netsuprema.application.dto.CedenteDto;
+import br.com.netsuprema.application.dto.RemessaDto;
 import br.com.netsuprema.view.CadastroDiretorioEnvioController;
 import br.com.netsuprema.view.ConfiguracoesServicoController;
+import br.com.netsuprema.view.DetalhesRemessaController;
 import br.com.netsuprema.view.DiretoriosEnvioController;
 import br.com.netsuprema.view.EnviosDetalhadosController;
 import br.com.netsuprema.view.MenuPrincipalController;
@@ -131,6 +133,30 @@ public class MainAppController {
 		}
 		
 		return false;
+	}
+
+	public void showCadastroDetalhesRemessaDialog(MainApp mainApp, BorderPane rootLayout, RemessaDto remessa) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainAppController.class.getResource("../view/DetalhesRemessa.fxml"));
+			AnchorPane detalhesRemessa = loader.load();
+			
+			Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Detalhes da Remessa");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(mainApp.getPrimaryStage());
+	        dialogStage.setResizable(false);
+	        Scene scene = new Scene(detalhesRemessa);
+	        dialogStage.setScene(scene);
+	        
+	        DetalhesRemessaController controller = loader.getController();
+	        controller.setMainApp(mainApp);
+	        controller.setRemessa(remessa);
+	        dialogStage.showAndWait();
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
 

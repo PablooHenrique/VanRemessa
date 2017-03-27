@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 
 public class CedenteDto{
 	
+	private StringProperty id;
 	private StringProperty nome;
 	private StringProperty codigo;
 	private StringProperty digitoVerificador;
@@ -18,12 +19,12 @@ public class CedenteDto{
 	private ListProperty<ContaDto> contas;
 	
 	public CedenteDto() {
-		this.nome = new SimpleStringProperty();
-		this.codigo = new SimpleStringProperty();
 		this.digitoVerificador = new SimpleStringProperty();
 		this.diretorioPadrao = new SimpleStringProperty();
-		
+		this.codigo = new SimpleStringProperty();
 		this.contas = new SimpleListProperty<ContaDto>();
+		this.nome = new SimpleStringProperty();
+		this.id = new SimpleStringProperty();
 	}
 
 	public void setCodigo(String codigo) {
@@ -84,5 +85,17 @@ public class CedenteDto{
 
 	public void setDiretorioPadraoProperty(StringProperty diretorioPadrao) {
 		this.diretorioPadrao = diretorioPadrao;
+	}
+
+	public StringProperty getId() {
+		return id;
+	}
+
+	public void setIdProperty(StringProperty id) {
+		this.id = id;
+	}
+	
+	public void setId(String id) {
+		this.id.set(id);
 	}
 }

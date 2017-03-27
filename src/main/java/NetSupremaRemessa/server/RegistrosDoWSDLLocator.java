@@ -21,8 +21,9 @@ public class RegistrosDoWSDLLocator extends org.apache.axis.client.Service imple
         super(wsdlLoc, sName);
     }
 
-    // Use to get a proxy class for RegistrosDoWSDLPort
-    private java.lang.String RegistrosDoWSDLPort_address = "http://sig.netsuprema.com.br/col_cobrancateste/webservice_remessa_titulo.php";
+//     Use to get a proxy class for RegistrosDoWSDLPort
+	private java.lang.String RegistrosDoWSDLPort_address = "http://192.168.7.205/joao/aplication/webservice_remessa_titulo.php?wsdl";
+//    private java.lang.String RegistrosDoWSDLPort_address = "http://sig5.netsuprema.com.br/col_cobrancateste/webservice_remessa_titulo.php";
 
     public java.lang.String getRegistrosDoWSDLPortAddress() {
         return RegistrosDoWSDLPort_address;

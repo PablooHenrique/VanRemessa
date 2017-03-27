@@ -431,4 +431,30 @@ public class RemessasDeTitulosService {
 			}
 		}
 	}
+
+	public List<Remessa> listar() {
+		Session session = null;
+		try {
+			session = factory.openSession();
+			List<Remessa> remessas = new RemessaRepository(session).listar();
+			return remessas;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	public Remessa listar(int id) {
+		Session session = null;
+		try {
+			session = factory.openSession();
+			Remessa remessa = new RemessaRepository(session).listarPorId(id);
+			return remessa;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
 }

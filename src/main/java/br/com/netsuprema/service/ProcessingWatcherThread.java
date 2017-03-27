@@ -14,6 +14,7 @@ public class ProcessingWatcherThread implements Runnable{
 				try {
 					new RemessasDeTitulosService().reprocessarRemessasEnviadasAoServidor();
 				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		};
