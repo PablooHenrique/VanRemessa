@@ -1,11 +1,8 @@
 package br.com.netsuprema.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import NetSupremaConsultaProcessamento.server.Autenticacao;
 import NetSupremaConsultaProcessamento.server.DadosConsulta;

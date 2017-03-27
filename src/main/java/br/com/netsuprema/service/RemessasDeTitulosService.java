@@ -65,7 +65,7 @@ public class RemessasDeTitulosService {
 	}
 	
 	public void reprocessarRemessasEnviadasAoServidor() throws Exception{
-		List<Remessa> remessas = new RemessasDeTitulosService().listarRemessasComAguardoProcessamento();
+		List<Remessa> remessas = new RemessasDeTitulosService().listarRemessasComAguardoProcessamentoLocal();
 		RelatoriosWebService serviceRelatorios = new RelatoriosWebService();
 		for (Remessa remessa : remessas) {
 			serviceRelatorios.reprocessarRemessaEnviadasAoServidor(remessa);
@@ -79,6 +79,7 @@ public class RemessasDeTitulosService {
 	public static void main(String[] args) throws Exception {
 		
 		new RemessasDeTitulosService().reprocessarRemessasEnviadasAoServidor();
+		System.out.println("");
 		
 	}
 	
@@ -358,11 +359,11 @@ public class RemessasDeTitulosService {
 		}
 	}
 	
-	public List<Remessa> listarRemessasComAguardoProcessamento() {
+	public List<Remessa> listarRemessasComAguardoProcessamentoLocal() {
 		Session session = null;
 		try {
 			session = factory.openSession();
-			List<Remessa> remessas = new RemessaRepository(session).listarRemessasComAguardoProcessamento();
+			List<Remessa> remessas = new RemessaRepository(session).listarRemessasComAguardoProcessamentoLocal();
 			return remessas;
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -379,4 +380,55 @@ public class RemessasDeTitulosService {
 		this.factory = factory;
 	}
 
+	public List<Remessa> listarRemessasProcessadasComSucesso() {
+		Session session = null;
+		try {
+			session = factory.openSession();
+			List<Remessa> remessas = new RemessaRepository(session).listarRemessasProcessadasComSucesso();
+			return remessas;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	public List<Remessa> listarRemessasProcessadasComErro() {
+		Session session = null;
+		try {
+			session = factory.openSession();
+			List<Remessa> remessas = new RemessaRepository(session).listarRemessasProcessadasComErro();
+			return remessas;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	public List<Remessa> listarRemessasEnviadas() {
+		Session session = null;
+		try {
+			session = factory.openSession();
+			List<Remessa> remessas = new RemessaRepository(session).listarRemessasEnviadas();
+			return remessas;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	public List<Remessa> listarRemessasComAguardoProcessamentoServidor() {
+		Session session = null;
+		try {
+			session = factory.openSession();
+			List<Remessa> remessas = new RemessaRepository(session).listarRemessasAguardandoProcessamentoServidor();
+			return remessas;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
 }

@@ -11,7 +11,10 @@ public class ProcessingWatcherThread implements Runnable{
 			
 			@Override
 			public void run() {
-				
+				try {
+					new RemessasDeTitulosService().reprocessarRemessasEnviadasAoServidor();
+				} catch (Exception e) {
+				}
 			}
 		};
 		

@@ -10,25 +10,26 @@
 
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.MenuPrincipalController">
    <children>
-      <JFXButton fx:id="btnConfiguracoes" buttonType="RAISED" layoutX="122.0" layoutY="222.0" onAction="#handleShowConfiguracoesServico" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " AnchorPane.topAnchor="224.0" />
-      <JFXButton fx:id="btnResumoEnvio" buttonType="RAISED" layoutX="322.0" layoutY="222.0" onAction="#handleShowResumoEnvio" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " AnchorPane.topAnchor="224.0" />
-      <JFXButton fx:id="btnEnviosDetalhados" buttonType="RAISED" layoutX="522.0" layoutY="224.0" onAction="#handleShowEnviosDetalhados" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " AnchorPane.topAnchor="224.0" />
-      <JFXButton fx:id="btnDiretoriosEnvio" buttonType="RAISED" layoutX="722.0" layoutY="222.0" onAction="#handleShowDiretoriosEnvio" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " AnchorPane.topAnchor="224.0" />
-      <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="112.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="23.0" />
-      <Label layoutX="165.0" layoutY="373.0" text="CONFIGURAÇÔES" AnchorPane.topAnchor="373.0" />
-      <Label layoutX="369.0" layoutY="373.0" text="RESUMO ENVIO" AnchorPane.topAnchor="373.0" />
-      <Label layoutX="558.0" layoutY="373.0" text="ENVIO DETALHADOS" AnchorPane.topAnchor="373.0" />
-      <Label layoutX="760.0" layoutY="373.0" text="DIRETÓRIOS ENVIO" AnchorPane.topAnchor="373.0" />
-      <Pane fx:id="paneOnOffStatusServicoRemessa" layoutX="864.0" layoutY="64.0" prefHeight="34.0" prefWidth="55.0" />
-      <Label layoutX="562.0" layoutY="68.0" prefHeight="26.0" prefWidth="302.0" text="SERVIÇO ENVIO REMESSA:" textFill="#323031">
+      <StackPane fx:id="stackPane" layoutX="393.0" layoutY="247.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <JFXButton fx:id="btnConfiguracoes" buttonType="RAISED" layoutX="132.0" layoutY="222.0" onAction="#handleShowConfiguracoesServico" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <JFXButton fx:id="btnResumoEnvio" buttonType="RAISED" layoutX="332.0" layoutY="222.0" onAction="#handleShowResumoEnvio" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <JFXButton fx:id="btnEnviosDetalhados" buttonType="RAISED" layoutX="532.0" layoutY="224.0" onAction="#handleShowEnviosDetalhados" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <JFXButton fx:id="btnDiretoriosEnvio" buttonType="RAISED" layoutX="732.0" layoutY="222.0" onAction="#handleShowDiretoriosEnvio" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: E5B250;" text=" " />
+      <Label fx:id="labelMsg" layoutX="30.0" layoutY="470.0" prefHeight="26.0" prefWidth="983.0" text="AVISOS: PROCESSANDO" textFill="#323031">
          <font>
             <Font name="Arial" size="22.0" />
          </font>
       </Label>
-      <Label fx:id="labelMsg" layoutX="20.0" layoutY="470.0" prefHeight="26.0" prefWidth="983.0" text="AVISOS: PROCESSANDO" textFill="#323031">
+      <Label layoutX="572.0" layoutY="68.0" prefHeight="26.0" prefWidth="302.0" text="SERVIÇO ENVIO REMESSA:" textFill="#323031">
          <font>
             <Font name="Arial" size="22.0" />
          </font>
       </Label>
+      <Label layoutX="755.0" layoutY="373.0" text="DIRETÓRIOS ENVIO" />
+      <Label layoutX="550.0" layoutY="373.0" text="ENVIO DETALHADOS" />
+      <Label layoutX="363.0" layoutY="373.0" text="RESUMO ENVIO" />
+      <Label layoutX="158.0" layoutY="373.0" text="CONFIGURAÇÔES" />
+      <Pane fx:id="paneOnOffStatusServicoRemessa" layoutX="874.0" layoutY="64.0" prefHeight="34.0" prefWidth="55.0" />
+      <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="122.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.0" />
    </children>
 </AnchorPane>

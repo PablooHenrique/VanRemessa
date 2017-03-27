@@ -45,19 +45,28 @@ public class CooperativaService {
 		}
 	}
 
-	public void salvarListaCooperativas(List<Cooperativa> cooperativas) {
-		Session session = null;
+	public void salvarListaCooperativas(List<Cooperativa> cooperativas) throws Exception {
 		try {
-			session = sessionFactory.openSession();
-			CooperativaRepository repository = new CooperativaRepository(session);
-			
-			Transaction transaction = session.beginTransaction();
-			cooperativas.stream().forEach(x-> repository.salvar(x));
-			transaction.commit();
-		} finally {
-			if ((session != null) && (session.isOpen())) {
-				session.close();
+			Session session = null;
+			try {
+				session = sessionFactory.openSession();
+				CooperativaRepository repository = new CooperativaRepository(session);
+				
+				Transaction transaction = session.beginTransaction();
+				cooperativas.stream().forEach(x-> repository.salvar(x));
+				transaction.commit();
+			} finally {
+				if ((session != null) && (session.isOpen())) {
+					session.close();
+				}
 			}
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Falha ao salvar os dados da lista de cooperativa.")
+					 .append("Motivo: " + e.getMessage())
+					 .append("Causa: " + e.getMessage());
+			
+			throw new Exception(exception.toString());
 		}
 	}
 

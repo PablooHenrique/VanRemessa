@@ -103,6 +103,20 @@ public class CedenteService {
 		}
 	}
 	
+	public Cedente listarPorNomeECodigo(Integer codigo, String nome) {
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			Cedente cedente = new CedenteRepository(session).listarPorNomeECodigo(codigo, nome);
+			session.close();
+			return cedente;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+	
 	public void excluirCedentePorCodigo(Integer codigo) throws Exception {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
@@ -147,4 +161,5 @@ public class CedenteService {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+
 }

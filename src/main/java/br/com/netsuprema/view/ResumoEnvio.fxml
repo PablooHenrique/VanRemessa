@@ -43,31 +43,31 @@
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="130.0" layoutY="375.0" prefHeight="39.0" prefWidth="360.0" />
+      <TextField fx:id="edtQuantidadeRemessasEnviadas" layoutX="130.0" layoutY="375.0" prefHeight="39.0" prefWidth="360.0" />
       <Label layoutX="130.0" layoutY="423.0" prefHeight="25.0" prefWidth="376.0" text="REMESSAS PROCESSADAS COM SUCESSO" textFill="#575757">
          <font>
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="130.0" layoutY="454.0" prefHeight="39.0" prefWidth="360.0" />
+      <TextField fx:id="edtQuantidadeRemessasProcessadasComSucesso" layoutX="130.0" layoutY="454.0" prefHeight="39.0" prefWidth="360.0" />
       <Label layoutX="531.0" layoutY="265.0" prefHeight="25.0" prefWidth="376.0" text="DATE E HORA DO ÚLTIMO ENVIO" textFill="#575757">
          <font>
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="531.0" layoutY="296.0" prefHeight="39.0" prefWidth="360.0" AnchorPane.rightAnchor="135.0" />
+      <TextField fx:id="edtDataHoraUltimoEnvio" layoutX="531.0" layoutY="296.0" prefHeight="39.0" prefWidth="360.0" AnchorPane.rightAnchor="135.0" />
       <Label layoutX="531.0" layoutY="344.0" prefHeight="25.0" prefWidth="470.0" text="QUANTIDADE DE REMESSAS AGUARDANDO PROCESSAMENTO" textFill="#575757">
          <font>
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="530.0" layoutY="375.0" prefHeight="39.0" prefWidth="360.0" AnchorPane.leftAnchor="530.0" AnchorPane.rightAnchor="135.0" />
+      <TextField fx:id="edtQuantidadeRemessasAguardandoProcessamento" layoutX="530.0" layoutY="375.0" prefHeight="39.0" prefWidth="360.0" AnchorPane.leftAnchor="530.0" AnchorPane.rightAnchor="135.0" />
       <Label layoutX="531.0" layoutY="424.0" prefHeight="25.0" prefWidth="376.0" text="REMESSAS PROCESSADAS COM ERRO" textFill="#575757">
          <font>
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="531.0" layoutY="454.0" prefHeight="39.0" prefWidth="360.0" />
+      <TextField fx:id="edtQuantidadeRemessasProcessadasComErro" layoutX="531.0" layoutY="454.0" prefHeight="39.0" prefWidth="360.0" />
       <Label layoutX="706.0" layoutY="157.0" text="á" />
    </children>
 </AnchorPane>

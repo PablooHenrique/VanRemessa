@@ -41,4 +41,21 @@ public class CedenteRepository extends AbstractRepository<Cedente>{
 		List<Cedente> cedentes = select(jpql.toString(), parametros);
 		return cedentes;
 	}
+
+	public Cedente listarPorNomeECodigo(Integer codigo, String nome) {
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("Select a from cedente a where a.nome like :nome ")
+			.append("and a.codigo = :codigo");
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("nome", "%" + nome + "%");
+		parametros.put("codigo", codigo);
+		
+		List<Cedente> cedentes = select(jpql.toString(), parametros);
+		
+		if (!cedentes.isEmpty()) {
+			return cedentes.get(0);
+		}
+		
+		return null;
+	}
 }

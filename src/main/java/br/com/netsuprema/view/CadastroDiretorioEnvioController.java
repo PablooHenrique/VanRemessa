@@ -156,6 +156,19 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 			return false;
 		}
 		
+		if(!numeroContaRepetido()){
+			return false;
+		}
+		
+		return true;
+	}
+
+	private boolean numeroContaRepetido() {
+		boolean anyMatch = contaData.stream().anyMatch(x -> x.getNumeroConta().equals(edtNumeroConta.getText()));
+		if (anyMatch) {
+			ViewUtils.exibirMensagemErro("Inválido", "Número da conta invalido.", "Uma conta com esse número ja foi inserido para esse cedente");
+			return false;
+		}
 		return true;
 	}
 

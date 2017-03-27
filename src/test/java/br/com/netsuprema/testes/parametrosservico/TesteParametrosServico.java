@@ -68,13 +68,13 @@ public class TesteParametrosServico {
 		parametros.setLogin("pablohenrique");
 		parametros.setSenha("net@123");
 		
-		service.salvar(parametros);
+//		service.salvar(parametros);
 	}
 
 	private void criarCooperativa() throws URISyntaxException, JSONException {
 		ParametrosService service = new ParametrosService();
 		List<Cooperativa> cooperativas = service.listarCooperativasWebService();
-		service.salvarListaCooperativas(cooperativas);
+//		service.salvarListaCooperativas(cooperativas);
 	}
 
 	private Cooperativa obterCooperativa() {

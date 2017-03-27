@@ -3,6 +3,8 @@
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +19,8 @@ public class LogEnvioRemessa {
 	private String situacao ;
 	private String detalheErro;
 	private LocalDateTime dataHoraEnvio;
+	
+	@Enumerated(value=EnumType.STRING)
 	private StatusProcessamento statusProcessamento;
 	private String detalheSituacao;
 	private String logProcessamento;

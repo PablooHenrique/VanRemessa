@@ -53,8 +53,9 @@ public class DiretoriosEnvioController extends AbstractController{
 	public void initialize() {
 		initializeComponents();
 		inicializarTabela();
+		buscarCedentes();
 	}
-	
+
 	private void inicializarTabela() {
 		codigoCedenteColumn.setCellValueFactory(cellData -> cellData.getValue().getCodigoProperty());
 		nomeColumn.setCellValueFactory(cellData -> cellData.getValue().getNomeProperty());
@@ -126,7 +127,6 @@ public class DiretoriosEnvioController extends AbstractController{
 	private void abrirDiretorio(Integer codigo) {
 		DiretorioEnvioApplication application = new DiretorioEnvioApplication();
 		application.abrirDiretorio(codigo);
-		
 	}
 
 	private void removerCedente() {
@@ -159,7 +159,16 @@ public class DiretoriosEnvioController extends AbstractController{
 	private void buscarCedentes() {
 		List<CedenteDto> cedentes = new ArrayList<CedenteDto>();
 		
-		if (!edtNome.getText().trim().isEmpty()) {
+		if ((!edtNome.getText().trim().isEmpty()) && (!edtCodigo.getText().trim().isEmpty())) {
+			try {
+				Integer codigo = ViewUtils.converterEntradaStringParaInteger(edtCodigo.getText());
+				CedenteDto cedente = listarCedentes(codigo, edtNome.getText().trim());
+				cedentes.add(cedente);
+			} catch (NumberFormatException e) {
+				ViewUtils.exibirMensagemAlerta("Atenção", "Código cedente inválido", "o código do cedente deve conter apenas numeros");
+				cedentes = listarCedentes();
+			}
+		}else if (!edtNome.getText().trim().isEmpty()) {
 			cedentes = listarCedentes(edtNome.getText().trim());
 		}else if (!edtCodigo.getText().trim().isEmpty()) {
 			try {
@@ -191,6 +200,10 @@ public class DiretoriosEnvioController extends AbstractController{
 		cedentesDto.stream().forEach(x->cedentesData.add(x));
 	}
 
+	private CedenteDto listarCedentes(Integer codigo, String nome) {
+		return new DiretorioEnvioApplication().listarCedentes(codigo, nome);
+	}
+	
 	private List<CedenteDto> listarCedentes() {
 		return new DiretorioEnvioApplication().listarCedentes();
 	}

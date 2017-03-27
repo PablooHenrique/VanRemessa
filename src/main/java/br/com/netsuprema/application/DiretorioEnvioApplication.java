@@ -62,6 +62,15 @@ public class DiretorioEnvioApplication {
 		return cedenteDto;
 	}
 
+	public CedenteDto listarCedentes(Integer codigo, String nome) {
+		ModelMapper mapper = new ModelMapper();
+		
+		Cedente cedente = new CedenteService().listarPorNomeECodigo(codigo, nome);
+		CedenteDto cedenteDto = mapper.map(cedente, CedenteDto.class);
+		
+		return cedenteDto;
+	}
+	
 	public void excluirCedente(Integer codigo) throws Exception {
 		new CedenteService().excluirCedentePorCodigo(codigo);
 	}
@@ -70,4 +79,5 @@ public class DiretorioEnvioApplication {
 		DiretoriosEnvioService service = new DiretoriosEnvioService();
 		service.abrirDiretorio(codigo);
 	}
+
 }

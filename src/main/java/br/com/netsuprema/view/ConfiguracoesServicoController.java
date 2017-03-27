@@ -1,12 +1,10 @@
 package br.com.netsuprema.view;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXButton.ButtonType;
@@ -16,11 +14,10 @@ import br.com.netsuprema.dominio.enuns.FormatoRemessa;
 import br.com.netsuprema.dominio.parametros.Cooperativa;
 import br.com.netsuprema.dominio.parametros.Parametros;
 import br.com.netsuprema.utils.ConfigUtils;
+import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
@@ -58,12 +55,21 @@ public class ConfiguracoesServicoController extends AbstractController{
 	}
 	
 	@FXML
-	public void initialize(){
-		initializeComponents();
-		carregarInformacoesIniciais();
+	public void initialize() throws Exception{
+		try {
+			initializeComponents();
+			carregarInformacoesIniciais();
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Falha ao realizar a consultar de cooperativas no servidor.")
+			 		 .append("Motivo: " + e.getMessage())
+			 		 .append("Causa: " + e.getCause().getMessage());
+			ViewUtils.exibirMensagemErro("Erro","Falha ao realizar o carregamento da pagina de parametros", exception.toString());
+			throw e;
+		}
 	}
 	
-	public void carregarInformacoesIniciais() {
+	public void carregarInformacoesIniciais() throws Exception {
 		Parametros parametros = application.consultarParametros();
 		if (parametros != null) {
 			preencherInformacoesParametros(parametros);
@@ -109,7 +115,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 		}
 	}
 
-	public void initializeComponents(){
+	public void initializeComponents() throws Exception{
 		inicializarCooperativas();
 		carregarComboCooperativa();
 		carregarComboFormatoRemessa();
@@ -126,7 +132,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 		imgLogo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO+"imagens/logo.png"));
 	}
 	
-	public void inicializarCooperativas() {
+	public void inicializarCooperativas() throws Exception {
 		List<Cooperativa> cooperativas;
 		
 		cooperativas = obterCooperativasBanco();
@@ -137,13 +143,14 @@ public class ConfiguracoesServicoController extends AbstractController{
 		}
 	}
 
-	public List<Cooperativa> obterCooperativasBanco() {
+	public List<Cooperativa> obterCooperativasBanco() throws Exception {
 		List<Cooperativa> cooperativas = application.consultarCooperativas();
 		return cooperativas;
 	}
 
-	public void carregarComboCooperativa(){
-		List<Cooperativa> cooperativas = obterCooperativasViaWebService();
+	public void carregarComboCooperativa() throws Exception{
+//		List<Cooperativa> cooperativas = obterCooperativasViaWebService();
+		List<Cooperativa> cooperativas = obterCooperativasBanco();
 		cooperativas.stream().forEach(x-> this.cooperativas.add(x.getKeyCop() +"-"+x.getNome().toUpperCase()));
 		comboBoxCooperativas.setItems(this.cooperativas);
 	}
@@ -154,31 +161,50 @@ public class ConfiguracoesServicoController extends AbstractController{
 		comboBoxFormatoRemessa.setItems(this.formatoRemessa);
 	}
 	
-	public List<Cooperativa> obterCooperativasViaWebService(){
-		List<Cooperativa> cooperativas = new ArrayList<Cooperativa>();
+	public List<Cooperativa> obterCooperativasViaWebService() throws Exception{
 		try {
+			List<Cooperativa> cooperativas = new ArrayList<Cooperativa>();
 			cooperativas = getApplication().consultarCooperativasWebService();
-		} catch (URISyntaxException | JSONException e) {
-			logger.error("ObterCooperativa: " + e.getMessage());
-			exibirMensagem("Falha ao realizar a consultar de cooperativas no servidor.", true);    
+			return cooperativas;
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Falha ao realizar a consultar de cooperativas no servidor.")
+			 		 .append("Motivo: " + e.getMessage())
+			 		 .append("Causa: " + e.getCause().getMessage());
+			
+			logger.error(exception.toString());
+			
+			throw e;
 		}
-		return cooperativas;
 	}
 	
 	@FXML
 	public void handleSalvar(){
-		if (dadosSaoValidos()) {
-			salvarParametros();
-			exibirMensagem("Parametros Salvos Com sucesso", false);
+		try {
+			if (dadosSaoValidos()) {
+				salvarParametros();
+				ViewUtils.exibirMensagemSucesso("Sucesso", "", "Parametros Salvos Com sucesso");
+			}
+		} catch (Exception e) {
+			ViewUtils.exibirMensagemErro("Falha ao salvar os parametros", e.getMessage(), e.getCause().getMessage());
 		}
 	}
 
-	public void salvarParametros() {
-		Parametros parametros = getParametros();
-		getApplication().salvar(parametros);
+	public void salvarParametros() throws Exception {
+		try {
+			Parametros parametros = getParametros();
+			getApplication().salvar(parametros);
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Falha ao salvar os parametros.")
+					 .append("Motivo: " + e.getMessage())
+					 .append("Causa: " + e.getMessage());
+			
+			throw new Exception(exception.toString());
+		}
 	}
 	
-	public Parametros getParametros(){
+	public Parametros getParametros() throws NumberFormatException, Exception{
 		Parametros parametros = new Parametros();
 		
 		parametros.setEmail(edtEmail.getText());
@@ -210,7 +236,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 		return null;
 	}
 
-	public Cooperativa criarCooperativa() {
+	public Cooperativa criarCooperativa() throws NumberFormatException, Exception {
 		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
 		String item = selectionModel.getSelectedItem();
 		
@@ -223,7 +249,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 		return null;
 	}
 	
-	public void salvarCooperativas(List<Cooperativa> cooperativas){
+	public void salvarCooperativas(List<Cooperativa> cooperativas) throws Exception{
 		application.salvarCooperativas(cooperativas);
 	}
 	
@@ -232,7 +258,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 		int index = selectionModel.getSelectedIndex();
 		
 		if (index == -1) {
-			exibirMensagem("selecione uma cooperativa", true);
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "selecione uma cooperativa");
 			return false;
 		}
 		
@@ -240,36 +266,28 @@ public class ConfiguracoesServicoController extends AbstractController{
 		index = selectionModel.getSelectedIndex();
 		
 		if (index == -1) {
-			exibirMensagem("Selecione um formato", true);
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Selecione um formato");
 			return false;
 		}
 		
 		if (edtEmail.getText().trim().equals("")) {
-			exibirMensagem("Digite um email valido", true);
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um email valido");
 			return false;
 		}
 		
 		if (edtSenha.getText().trim().equals("")) {
-			exibirMensagem("Digite uma senha valida", true);
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite uma senha valida");
 			return false;
 		}
 		
 		if (edtUsuario.getText().trim().equals("")) {
-			exibirMensagem("Digite um usuario valido", true);
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um usuario valido");
 			return false;
 		}
 		
 		return true;
 	}
 	
-	public void exibirMensagem(String mensagem, boolean erro){
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Informacao");
-		alert.setContentText(mensagem);
-		alert.showAndWait();
-	}
-	
-
 	public ParametrosApplication getApplication() {
 		return application;
 	}

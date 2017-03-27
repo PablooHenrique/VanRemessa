@@ -3,6 +3,7 @@ package br.com.netsuprema;
 import java.io.IOException;
 
 import br.com.netsuprema.controller.MainAppController;
+import br.com.netsuprema.service.ProcessingWatcherThread;
 import br.com.netsuprema.service.ScannerFilesThread;
 import br.com.netsuprema.utils.ConfigUtils;
 import javafx.application.Application;
@@ -33,6 +34,10 @@ public class MainApp extends Application{
 		
 		ScannerFilesThread instance = ScannerFilesThread.getInstance();
 		instance.startProcessamento();	
+		
+		ProcessingWatcherThread processingWatcherThread = new ProcessingWatcherThread(); 
+		Thread td = new Thread(processingWatcherThread);
+		td.start();
 	}
 	
 	private void startBanco() {

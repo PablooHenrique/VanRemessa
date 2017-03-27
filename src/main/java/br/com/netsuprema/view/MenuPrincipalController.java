@@ -5,21 +5,33 @@ import java.util.TimerTask;
 
 import com.jfoenix.controls.JFXButton;
 
+import br.com.netsuprema.application.ParametrosApplication;
 import br.com.netsuprema.application.ServicosApplication;
 import br.com.netsuprema.controller.MainAppController;
+import br.com.netsuprema.dominio.parametros.Parametros;
 import br.com.netsuprema.utils.ConfigUtils;
+import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class MenuPrincipalController extends AbstractController{
 	
 	@FXML
 	private AnchorPane anchorPane;
+	@FXML
+	private StackPane stackPane;
 	@FXML
 	private JFXButton btnConfiguracoes;
 	@FXML
@@ -34,15 +46,86 @@ public class MenuPrincipalController extends AbstractController{
 	private Pane paneOnOffStatusServicoRemessa;
 	@FXML
 	private Label labelMsg;
-	
+	@FXML
+	private Button btnTesteSpinner;
 	
 	@FXML
 	private void initialize(){
 		imgLogo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO+"imagens/logo.png"));
 		inicializarVerificacaoServicoRemessa();
-		processingWhatcherThread();
+		inicializarConfigurações();
+		inicializarImagensBtns();
 	}
 	
+	private void inicializarImagensBtns() {
+		inicializarBtnConfiguracoes();
+		inicializarBtnDiretorioEnvio();
+		inicializarBtnEnviosDetalhados();
+		inicializarBtnResumoEnvio();
+	}
+
+	private void inicializarBtnResumoEnvio() {
+		String url = ConfigUtils.PATH_RESOURCE_PADRAO + "imagens/lista_envio.png";
+		ImageView image = new ImageView(url);
+		btnResumoEnvio.setGraphic(image);
+	}
+
+	private void inicializarBtnEnviosDetalhados() {
+		String url = ConfigUtils.PATH_RESOURCE_PADRAO + "imagens/envio_detalahado.png";
+		ImageView image = new ImageView(url);
+		btnEnviosDetalhados.setGraphic(image);
+	}
+
+	private void inicializarBtnDiretorioEnvio() {
+		String url = ConfigUtils.PATH_RESOURCE_PADRAO + "imagens/diretorio.png";
+		ImageView image = new ImageView(url);
+		btnDiretoriosEnvio.setGraphic(image);
+	}
+
+	private void inicializarBtnConfiguracoes() {
+		String url = ConfigUtils.PATH_RESOURCE_PADRAO + "imagens/configuracao.png";
+		ImageView image = new ImageView(url);
+		btnConfiguracoes.setGraphic(image);
+	}
+
+	private void inicializarConfigurações() {
+		if (parametrosSaoValidos()) {
+			processingWhatcherThread();
+		}else{
+			labelMsg.setText("Cadastre os parâmetros para inicializar o processamento dos dados");
+		}
+	}
+
+	private boolean parametrosSaoValidos() {
+		try {
+			ParametrosApplication parametrosApplication = new ParametrosApplication();
+			Parametros parametros = parametrosApplication.consultarParametros();
+			
+			if (parametros == null) {
+				habilitarBtns(true);
+				
+				return false;
+			}
+			
+			habilitarBtns(false);
+			return true;
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Falha ao validar os parametros.")
+			 		 .append("Motivo: " + e.getMessage())
+			 		 .append("Causa: " + e.getCause().getMessage());
+			ViewUtils.exibirMensagemErro("", "Falha ao validar os parametros", exception.toString());
+		}
+		
+		return false;
+	}
+
+	private void habilitarBtns(boolean habiitar) {
+		btnDiretoriosEnvio.setDisable(habiitar);
+		btnEnviosDetalhados.setDisable(habiitar);
+		btnResumoEnvio.setDisable(habiitar);
+	}
+
 	private void inicializarVerificacaoServicoRemessa() {
 		boolean status = new ServicosApplication().verificarServicoRemessa();
 		if (status) {
@@ -64,8 +147,16 @@ public class MenuPrincipalController extends AbstractController{
 	}
 	
 	public void handleShowConfiguracoesServico(){
-		MainAppController controller = getMainApp().getController();
-		controller.showConfiguracoesServico(getMainApp(), getMainApp().getRootLayout());
+		try {
+			MainAppController controller = getMainApp().getController();
+			controller.showConfiguracoesServico(getMainApp(), getMainApp().getRootLayout());
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Falha ao abrir a pagina de configurações.")
+			 		 .append("Motivo: " + e.getMessage())
+			 		 .append("Causa: " + e.getCause().getMessage());
+			ViewUtils.exibirMensagemErro("", "Flha ao abrir a pagina de configurações", exception.toString());
+		}
 	}
 	
 	public void handleShowResumoEnvio(){
@@ -110,5 +201,20 @@ public class MenuPrincipalController extends AbstractController{
 			    });
 			}
 		},2000, 60000);
+	}
+	
+	public void handleShowSippner(){
+		VBox bx = new VBox();
+        bx.setAlignment(Pos.CENTER);
+        
+        btnTesteSpinner.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				ProgressIndicator pi = new ProgressIndicator();
+				VBox box = new VBox(pi);
+				box.setAlignment(Pos.CENTER);
+				stackPane.getChildren().add(box);
+			}
+		});
 	}
 }
