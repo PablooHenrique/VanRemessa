@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="500.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.LoginController">
+   <children>
+      <JFXPasswordField layoutX="10.0" layoutY="243.0" prefHeight="40.0" prefWidth="330.0" promptText="Senha" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="294.0" prefHeight="40.0" prefWidth="330.0" ripplerFill="WHITE" style="-fx-background-color: #2196F3;" text="Login" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="294.0" />
+      <JFXTextField layoutX="10.0" layoutY="201.0" prefHeight="40.0" prefWidth="330.0" promptText="Login" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <TextField layoutX="71.0" layoutY="384.0" prefHeight="40.0" prefWidth="265.0" />
+      <ImageView fitHeight="40.0" fitWidth="50.0" layoutX="21.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

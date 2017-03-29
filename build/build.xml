@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<project name="VanRemessa" default="do-deploy" basedir="."  xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<target name="init-fx-tasks">
+		<path id="fxant">
+			<filelist>
+				<file name="${java.home}\..\lib\ant-javafx.jar"/>
+				<file name="${java.home}\lib\jfxrt.jar"/>
+				<file name="${basedir}"/>
+			</filelist>
+		</path>
+	
+		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+			uri="javafx:com.sun.javafx.tools.ant"
+			classpathref="fxant"/>
+	</target>
+	<target name="setup-staging-area">
+		<delete dir="externalLibs" />
+		<delete dir="project" />
+		<delete dir="projectRefs" />
+	
+		<mkdir dir="externalLibs" />
+	
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\antlr\antlr\2.7.7">
+				<filename name="antlr-2.7.7.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\spring-jdbc\4.2.5.RELEASE">
+				<filename name="spring-jdbc-4.2.5.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\workspace2\VanRemessa\lib">
+				<filename name="hibernate-commons-annotations-5.0.1.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\json\json\20090211">
+				<filename name="json-20090211.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\apache\geronimo\specs\geronimo-jta_1.1_spec\1.1.1">
+				<filename name="geronimo-jta_1.1_spec-1.1.1.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\com\fasterxml\classmate\1.3.0">
+				<filename name="classmate-1.3.0.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\spring-tx\4.2.5.RELEASE">
+				<filename name="spring-tx-4.2.5.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\dom4j\dom4j\1.6.1">
+				<filename name="dom4j-1.6.1.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\javax\inject\javax.inject\1">
+				<filename name="javax.inject-1.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\com\google\code\gson\gson\2.2.4">
+				<filename name="gson-2.2.4.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\hibernate\javax\persistence\hibernate-jpa-2.1-api\1.0.0.Final">
+				<filename name="hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\spring-core\4.2.5.RELEASE">
+				<filename name="spring-core-4.2.5.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Desenvolvimento\eclipse - Java\eclipse\plugins\org.apache.axis_1.4.0.v201411182030\lib">
+				<filename name="axis.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\com\h2database\h2\1.4.193">
+				<filename name="h2-1.4.193.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\jboss\spec\javax\interceptor\jboss-interceptors-api_1.1_spec\1.0.0.Beta1">
+				<filename name="jboss-interceptors-api_1.1_spec-1.0.0.Beta1.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\spring-web\4.2.5.RELEASE">
+				<filename name="spring-web-4.2.5.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\javax\enterprise\cdi-api\1.1">
+				<filename name="cdi-api-1.1.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Desenvolvimento\eclipse - Java\eclipse\plugins\javax.xml.soap_1.2.0.v201005080501\lib">
+				<filename name="saaj.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Desenvolvimento\eclipse - Java\eclipse\plugins\javax.xml.rpc_1.1.0.v201209140446\lib">
+				<filename name="jaxrpc.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\workspace2\VanRemessa\lib">
+				<filename name="hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\junit\junit\4.11">
+				<filename name="junit-4.11.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Desenvolvimento\eclipse - Java\eclipse\plugins">
+				<filename name="org.apache.commons.logging_1.1.1.v201101211721.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\javassist\javassist\3.20.0-GA">
+				<filename name="javassist-3.20.0-GA.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\log4j\log4j\1.2.17">
+				<filename name="log4j-1.2.17.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\spring-beans\4.2.5.RELEASE">
+				<filename name="spring-beans-4.2.5.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\security\spring-security-core\3.2.9.RELEASE">
+				<filename name="spring-security-core-3.2.9.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\javax\annotation\jsr250-api\1.0">
+				<filename name="jsr250-api-1.0.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Desenvolvimento\eclipse - Java\eclipse\plugins">
+				<filename name="javax.wsdl_1.6.2.v201012040545.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\hibernate\hibernate-core\5.2.4.Final">
+				<filename name="hibernate-core-5.2.4.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\spring-expression\4.2.5.RELEASE">
+				<filename name="spring-expression-4.2.5.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\workspace2\VanRemessa\lib">
+				<filename name="hibernate-entitymanager-5.2.4.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Desenvolvimento\eclipse - Java\eclipse\plugins\org.apache.commons.discovery_0.2.0.v201004190315\lib">
+				<filename name="commons-discovery-0.2.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\security\spring-security-config\3.2.9.RELEASE">
+				<filename name="spring-security-config-3.2.9.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\hibernate\common\hibernate-commons-annotations\5.0.1.Final">
+				<filename name="hibernate-commons-annotations-5.0.1.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\spring-context\4.2.5.RELEASE">
+				<filename name="spring-context-4.2.5.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\workspace2\VanRemessa\lib">
+				<filename name="hibernate-core-5.2.4.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\hamcrest\hamcrest-core\1.3">
+				<filename name="hamcrest-core-1.3.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\modelmapper\modelmapper\0.6.3">
+				<filename name="modelmapper-0.6.3.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\commons-logging\commons-logging\1.2">
+				<filename name="commons-logging-1.2.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\hibernate\hibernate-entitymanager\5.2.4.Final">
+				<filename name="hibernate-entitymanager-5.2.4.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\aopalliance\aopalliance\1.0">
+				<filename name="aopalliance-1.0.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\javax\el\el-api\2.2">
+				<filename name="el-api-2.2.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\springframework\spring-aop\4.2.5.RELEASE">
+				<filename name="spring-aop-4.2.5.RELEASE.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\jboss\logging\jboss-logging\3.3.0.Final">
+				<filename name="jboss-logging-3.3.0.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\netsuprema\.m2\repository\org\jboss\jandex\2.0.0.Final">
+				<filename name="jandex-2.0.0.Final.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\workspace2\VanRemessa\lib">
+				<filename name="jfoenix.jar"/>
+			</fileset>
+		</copy>
+	
+		<mkdir dir="project" />
+		<copy todir="project">
+			<fileset dir="C:\workspace2\VanRemessa">
+				<include name="src\main\resources/**" />
+			</fileset>
+		</copy>
+		<copy todir="project">
+			<fileset dir="C:\workspace2\VanRemessa">
+				<include name="src\test\java/**" />
+			</fileset>
+		</copy>
+		<copy todir="project">
+			<fileset dir="C:\workspace2\VanRemessa">
+				<include name="src\main\java/**" />
+			</fileset>
+		</copy>
+	
+		<mkdir dir="projectRefs" />
+	</target>
+	<target name='do-compile'>
+		<delete dir="build" />
+		<mkdir dir="build/src" />
+		<mkdir dir="build/libs" />
+		<mkdir dir="build/classes" />
+	
+		<!-- Copy project-libs references -->
+		<copy todir="build/libs">
+			<fileset dir="externalLibs">
+				<include name="jaxrpc.jar"/>
+				<include name="spring-beans-4.2.5.RELEASE.jar"/>
+				<include name="spring-web-4.2.5.RELEASE.jar"/>
+				<include name="spring-expression-4.2.5.RELEASE.jar"/>
+				<include name="modelmapper-0.6.3.jar"/>
+				<include name="h2-1.4.193.jar"/>
+				<include name="jboss-logging-3.3.0.Final.jar"/>
+				<include name="jandex-2.0.0.Final.jar"/>
+				<include name="commons-logging-1.2.jar"/>
+				<include name="hibernate-entitymanager-5.2.4.Final.jar"/>
+				<include name="javassist-3.20.0-GA.jar"/>
+				<include name="hamcrest-core-1.3.jar"/>
+				<include name="javax.inject-1.jar"/>
+				<include name="spring-core-4.2.5.RELEASE.jar"/>
+				<include name="classmate-1.3.0.jar"/>
+				<include name="dom4j-1.6.1.jar"/>
+				<include name="commons-discovery-0.2.jar"/>
+				<include name="spring-jdbc-4.2.5.RELEASE.jar"/>
+				<include name="spring-security-config-3.2.9.RELEASE.jar"/>
+				<include name="json-20090211.jar"/>
+				<include name="axis.jar"/>
+				<include name="hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+				<include name="spring-tx-4.2.5.RELEASE.jar"/>
+				<include name="javax.wsdl_1.6.2.v201012040545.jar"/>
+				<include name="geronimo-jta_1.1_spec-1.1.1.jar"/>
+				<include name="spring-context-4.2.5.RELEASE.jar"/>
+				<include name="log4j-1.2.17.jar"/>
+				<include name="aopalliance-1.0.jar"/>
+				<include name="junit-4.11.jar"/>
+				<include name="gson-2.2.4.jar"/>
+				<include name="org.apache.commons.logging_1.1.1.v201101211721.jar"/>
+				<include name="saaj.jar"/>
+				<include name="jsr250-api-1.0.jar"/>
+				<include name="cdi-api-1.1.jar"/>
+				<include name="el-api-2.2.jar"/>
+				<include name="spring-security-core-3.2.9.RELEASE.jar"/>
+				<include name="antlr-2.7.7.jar"/>
+				<include name="jboss-interceptors-api_1.1_spec-1.0.0.Beta1.jar"/>
+				<include name="jfoenix.jar"/>
+				<include name="hibernate-core-5.2.4.Final.jar"/>
+				<include name="spring-aop-4.2.5.RELEASE.jar"/>
+				<include name="hibernate-commons-annotations-5.0.1.Final.jar"/>
+			</fileset>
+		</copy>
+	
+		<!-- Copy project references -->
+	
+		<!-- Copy project sources itself -->
+		<copy todir="build/src">
+			<fileset dir="project/src/test/java">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<copy todir="build/src">
+			<fileset dir="project/src/main/resources">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<copy todir="build/src">
+			<fileset dir="project/src/main/java">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	
+		<javac includeantruntime="false" source="1.8" target="1.8" srcdir="build/src" destdir="build/classes" encoding="Cp1252">
+			<classpath>
+				<fileset dir="build/libs">
+					<include name="*"/>
+				</fileset>
+			</classpath>
+		</javac>
+	
+		<!-- Copy over none Java-Files -->
+		<copy todir="build/classes">
+		<fileset dir="project/src/test/java">
+			<exclude name="**/*.java"/>
+		</fileset>
+		<fileset dir="project/src/main/resources">
+			<exclude name="**/*.java"/>
+		</fileset>
+		<fileset dir="project/src/main/java">
+			<exclude name="**/*.java"/>
+		</fileset>
+		</copy>
+	
+	
+	</target>
+	<target name="do-deploy" depends="setup-staging-area, do-compile, init-fx-tasks">
+		<delete file="dist"/>
+		<delete file="deploy" />
+	
+		<mkdir dir="dist" />
+		<mkdir dir="dist/libs" />
+	
+		<copy todir="dist/libs">
+			<fileset dir="externalLibs">
+				<include name="*" />
+			</fileset>
+		</copy>
+	
+	
+		<fx:resources id="appRes">
+			<fx:fileset dir="dist" includes="VanRemessa.jar"/>
+			<fx:fileset dir="dist" includes="libs/*"/>
+			<fx:fileset dir="dist" includes="resources/**"/>
+		</fx:resources>
+	
+		<fx:application id="fxApplication"
+			name="VanRemessa"
+			mainClass="br.com.netsuprema.MainApp"
+			version="1.0"
+		/>
+	
+		<mkdir dir="build/classes/META-INF" />
+	
+		<fx:jar destfile="dist/VanRemessa.jar">
+			<fx:application refid="fxApplication"/>
+			<fileset dir="build/classes">
+			</fileset>
+			<fx:resources refid="appRes"/>
+	
+			<manifest>
+				<attribute name="Implementation-Vendor" value="VanRemessa"/>
+				<attribute name="Implementation-Title" value="VanRemessa"/>
+				<attribute name="Implementation-Version" value="1.0"/>
+				<attribute name="JavaFX-Feature-Proxy" value="None"/>
+			</manifest>
+		</fx:jar>
+	
+	
+		<mkdir dir="deploy" />
+		<!-- Need to use ${basedir} because somehow the ant task is calculating the directory differently -->
+		<fx:deploy
+			embedJNLP="false"
+			extension="false"
+			includeDT="false"
+			offlineAllowed="true"
+			outdir="${basedir}/deploy"
+			outfile="VanRemessa" nativeBundles="exe"
+			updatemode="background" >
+	
+			<fx:platform basedir="${java.home}"/>
+			<fx:info title="VanRemessa" vendor="VanRemessa"/>
+	
+			<fx:application refId="fxApplication"/>
+			<fx:resources refid="appRes"/>
+		</fx:deploy>
+	
+	
+	</target>
+</project>
