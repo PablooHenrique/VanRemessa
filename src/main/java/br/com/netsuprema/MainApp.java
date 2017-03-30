@@ -14,6 +14,7 @@ import br.com.netsuprema.view.EnviosDetalhadosController;
 import br.com.netsuprema.view.MenuPrincipalController;
 import br.com.netsuprema.view.ResumoEnvioController;
 import br.com.netsuprema.view.StatusServicoController;
+import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,24 +30,29 @@ public class MainApp extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		startBanco();
+		try {
+			startBanco();
 		
-		this.setPrimaryStage(primaryStage);
-		this.getPrimaryStage().setTitle("Sistema SIG Cobrança - Envio de Remessa");
-		this.getPrimaryStage().setResizable(false);
-		this.getPrimaryStage().setWidth(1024);
-		this.getPrimaryStage().setHeight(670);
-		
-		initRootLayout();
-		
-		showMenuPrincipal(this, getRootLayout());
-		
-		ScannerFilesThread instance = ScannerFilesThread.getInstance();
-		instance.startProcessamento();	
-		
-		ProcessingWatcherThread processingWatcherThread = new ProcessingWatcherThread(); 
-		Thread td = new Thread(processingWatcherThread);
-		td.start();
+			this.setPrimaryStage(primaryStage);
+			this.getPrimaryStage().setTitle("Sistema SIG Cobrança - SigVan");
+			this.getPrimaryStage().setResizable(false);
+			this.getPrimaryStage().setWidth(1024);
+			this.getPrimaryStage().setHeight(670);
+			
+			initRootLayout();
+			
+			showMenuPrincipal(this, getRootLayout());
+			
+			ScannerFilesThread instance = ScannerFilesThread.getInstance();
+			instance.startProcessamento();	
+			
+			ProcessingWatcherThread processingWatcherThread = new ProcessingWatcherThread(); 
+			Thread td = new Thread(processingWatcherThread);
+			td.start();
+			
+		} catch (Exception e) {
+			ViewUtils.exibirMensagemErro("Erro", "Falha no acesso ao banco", "Falha ao acessar o banco de dados, uma nova instancia do processo ja está iniciada");
+		}
 	}
 	
 	private void startBanco() {

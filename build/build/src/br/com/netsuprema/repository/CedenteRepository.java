@@ -58,4 +58,27 @@ public class CedenteRepository extends AbstractRepository<Cedente>{
 		
 		return null;
 	}
+
+	public Cedente listarPorNumeroConta(Integer numeroConta) {
+		
+		try {
+			StringBuilder jpql = new StringBuilder();
+			jpql.append("select a from cedente a ")
+				.append("join a.contas as c ")
+				.append("where c.numeroConta = :numeroConta ");
+			
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("numeroConta", numeroConta);
+			
+			List<Cedente> cedentes = select(jpql.toString(), parametros);
+			if (!cedentes.isEmpty()) {
+				return cedentes.get(0);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		return null;
+	}
 }

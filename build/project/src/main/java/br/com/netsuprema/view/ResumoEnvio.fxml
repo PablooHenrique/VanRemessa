@@ -50,7 +50,7 @@
          </font>
       </Label>
       <TextField fx:id="edtQuantidadeRemessasProcessadasComSucesso" layoutX="130.0" layoutY="454.0" prefHeight="39.0" prefWidth="360.0" />
-      <Label layoutX="531.0" layoutY="265.0" prefHeight="25.0" prefWidth="376.0" text="DATE E HORA DO ÚLTIMO ENVIO" textFill="#575757">
+      <Label layoutX="531.0" layoutY="265.0" prefHeight="25.0" prefWidth="376.0" text="DATA E HORA DO ÚLTIMO ENVIO" textFill="#575757">
          <font>
             <Font name="Arial" size="15.0" />
          </font>

@@ -12,8 +12,6 @@ public class DetalhesRemessaController extends AbstractController{
 	@FXML
 	private TableView<RemessaDto> cedenteTable;
 	@FXML
-	private TableColumn<RemessaDto, String> idCedenteColumn;
-	@FXML
 	private TableColumn<RemessaDto, String> codigoCedenteColumn;
 	@FXML
 	private TableColumn<RemessaDto, String> nomeCedenteColumn;
@@ -63,7 +61,7 @@ public class DetalhesRemessaController extends AbstractController{
 		dataRemessaColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getDataHoraEnvio());
 		codigoLoteAgendamentoRemessaColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getCodigoLoteAgendamento());
 		situacaoRemessaColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getSituacao());
-		erroRemessaColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getDetalheSituacao());
+		erroRemessaColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getDetalheErro());
 		
 		remessaTable.setItems(remessaData);
 	}
@@ -71,7 +69,7 @@ public class DetalhesRemessaController extends AbstractController{
 	public void preencherTableProcessamento(){
 		dataEnvioProcessamentoColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getDhProcessamento());
 		statusProcessamentoColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getStatusProcessamento());
-		detalheProcessamentoColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getDetalheErro());
+		detalheProcessamentoColumn.setCellValueFactory(cellData -> cellData.getValue().getLog().getLogProcessamento());
 		
 		processamentoTable.setItems(processamentoData);
 	}

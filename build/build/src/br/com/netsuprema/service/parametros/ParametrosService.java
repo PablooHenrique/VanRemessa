@@ -28,6 +28,9 @@ public class ParametrosService {
 		Transaction transaction = null;
 		try {
 			try {
+				
+				parametros.setSenha(parametros.gerarMD5Senha(parametros.getLogin()));
+				
 				session = this.getSessionFactory().openSession();
 				ParametrosRepository repository = new ParametrosRepository(session);
 				

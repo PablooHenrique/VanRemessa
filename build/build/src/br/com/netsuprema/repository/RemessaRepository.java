@@ -201,7 +201,7 @@ public class RemessaRepository extends AbstractRepository<Remessa>{
 		
 		if (codigoEnvio > 0 ) {
 			jpql.append(" and l.codigoLoteAgendamento = :codigoLoteAgendamento ");
-			parametros.put("codigoLoteAgendamento", codigoEnvio);
+			parametros.put("codigoLoteAgendamento", String.valueOf(codigoEnvio));
 		}
 		
 		if (codigoConta > 0 ) {

@@ -254,12 +254,12 @@
 		<mkdir dir="project" />
 		<copy todir="project">
 			<fileset dir="C:\workspace2\VanRemessa">
-				<include name="src\main\resources/**" />
+				<include name="src\test\java/**" />
 			</fileset>
 		</copy>
 		<copy todir="project">
 			<fileset dir="C:\workspace2\VanRemessa">
-				<include name="src\test\java/**" />
+				<include name="src\main\resources/**" />
 			</fileset>
 		</copy>
 		<copy todir="project">
@@ -379,7 +379,6 @@
 			</fileset>
 		</copy>
 	
-	
 		<fx:resources id="appRes">
 			<fx:fileset dir="dist" includes="VanRemessa.jar"/>
 			<fx:fileset dir="dist" includes="libs/*"/>
@@ -387,9 +386,9 @@
 		</fx:resources>
 	
 		<fx:application id="fxApplication"
-			name="VanRemessa"
+			name="SigVan"
 			mainClass="br.com.netsuprema.MainApp"
-			version="1.0"
+			version="1.0.3"
 		/>
 	
 		<mkdir dir="build/classes/META-INF" />
@@ -401,9 +400,9 @@
 			<fx:resources refid="appRes"/>
 	
 			<manifest>
-				<attribute name="Implementation-Vendor" value="VanRemessa"/>
-				<attribute name="Implementation-Title" value="VanRemessa"/>
-				<attribute name="Implementation-Version" value="1.0"/>
+				<attribute name="Implementation-Vendor" value="SigVan"/>
+				<attribute name="Implementation-Title" value="SigVan"/>
+				<attribute name="Implementation-Version" value="1.0.2"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>
@@ -421,7 +420,7 @@
 			updatemode="background" >
 	
 			<fx:platform basedir="${java.home}"/>
-			<fx:info title="VanRemessa" vendor="VanRemessa"/>
+			<fx:info title="VanRemessa" vendor="SigVan"/>
 	
 			<fx:application refId="fxApplication"/>
 			<fx:resources refid="appRes"/>

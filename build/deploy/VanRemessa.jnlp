@@ -2,13 +2,13 @@
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="VanRemessa.jnlp">
   <information>
     <title>VanRemessa</title>
-    <vendor>VanRemessa</vendor>
-    <description>VanRemessa</description>
+    <vendor>SigVan</vendor>
+    <description>SigVan</description>
     <offline-allowed/>
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="VanRemessa.jar" size="146972" download="eager" />
+    <jar href="VanRemessa.jar" size="147763" download="eager" />
     <jar href="libs\antlr-2.7.7.jar" size="445288" download="eager" />
     <jar href="libs\aopalliance-1.0.jar" size="4467" download="eager" />
     <jar href="libs\axis.jar" size="1599570" download="eager" />
@@ -53,6 +53,6 @@
     <jar href="libs\spring-tx-4.2.5.RELEASE.jar" size="265523" download="eager" />
     <jar href="libs\spring-web-4.2.5.RELEASE.jar" size="767232" download="eager" />
   </resources>
-  <jfx:javafx-desc  width="0" height="0" main-class="br.com.netsuprema.MainApp"  name="VanRemessa" />
+  <jfx:javafx-desc  width="0" height="0" main-class="br.com.netsuprema.MainApp"  name="SigVan" />
   <update check="background"/>
 </jnlp>

@@ -22,21 +22,16 @@ public class CedenteService {
 	
 	public void criarCedente(Cedente cedente) throws Exception {
 		Session session = getSessionFactory().openSession();
-		CedenteRepository repository = new CedenteRepository(session);
 		Transaction transaction = null;
 		
 		try {
-			if(!cedente.cedenteExiste(session)){
-				
-				transaction = session.beginTransaction();
-				
-				new DiretoriosEnvioService().criarDiretorio(cedente);
-				salvar(session, cedente);
-				
-				transaction.commit();
-			}else{
-				repository.atualizar(cedente);
-			}
+			transaction = session.beginTransaction();
+			
+			new DiretoriosEnvioService().criarDiretorio(cedente);
+			salvar(session, cedente);
+			
+			transaction.commit();
+			
 		} catch (DiretoriosInvalidosExceptions e) {
 			if ((session != null) && (session.isOpen())) {
 				if (transaction.isActive()) {
@@ -143,6 +138,28 @@ public class CedenteService {
 		}
 	}
 	
+	public boolean numeroContaExiste(Integer numeroConta) throws Exception {
+		try {
+			Cedente cedente = listarPorNumeroConta(numeroConta);
+			return cedente != null;
+		} catch (Exception e) {
+			throw new Exception("Não foi possível consultar os cedente por numero da conta. Motivo: " +e.getMessage());
+		}
+	}
+	
+	private Cedente listarPorNumeroConta(Integer numeroConta) {
+		Session session = sessionFactory.openSession();
+		try {
+			CedenteRepository repository = new CedenteRepository(session);
+			Cedente cedente = repository.listarPorNumeroConta(numeroConta);
+			return cedente;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
 	private void removerReferenciasCedentePorCodigo(Session session, Integer codigo) {
 		RemessaRepository repository = new RemessaRepository(session);
 		List<Remessa> remessas = repository.listarPorCodigoCedente(codigo);
@@ -161,5 +178,6 @@ public class CedenteService {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+
 
 }

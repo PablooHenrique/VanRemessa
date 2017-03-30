@@ -8,10 +8,11 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.security.AccessControlException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,7 +23,7 @@ import br.com.netsuprema.service.cedente.DiretoriosEnvioService;
 public class FileService {
 	
 	public List<File> obterArquivosParaEnvioDiretorio(String diretorio) throws IOException{
-		List<File> files = filtrarArquivosPorMineType(Arrays.asList(getArquivosDiretorio(diretorio)));
+		List<File> files = filtrarArquivosDiretorio(Arrays.asList(getArquivosDiretorio(diretorio)));
 		return files;
 	}
 	
@@ -74,11 +75,10 @@ public class FileService {
         }
    }
 
-	public List<File> filtrarArquivosPorMineType(List<File> files) {
+	public List<File> filtrarArquivosDiretorio(List<File> files) {
 		List<File> filesFiltrados = new ArrayList<File>();
 		for (File arq : files) {
-			String mimiType = URLConnection.guessContentTypeFromName(arq.getName());
-			if ((mimiType!= null) && (mimiType.equals("text/plain"))) {
+			if (!arq.isDirectory()) {
 				filesFiltrados.add(arq);
 			}
 		}
@@ -104,7 +104,7 @@ public class FileService {
 			BufferedReader bufferReader = new BufferedReader(fileReader);
 			
 			while (bufferReader.ready()) {
-				conteudo.append(bufferReader.readLine());
+				conteudo.append(bufferReader.readLine()+"\r\n");
 			}
 			
 			bufferReader.close();
@@ -124,9 +124,23 @@ public class FileService {
 		String format = formatarDate.format(data);
 		
 		File file = new File(DiretoriosEnvioService.DIRETORIO_PADRAO + "log-"+format+".txt");
+		
+		FileService fileService = new FileService();
+		
+		if (!fileService.diretorioExists(DiretoriosEnvioService.DIRETORIO_PADRAO)){
+			fileService.criarDiretorio(DiretoriosEnvioService.DIRETORIO_PADRAO);
+		}
+		
 		FileWriter fileW = new FileWriter (file, true);
         BufferedWriter buffW = new BufferedWriter (fileW);
         buffW.newLine();
+        
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		LocalDateTime dataHoraEnvio = LocalDateTime.now();
+		String date = dataHoraEnvio.format(pattern);
+        
+        buffW.newLine();
+		buffW.write(date);
         
         logErros.stream().forEach(x-> {
 			try {
@@ -139,6 +153,5 @@ public class FileService {
     
         buffW.close();
         fileW.close();
-		
 	}
 }

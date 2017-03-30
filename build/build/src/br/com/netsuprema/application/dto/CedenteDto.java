@@ -45,6 +45,10 @@ public class CedenteDto{
 		return digitoVerificador.get();
 	}
 	
+	public StringProperty getDigitoVerificadorProperty() {
+		return digitoVerificador;
+	}
+	
 	public StringProperty getDigitoProperty() {
 		return digitoVerificador;
 	}

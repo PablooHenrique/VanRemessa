@@ -38,8 +38,13 @@ public class RelatoriosWebService {
 		if (!filtro.isEmpty()) {
 			log.setStatusProcessamento(filtro.get(0));
 		} 
+
+		if (retornoProcessamento.getDETALHE_SITUACAO().length() > 254) {
+			log.setLogProcessamento(retornoProcessamento.getDETALHE_SITUACAO().substring(0, 254));
+		}else{
+			log.setLogProcessamento(retornoProcessamento.getDETALHE_SITUACAO());
+		}
 		
-		log.setLogProcessamento(retornoProcessamento.getDETALHE_SITUACAO().substring(0, 254));
 		log.setDetalheErro(retornoProcessamento.getLOG_PROCESSAMENTO());
 		log.setDhProcessamento(retornoProcessamento.getDHPROCESSAMENTO());
 	}

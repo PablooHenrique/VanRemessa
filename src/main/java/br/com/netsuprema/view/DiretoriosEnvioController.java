@@ -40,12 +40,20 @@ public class DiretoriosEnvioController extends AbstractController{
 	private TextField edtCodigo;
 	@FXML
 	private TableView<CedenteDto> cedentesTable;
+	
 	@FXML
 	private TableColumn<CedenteDto, String> codigoCedenteColumn;
 	@FXML
 	private TableColumn<CedenteDto, String> nomeColumn;
 	@FXML
 	private TableColumn<CedenteDto, String> diretorioColumn;
+	@FXML
+	private TableColumn<CedenteDto, String> codigoCedenteDvColumn;
+	@FXML
+	private TableColumn<CedenteDto, String> numeroContaColumn;
+	@FXML
+	private TableColumn<CedenteDto, String> numeroContaDvColumn;
+	
 	
 	private ObservableList<CedenteDto> cedentesData = FXCollections.observableArrayList();
 	
@@ -58,6 +66,11 @@ public class DiretoriosEnvioController extends AbstractController{
 
 	private void inicializarTabela() {
 		codigoCedenteColumn.setCellValueFactory(cellData -> cellData.getValue().getCodigoProperty());
+		codigoCedenteDvColumn.setCellValueFactory(cellData -> cellData.getValue().getDigitoVerificadorProperty());
+		
+		numeroContaColumn.setCellValueFactory(cellData -> cellData.getValue().getContas().get(0).getNumeroContaProperty());
+		numeroContaDvColumn.setCellValueFactory(cellData -> cellData.getValue().getContas().get(0).getDigitoVerificadorProperty());
+		
 		nomeColumn.setCellValueFactory(cellData -> cellData.getValue().getNomeProperty());
 		diretorioColumn.setCellValueFactory(cellData -> cellData.getValue().getDiretorioPadraoProperty());
 		

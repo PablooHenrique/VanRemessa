@@ -1,5 +1,9 @@
 package br.com.netsuprema.dominio.parametros;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.com.netsuprema.dominio.enuns.FormatoRemessa;
-import br.com.netsuprema.dominio.parametros.Cooperativa;
 
 
 @Entity(name = "parametros")
@@ -31,6 +34,23 @@ public class Parametros {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cooperativa")
 	private Cooperativa cooperativa;
+	
+	public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		new Parametros().gerarMD5Senha("CRECI_5_HOMOLOGACAO");
+	}
+	
+	public String gerarMD5Senha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		MessageDigest algorithm = MessageDigest.getInstance("MD5");
+		byte messageDigest[] = algorithm.digest(senha.getBytes("UTF-8"));
+		StringBuilder hexString = new StringBuilder();
+		
+		for (byte b : messageDigest) {
+		  hexString.append(String.format("%02x", 0xFF & b));
+		}
+		
+		return hexString.toString();
+	}
+	
 	
 	public Cooperativa getCooperativa() {
 		return cooperativa;

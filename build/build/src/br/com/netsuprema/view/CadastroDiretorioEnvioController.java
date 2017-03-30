@@ -1,16 +1,16 @@
 package br.com.netsuprema.view;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jfoenix.controls.JFXButton;
 
 import br.com.netsuprema.application.DiretorioEnvioApplication;
 import br.com.netsuprema.application.dto.CedenteDto;
 import br.com.netsuprema.application.dto.ContaDto;
 import br.com.netsuprema.view.utils.ViewUtils;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -21,10 +21,6 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 	@FXML
 	private JFXButton btnSalvar;
 	@FXML
-	private JFXButton btnAdicionar;
-	@FXML
-	private JFXButton btnRemover;
-	@FXML
 	private TextField edtCodigoCedente;
 	@FXML
 	private TextField edtNumeroConta;
@@ -34,15 +30,8 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 	private TextField edtDigitoVerificadorCedente;
 	@FXML
 	private TextField edtNome;
-	
 	@FXML
-	private TableView<ContaDto> contaTable;
-	@FXML
-	private TableColumn<ContaDto, String> numeroContaColumn;
-	@FXML
-	private TableColumn<ContaDto, String> digitoVerificadorColumn;
-	
-	private ObservableList<ContaDto> contaData = FXCollections.observableArrayList();
+	private TextField edtDiretorio;
 	
 	private boolean salvarCedente;
 	
@@ -59,14 +48,7 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 	}
 	
 	public void initializeComponents(){
-		inicializarTable();
 		inicializarEdts();
-	}
-
-	private void inicializarTable() {
-		numeroContaColumn.setCellValueFactory(cellData -> cellData.getValue().getNumeroContaProperty());
-		digitoVerificadorColumn.setCellValueFactory(cellData -> cellData.getValue().getDigitoVerificadorProperty());
-		contaTable.setItems(this.contaData);
 	}
 
 	private void inicializarEdts() {
@@ -82,24 +64,7 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 		getDialogStage().close();
 	}
 	
-	public void handleAdicionar(){
-		if (dadosDaContaEValido()) {
-			ContaDto conta = lerDadosConta();
-			contaData.add(conta);
-			limparCamposConta();
-		}
-	}
-	
-	public void handleRemover(){
-		int selectedIndex = contaTable.getSelectionModel().getSelectedIndex();
-	    if (selectedIndex >= 0) {
-	        contaTable.getItems().remove(selectedIndex);
-	    } else {
-	    	ViewUtils.exibirMensagemAlerta("Nenhuma seleção", "Nenhuma conta selecionada", "Por favor, selecione uma conta na tabela.");
-	    }
-	}
-	
-	private void limparCamposConta() {
+	public void limparCamposConta() {
 		edtDigitoVerificador.clear();
 		edtNumeroConta.clear();
 	}
@@ -124,16 +89,42 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 		cedente.setCodigo(edtCodigoCedente.getText());
 		cedente.setDigitoVerificador(edtDigitoVerificadorCedente.getText());
 		cedente.setNome(edtNome.getText());
-		cedente.setContas(contaData);
+		cedente.setDiretorioPadrao(edtDiretorio.getText());
+		cedente.setContas(criarConta());
 		return cedente;
 	}
 	
+	private List<ContaDto> criarConta() {
+		ContaDto conta = lerDadosConta();
+		
+		List<ContaDto> contas = new ArrayList<ContaDto>();
+		contas.add(conta);
+		return contas;
+	}
+
 	private boolean dadosCedenteEValido(){
 		if(!codigoCedenteEValido(edtCodigoCedente.getText())){
 			return false;
 		}
 		
 		if (!digitoVerificadorCedenteEValido(edtDigitoVerificadorCedente.getText())) {
+			return false;
+		}
+		
+		if (!diretorioEValido(edtDiretorio.getText().trim())) {
+			return false;
+		} 
+		
+		if(!dadosDaContaEValido()){
+			return false;
+		}
+		
+		return true;
+	}
+
+	private boolean diretorioEValido(String diretorio) {
+		if (!new File(diretorio).isDirectory()) {
+			ViewUtils.exibirMensagemErro("Inválido", "Diretório inválido.", "O diretório do arquivo e inválido. Selecione um diretório valido para prosseguir");
 			return false;
 		}
 		
@@ -144,6 +135,7 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 		ContaDto conta  = new ContaDto();
 		conta.setNumeroConta(edtNumeroConta.getText());
 		conta.setDigitoVerificador(edtDigitoVerificador.getText());
+		conta.setDiretorio(edtDiretorio.getText());
 		return conta;
 	}
 	
@@ -164,9 +156,11 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 	}
 
 	private boolean numeroContaRepetido() {
-		boolean anyMatch = contaData.stream().anyMatch(x -> x.getNumeroConta().equals(edtNumeroConta.getText()));
-		if (anyMatch) {
-			ViewUtils.exibirMensagemErro("Inválido", "Número da conta invalido.", "Uma conta com esse número ja foi inserido para esse cedente");
+		Integer numeroConta = Integer.valueOf(edtNumeroConta.getText());
+		boolean numeroContaExiste = new DiretorioEnvioApplication().numeroContaExiste(numeroConta);
+		
+		if (numeroContaExiste) {
+			ViewUtils.exibirMensagemErro("Inválido", "Número da conta invalido.", "Uma conta com esse número ja foi inserida");
 			return false;
 		}
 		return true;

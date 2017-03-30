@@ -49,6 +49,13 @@ public class ConfiguracoesGeraisProjetoService {
 				transaction.commit();
 			
 			} catch (Exception e) {
+				if ((session != null) && (session.isOpen())) {
+					if (transaction.isActive()) {
+						transaction.rollback();
+					}
+					session.close();
+				}
+				session.close();
 				e.printStackTrace();
 			}
 		} finally {

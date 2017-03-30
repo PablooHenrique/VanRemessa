@@ -81,6 +81,7 @@ public class EnviosDetalhadosController extends AbstractController{
 	public void initialize(){
 		initializeComponents();
 		inicializarTabela();
+		handleBuscar();
 	}
 
 	private void initializeComponents(){
@@ -135,41 +136,87 @@ public class EnviosDetalhadosController extends AbstractController{
 	}
 	
 	public void buscarPorParametros(){
-		remessasData.clear();
-		LocalDate dtIni = dataInicial.getValue();
-		LocalDate dtFim = dataInicial.getValue();
 		
-		String codigoCedente;
-		String codigoEnvio;
-		String codigoConta;
-		
-		if((dtFim != null) && (dtIni != null)){
+		if (parametrosSaoValido()) {
+			remessasData.clear();
+			LocalDate dtIni = dataInicial.getValue();
+			LocalDate dtFim = dataInicial.getValue();
 			
+			String codigoCedente;
+			String codigoEnvio;
+			String codigoConta;
+			
+			if (!edtCodigoCedente.getText().trim().isEmpty()) {
+				codigoCedente = edtCodigoCedente.getText(); 	
+			}else{
+				codigoCedente = "0";
+			}
+			
+			if (!edtCodigoEnvio.getText().trim().isEmpty()) {
+				codigoEnvio = edtCodigoEnvio.getText(); 	
+			}else{
+				codigoEnvio = "0";
+			}
+			
+			
+			if (!edtCodigoConta.getText().trim().isEmpty()) {
+				codigoConta = edtCodigoConta.getText(); 	
+			}else{
+				codigoConta = "0";
+			}
+			
+			List<RemessaDto> remessas = new RemessasApplication().listarTodasRemessasPorParametro(dtIni, dtFim, codigoCedente, codigoEnvio, codigoConta, null);
+			remessas.stream().forEach(x->remessasData.add(x));
+			SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+			selectionModel.select(1);
+		
+		}
+	}
+	
+	private boolean parametrosSaoValido(){
+		if ((!edtCodigoConta.getText().trim().equals("")) && (!codigoContaEValido(edtCodigoConta.getText().trim()))) {
+			return false;
 		}
 		
-		if (!edtCodigoCedente.getText().trim().isEmpty()) {
-			codigoCedente = edtCodigoCedente.getText(); 	
-		}else{
-			codigoCedente = "0";
+		if ((!edtCodigoCedente.getText().trim().equals("")) && (!codigoCedenteEValido(edtCodigoCedente.getText().trim()))) {
+			return false;
 		}
 		
-		if (!edtCodigoEnvio.getText().trim().isEmpty()) {
-			codigoEnvio = edtCodigoEnvio.getText(); 	
-		}else{
-			codigoEnvio = "0";
+		if ((!edtCodigoEnvio.getText().trim().equals("")) && (!codigoEnvioEValido(edtCodigoEnvio.getText().trim()))) {
+			return false;
 		}
 		
-		
-		if (!edtCodigoConta.getText().trim().isEmpty()) {
-			codigoConta = edtCodigoConta.getText(); 	
-		}else{
-			codigoConta = "0";
+		return true;
+	}
+
+	private boolean codigoContaEValido(String codigoConta) {
+		try {
+			ViewUtils.converterEntradaStringParaInteger(codigoConta);
+			return true;
+		} catch (Exception e) {
+			ViewUtils.exibirMensagemErro("Erro", "Código da conta inválido", "O código da conta deve ser composto de apenas numeros");
+			return false;
 		}
-		
-		List<RemessaDto> remessas = new RemessasApplication().listarTodasRemessasPorParametro(dtIni, dtFim, codigoCedente, codigoEnvio, codigoConta, null);
-		remessas.stream().forEach(x->remessasData.add(x));
-		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-		selectionModel.select(1);
+	}
+
+	private boolean codigoEnvioEValido(String codigoEnvio) {
+		try {
+			ViewUtils.converterEntradaStringParaInteger(codigoEnvio);
+			return true;
+		} catch (Exception e) {
+			ViewUtils.exibirMensagemErro("Erro", "Código envio inválido", "O código de envio deve ser composto de apenas numeros");
+			return false;
+		}
+	}
+
+	private boolean codigoCedenteEValido(String codigoCedente) {
+		try {
+			ViewUtils.converterEntradaStringParaInteger(codigoCedente);
+			return true;
+		} catch (Exception e) {
+			ViewUtils.exibirMensagemErro("Erro", "Código cedente inválido", "O código do cedente deve ser composto de apenas numeros");
+			return false;
+		}
 	}
 	
 	public void handleExibirDetalhes(){

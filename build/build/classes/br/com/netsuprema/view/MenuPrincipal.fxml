@@ -26,8 +26,8 @@
          </font>
       </Label>
       <Label layoutX="755.0" layoutY="373.0" text="DIRETÓRIOS ENVIO" />
-      <Label layoutX="550.0" layoutY="373.0" text="ENVIO DETALHADOS" />
-      <Label layoutX="363.0" layoutY="373.0" text="RESUMO ENVIO" />
+      <Label layoutX="550.0" layoutY="373.0" text="ENVIOS DETALHADOS" />
+      <Label layoutX="363.0" layoutY="373.0" text="RESUMO DE ENVIOS" />
       <Label layoutX="158.0" layoutY="373.0" text="CONFIGURAÇÔES" />
       <Pane fx:id="paneOnOffStatusServicoRemessa" layoutX="874.0" layoutY="64.0" prefHeight="34.0" prefWidth="55.0" />
       <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="122.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.0" />

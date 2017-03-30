@@ -205,7 +205,7 @@ public class RemessasDeTitulosService {
 				boolean processamentoEncerradoComSucesso = processamentoEncerradoComSucesso(session, idProcessamento);
 				
 				if (processamentoEncerradoComSucesso) {
-					new FileService().copyFile(file, new File(cedente.getDiretorioPadrao()+"/"+conta.getNumeroConta()+"/enviados/"+file.getName()+".txt"));
+					new FileService().copyFile(file, new File(cedente.getDiretorioPadrao()+"/enviados/"+file.getName()+".txt"));
 					file.delete();
 				}else{
 					ScannerFilesThread.logErros.add("Processamento realizado com erro. Favor verificar o log do processamento para mais detalhes.");

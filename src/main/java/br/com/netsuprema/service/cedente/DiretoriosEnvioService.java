@@ -8,7 +8,6 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 
 import br.com.netsuprema.dominio.cedente.Cedente;
-import br.com.netsuprema.dominio.cedente.Conta;
 import br.com.netsuprema.dominio.exceptions.DiretoriosInvalidosExceptions;
 import br.com.netsuprema.repository.Application;
 import br.com.netsuprema.service.FileService;
@@ -40,22 +39,12 @@ public class DiretoriosEnvioService {
 
 	private List<String> criarPathDiretorios(Cedente cedente) {
 		List<String> diretorios = new ArrayList<String>();
-		String path = getDiretorioPadrao() + cedente.getCodigo();
-		cedente.setDiretorioPadrao(path);
+		String path = cedente.getDiretorioPadrao();
 		
-		for (Conta conta : cedente.getContas()) {
-			String pathConta = path +"/"+ conta.getNumeroConta();
-			conta.setDiretorio(pathConta);
-			diretorios.add(pathConta); 
-			pathConta = path +"/"+ conta.getNumeroConta() +"/enviados";
-			diretorios.add(pathConta);
-		}
+		diretorios.add(path);
+		diretorios.add(path + "/enviados");
 		
 		return diretorios;
-	}
-
-	private String getDiretorioPadrao() {
-		return DIRETORIO_PADRAO;
 	}
 
 	public void abrirDiretorio(Integer codigo) {

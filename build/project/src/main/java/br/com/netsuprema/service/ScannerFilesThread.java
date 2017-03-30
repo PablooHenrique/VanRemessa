@@ -54,7 +54,7 @@ public class ScannerFilesThread implements Runnable{
 		};
 		
 		Timer timer = new Timer();
-		timer.schedule(task, 2000, 600000);
+		timer.schedule(task, 2000, 60000);
 	}
 
 	public void startProcessamento() {

@@ -9,6 +9,7 @@ import br.com.netsuprema.application.dto.CedenteDto;
 import br.com.netsuprema.dominio.cedente.Cedente;
 import br.com.netsuprema.service.cedente.CedenteService;
 import br.com.netsuprema.service.cedente.DiretoriosEnvioService;
+import br.com.netsuprema.view.utils.ViewUtils;
 
 public class DiretorioEnvioApplication {
 
@@ -80,4 +81,13 @@ public class DiretorioEnvioApplication {
 		service.abrirDiretorio(codigo);
 	}
 
+	public boolean numeroContaExiste(Integer numeroConta) {
+		try {
+			boolean numeroContaExiste = new CedenteService().numeroContaExiste(numeroConta);
+			return numeroContaExiste;
+		} catch (Exception e) {
+			ViewUtils.exibirMensagemAlerta("Erro", "Falha ao verifica se o numero da conta existe", e.getMessage());
+			return true;
+		}
+	}
 }
