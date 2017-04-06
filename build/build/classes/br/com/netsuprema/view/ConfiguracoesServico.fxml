@@ -12,9 +12,10 @@
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" style="-fx-background-color: #f4f4f3;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.ConfiguracoesServicoController">
    <children>
       <ComboBox fx:id="comboBoxCooperativas" layoutX="132.0" layoutY="309.0" prefHeight="39.0" prefWidth="360.0" promptText="Selecione" />
+      <TextField fx:id="edtEmail" layoutX="533.0" layoutY="309.0" prefHeight="39.0" prefWidth="360.0" />
       <TextField fx:id="edtUsuario" layoutX="132.0" layoutY="413.0" prefHeight="39.0" prefWidth="360.0" />
       <PasswordField fx:id="edtSenha" layoutX="533.0" layoutY="413.0" prefHeight="39.0" prefWidth="360.0" />
-      <TextField fx:id="edtEmail" layoutX="132.0" layoutY="510.0" prefHeight="39.0" prefWidth="360.0" />
+      <ComboBox fx:id="comboBoxFormatoRetorno" layoutX="132.0" layoutY="510.0" prefHeight="39.0" prefWidth="360.0" promptText="Selecione" />
       <ComboBox fx:id="comboBoxFormatoRemessa" layoutX="533.0" layoutY="510.0" prefHeight="39.0" prefWidth="360.0" promptText="Selecione" />
       <JFXButton fx:id="btnsalvar" buttonType="RAISED" layoutX="723.0" layoutY="575.0" onAction="#handleSalvar" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="GRAVAR" textFill="#323031">
          <font>
@@ -39,7 +40,7 @@
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="133.0" layoutY="459.0" prefHeight="51.0" prefWidth="194.0" text="EMAIL DA NOTIFICAÇÃO" textFill="#575757">
+      <Label layoutX="534.0" layoutY="258.0" prefHeight="51.0" prefWidth="194.0" text="EMAIL DA NOTIFICAÇÃO" textFill="#575757">
          <font>
             <Font name="Arial" size="15.0" />
          </font>
@@ -55,6 +56,11 @@
          </font>
       </Label>
       <Label layoutX="133.0" layoutY="258.0" prefHeight="51.0" prefWidth="194.0" text="COOPERATIVA" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="133.0" layoutY="459.0" prefHeight="51.0" prefWidth="223.0" text="FORMATO DO RETORNO" textFill="#575757">
          <font>
             <Font name="Arial" size="15.0" />
          </font>

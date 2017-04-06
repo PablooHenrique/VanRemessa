@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="670.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.RetornosController">
+   <children>
+      <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="122.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="122.0" AnchorPane.topAnchor="23.0" />
+      <JFXButton fx:id="btnVoltar" layoutX="128.0" layoutY="117.0" onAction="#handleVoltar" prefHeight="34.0" prefWidth="34.0" ripplerFill="#bc9347" style="-fx-background-color: #e5b250;" text="v" />
+      <Label layoutX="190.0" layoutY="117.0" prefHeight="51.0" prefWidth="95.0" text="VOLTAR" textFill="#323031">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="190.0" layoutY="179.0" prefHeight="51.0" prefWidth="470.0" text="PESQUISA DE RETORNOS" textFill="#323031" AnchorPane.leftAnchor="128.0">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <Line endX="700.0" layoutX="242.0" layoutY="240.0" startX="-100.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="112.0" />
+      <TableView fx:id="retornoTable" layoutX="112.0" layoutY="339.0" prefHeight="275.0" prefWidth="801.0">
+        <columns>
+          <TableColumn fx:id="codCedenteColumn" prefWidth="91.0" text="Cód Cedente" />
+          <TableColumn fx:id="contaColumn" minWidth="0.0" prefWidth="52.0" text="Conta" />
+            <TableColumn fx:id="dataRetornoColumn" minWidth="0.0" prefWidth="102.0" text="Data Retorno" />
+            <TableColumn fx:id="situacaoColumn" prefWidth="107.0" text="Situação" />
+            <TableColumn fx:id="detalheColumn" prefWidth="208.0" text="Detalhe" />
+            <TableColumn fx:id="logColumn" prefWidth="240.0" text="Log" />
+        </columns>
+      </TableView>
+      <Label layoutX="113.0" layoutY="247.0" prefHeight="24.0" prefWidth="283.0" text="DIRETÓRIO PARA SALVAR RETORNOS" textFill="#575757">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnsalvar" buttonType="RAISED" layoutX="484.0" layoutY="279.0" onAction="#handleSalvar" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="GRAVAR" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
+      <TextField fx:id="edtDiretorio" layoutX="113.0" layoutY="279.0" prefHeight="39.0" prefWidth="360.0" />
+      <Label layoutX="717.0" layoutY="156.0" text="á" />
+      <Label layoutX="533.0" layoutY="126.0" prefHeight="17.0" prefWidth="48.0" text="Período" />
+      <JFXButton buttonType="RAISED" layoutX="735.0" layoutY="195.0" onAction="#handlePesquisar" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="Buscar" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
+      <DatePicker fx:id="edtDataFinal" layoutX="731.0" layoutY="152.0" />
+      <DatePicker fx:id="edtDataInicial" layoutX="533.0" layoutY="152.0" />
+   </children>
+</AnchorPane>

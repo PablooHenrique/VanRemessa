@@ -74,7 +74,7 @@ public class ParametrosApplication {
 					 .append("Motivo: " + e.getMessage())
 					 .append("Causa: " + e.getMessage());
 			
-			throw new Exception(exception.toString());
+			throw e;
 		}
 	}
 
@@ -105,6 +105,39 @@ public class ParametrosApplication {
 					 .append("Causa: " + e.getMessage());
 			
 			throw new Exception(exception.toString());
+		}
+	}
+
+	public void salvarDiretorioRetorno(String diretorioRetorno) throws Exception {
+		try {
+			new ParametrosService().salvarDiretorio(diretorioRetorno);
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Erro ao realizar tentar salvar o diretório dos arquivos de retorno")
+					 .append("Cause: " + e.getCause().getMessage())
+					 .append("Mensagem: " + e.getMessage());
+			
+			throw e;
+		}
+	}
+
+	public String consultarDiretorioRetornos() throws Exception {
+		try {
+			Parametros parametros;
+			parametros = consultarParametros();
+			
+			if (parametros != null) {
+				return parametros.getDiretorioRetornos();
+			}else{
+				return "";
+			}
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Erro ao realizar tentar consultar o diretório dos arquivos de retorno")
+					 .append("Cause: " + e.getCause().getMessage())
+					 .append("Mensagem: " + e.getMessage());
+			
+			throw e;
 		}
 	}
 }

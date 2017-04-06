@@ -388,7 +388,7 @@
 		<fx:application id="fxApplication"
 			name="SigVan"
 			mainClass="br.com.netsuprema.MainApp"
-			version="1.0.3"
+			version="1.1.5"
 		/>
 	
 		<mkdir dir="build/classes/META-INF" />
@@ -402,7 +402,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="SigVan"/>
 				<attribute name="Implementation-Title" value="SigVan"/>
-				<attribute name="Implementation-Version" value="1.0.2"/>
+				<attribute name="Implementation-Version" value="1.1.5"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>
@@ -425,7 +425,5 @@
 			<fx:application refId="fxApplication"/>
 			<fx:resources refid="appRes"/>
 		</fx:deploy>
-	
-	
 	</target>
 </project>

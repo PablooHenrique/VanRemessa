@@ -6,6 +6,7 @@ import br.com.netsuprema.application.dto.CedenteDto;
 import br.com.netsuprema.application.dto.RemessaDto;
 import br.com.netsuprema.service.ProcessingWatcherThread;
 import br.com.netsuprema.service.ScannerFilesThread;
+import br.com.netsuprema.service.retornos.ReturnProcessWatcherThread;
 import br.com.netsuprema.view.CadastroDiretorioEnvioController;
 import br.com.netsuprema.view.ConfiguracoesServicoController;
 import br.com.netsuprema.view.DetalhesRemessaController;
@@ -13,6 +14,7 @@ import br.com.netsuprema.view.DiretoriosEnvioController;
 import br.com.netsuprema.view.EnviosDetalhadosController;
 import br.com.netsuprema.view.MenuPrincipalController;
 import br.com.netsuprema.view.ResumoEnvioController;
+import br.com.netsuprema.view.RetornosController;
 import br.com.netsuprema.view.StatusServicoController;
 import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Application;
@@ -49,6 +51,10 @@ public class MainApp extends Application{
 			ProcessingWatcherThread processingWatcherThread = new ProcessingWatcherThread(); 
 			Thread td = new Thread(processingWatcherThread);
 			td.start();
+			
+			ReturnProcessWatcherThread returnProcessWatcherThread = new ReturnProcessWatcherThread();
+			Thread tdDois = new Thread(returnProcessWatcherThread);
+			tdDois.start();
 			
 		} catch (Exception e) {
 			ViewUtils.exibirMensagemErro("Erro", "Falha no acesso ao banco", "Falha ao acessar o banco de dados, uma nova instancia do processo ja está iniciada");
@@ -214,6 +220,20 @@ public class MainApp extends Application{
 	        dialogStage.showAndWait();
 	        
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void showRetornos(MainApp mainApp, BorderPane rootLayout2) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/Retornos.fxml"));
+			AnchorPane retornos = loader.load();
+			
+			rootLayout.setCenter(retornos);
+			RetornosController controller = loader.getController();
+			controller.setMainApp(mainApp);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

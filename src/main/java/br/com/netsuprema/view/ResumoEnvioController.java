@@ -112,33 +112,35 @@ public class ResumoEnvioController extends AbstractController{
 	private void consultarResumoEnvioSemParametros() {
 		ResumoEnvioDto resumo = consultar();
 		
-		DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-		LocalDateTime dateTime = resumo.getDataUltimaVerificacaoEnvio();
-		String date = dateTime.format(pattern);
-		
-		edtDataHoraUltimaVerificacaoEnvio.setText(date);
-		
-		RemessasDeTitulosService service = new RemessasDeTitulosService();
-		
-		List<Remessa> remessas = service.listarRemessasEnviadas();
-		
-		if (!remessas.isEmpty()) {
-			LocalDateTime dataHoraEnvio = remessas.get(0).getLog().getDataHoraEnvio();
-			date = dataHoraEnvio.format(pattern);
-			edtDataHoraUltimoEnvio.setText(date);
+		if (resumo.getDataUltimaVerificacaoEnvio()!=null) {
+			DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+			LocalDateTime dateTime = resumo.getDataUltimaVerificacaoEnvio();
+			String date = dateTime.format(pattern);
+			
+			edtDataHoraUltimaVerificacaoEnvio.setText(date);
+			
+			RemessasDeTitulosService service = new RemessasDeTitulosService();
+			
+			List<Remessa> remessas = service.listarRemessasEnviadas();
+			
+			if (!remessas.isEmpty()) {
+				LocalDateTime dataHoraEnvio = remessas.get(0).getLog().getDataHoraEnvio();
+				date = dataHoraEnvio.format(pattern);
+				edtDataHoraUltimoEnvio.setText(date);
+			}
+			
+			remessas = service.listarRemessasEnviadas();
+			edtQuantidadeRemessasEnviadas.setText(String.valueOf(remessas.size()));
+			
+			remessas = service.listarRemessasComAguardoProcessamentoServidor();
+			edtQuantidadeRemessasAguardandoProcessamento.setText(String.valueOf(remessas.size()));
+			
+			remessas = service.listarRemessasProcessadasComSucesso();
+			edtQuantidadeRemessasProcessadasComSucesso.setText(String.valueOf(remessas.size()));
+			
+			remessas = service.listarRemessasProcessadasComErro();
+			edtQuantidadeRemessasProcessadasComErro.setText(String.valueOf(remessas.size()));
 		}
-		
-		remessas = service.listarRemessasEnviadas();
-		edtQuantidadeRemessasEnviadas.setText(String.valueOf(remessas.size()));
-		
-		remessas = service.listarRemessasComAguardoProcessamentoServidor();
-		edtQuantidadeRemessasAguardandoProcessamento.setText(String.valueOf(remessas.size()));
-		
-		remessas = service.listarRemessasProcessadasComSucesso();
-		edtQuantidadeRemessasProcessadasComSucesso.setText(String.valueOf(remessas.size()));
-		
-		remessas = service.listarRemessasProcessadasComErro();
-		edtQuantidadeRemessasProcessadasComErro.setText(String.valueOf(remessas.size()));
 	}
 
 	

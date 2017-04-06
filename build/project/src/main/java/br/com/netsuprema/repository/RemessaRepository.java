@@ -40,11 +40,12 @@ public class RemessaRepository extends AbstractRepository<Remessa>{
 		StringBuilder jpql = new StringBuilder();
 		jpql.append("select a from remessa a ")
 			.append("inner join a.log l on a.log.id = l.id ")
-			.append("where UPPER(l.situacao) like :situacaook and l.statusProcessamento is null ")
+			.append("where UPPER(l.situacao) like :situacaook and ((l.statusProcessamento is null) or (l.statusProcessamento = :statusProcessamento)) ")
 			.append("order by l.dataHoraEnvio desc");
 		
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("situacaook", "%"+"OK"+"%");
+		parametros.put("statusProcessamento", StatusProcessamento.AGURDANDO_PROCESSAMENTO_PROCESSAMENTO);
 		List<Remessa> remessas = select(jpql.toString(), parametros);
 		
 		return remessas;

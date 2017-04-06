@@ -35,9 +35,9 @@ public class Parametros {
 	@JoinColumn(name = "cooperativa")
 	private Cooperativa cooperativa;
 	
-	public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		new Parametros().gerarMD5Senha("CRECI_5_HOMOLOGACAO");
-	}
+	private FormatoRetornoLiquidacao formatoRetornoLiquidacao;
+	
+	private String diretorioRetornos;
 	
 	public String gerarMD5Senha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		MessageDigest algorithm = MessageDigest.getInstance("MD5");
@@ -81,5 +81,21 @@ public class Parametros {
 	}
 	public void setFormatoRemessa(FormatoRemessa formatoRemessa) {
 		this.formatoRemessa = formatoRemessa;
+	}
+	public FormatoRetornoLiquidacao getFormatoRetornoLiquidacao() {
+		return formatoRetornoLiquidacao;
+	}
+	public void setFormatoRetornoLiquidacao(FormatoRetornoLiquidacao formatoRetornoLiquidacao) {
+		this.formatoRetornoLiquidacao = formatoRetornoLiquidacao;
+	}
+
+
+	public String getDiretorioRetornos() {
+		return diretorioRetornos;
+	}
+
+
+	public void setDiretorioRetornos(String diretorioRetornos) {
+		this.diretorioRetornos = diretorioRetornos;
 	}
 }

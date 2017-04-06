@@ -40,5 +40,7 @@
     <mapping class="br.com.netsuprema.dominio.cedente.Conta"/>
     <mapping class="br.com.netsuprema.dominio.remessa.Remessa"/>
     <mapping class="br.com.netsuprema.dominio.remessa.LogEnvioRemessa"/>
+    <mapping class="br.com.netsuprema.dominio.retornoliquidacao.RetornoLiquidacao"/>
+    <mapping class="br.com.netsuprema.dominio.retornoliquidacao.LogEnvioRetornoLiquidacao"/>
   </session-factory>
 </hibernate-configuration>

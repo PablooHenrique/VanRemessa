@@ -154,4 +154,27 @@ public class FileService {
         buffW.close();
         fileW.close();
 	}
+	
+	public void salvarArquivoRetorno(String diretorio, String nomeArquivo, String conteudo) throws IOException{
+		Date data = new Date(System.currentTimeMillis());  
+		SimpleDateFormat formatarDate = new SimpleDateFormat("yyyy-MM-dd"); 
+		String format = formatarDate.format(data);
+		
+		File file = new File(diretorio + "/" +nomeArquivo+"-"+format+ ".txt");
+		
+		FileService fileService = new FileService();
+		
+		if (!fileService.diretorioExists(diretorio)){
+			fileService.criarDiretorio(diretorio);
+		}
+		
+		FileWriter fileW = new FileWriter (file, true);
+        BufferedWriter buffW = new BufferedWriter (fileW);
+        
+        buffW.newLine();
+		buffW.write(conteudo);
+    
+        buffW.close();
+        fileW.close();
+	}
 }

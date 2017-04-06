@@ -6,9 +6,10 @@ import java.util.TimerTask;
 import com.jfoenix.controls.JFXButton;
 
 import br.com.netsuprema.application.ParametrosApplication;
+import br.com.netsuprema.application.RetornosApplication;
 import br.com.netsuprema.application.ServicosApplication;
+import br.com.netsuprema.dominio.DateUtils;
 import br.com.netsuprema.dominio.parametros.Parametros;
-import br.com.netsuprema.utils.ConfigUtils;
 import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -40,6 +41,8 @@ public class MenuPrincipalController extends AbstractController{
 	@FXML
 	private JFXButton btnDiretoriosEnvio;
 	@FXML
+	private JFXButton btnRetorno;
+	@FXML
 	private ImageView imgLogo;
 	@FXML
 	private Pane paneOnOffStatusServicoRemessa;
@@ -62,6 +65,7 @@ public class MenuPrincipalController extends AbstractController{
 		inicializarBtnDiretorioEnvio();
 		inicializarBtnEnviosDetalhados();
 		inicializarBtnResumoEnvio();
+		inicializarBtnRetorno();
 	}
 
 	private void inicializarBtnResumoEnvio() {
@@ -87,12 +91,40 @@ public class MenuPrincipalController extends AbstractController{
 		ImageView image = new ImageView(url);
 		btnConfiguracoes.setGraphic(image);
 	}
+	
+	private void inicializarBtnRetorno() {
+		Label lblRetornos = new Label("RETORNOS: \n"
+				+ "STATUS: Ag. Processamento\n"
+				+ "PROCESSADOS : 0 / 0");
+		
+		btnRetorno.setGraphic(lblRetornos);
+	}
 
 	private void inicializarConfigurações() {
+		
+		if (parametrosArquivoRetornoEValido()) {
+			processingWhatcherReturnsThread();
+		}
+		
 		if (parametrosSaoValidos()) {
 			processingWhatcherThread();
 		}else{
 			labelMsg.setText("Cadastre os parâmetros para inicializar o processamento dos dados");
+		}
+	}
+
+	private boolean parametrosArquivoRetornoEValido() {
+		try {
+			RetornosApplication application = new RetornosApplication();
+			boolean retorno = application.parametrosRetornoLiquidacaoSaoValidos();
+			return retorno;
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Falha ao consultar os parâmetros.")
+					 .append("Motivo: " + e.getMessage())
+					 .append("Causa: " + e.getMessage());
+			ViewUtils.exibirMensagemErro("Erro", "", exception.toString());
+			return false;
 		}
 	}
 
@@ -124,6 +156,7 @@ public class MenuPrincipalController extends AbstractController{
 		btnDiretoriosEnvio.setDisable(habiitar);
 		btnEnviosDetalhados.setDisable(habiitar);
 		btnResumoEnvio.setDisable(habiitar);
+		btnRetorno.setDisable(habiitar);
 	}
 
 	private void inicializarVerificacaoServicoRemessa() {
@@ -155,6 +188,18 @@ public class MenuPrincipalController extends AbstractController{
 			 		 .append("Motivo: " + e.getMessage())
 			 		 .append("Causa: " + e.getCause().getMessage());
 			ViewUtils.exibirMensagemErro("", "Flha ao abrir a pagina de configurações", exception.toString());
+		}
+	}
+	
+	public void handleShowRetornos(){
+		try {
+			getMainApp().showRetornos(getMainApp(), getMainApp().getRootLayout());
+		} catch (Exception e) {
+			StringBuilder exception = new StringBuilder();
+			exception.append("Falha ao abrir a pagina de retornos.")
+			 		 .append("Motivo: " + e.getMessage())
+			 		 .append("Causa: " + e.getCause().getMessage());
+			ViewUtils.exibirMensagemErro("", "Flha ao abrir a pagina de retornos", exception.toString());
 		}
 	}
 	
@@ -193,6 +238,42 @@ public class MenuPrincipalController extends AbstractController{
 			    		   setMsg(msg);
 			    	   }
 			      }
+			    });
+			}
+		},2000, 60000);
+	}
+	
+	public void processingWhatcherReturnsThread(){
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			    public void run() {
+			    Platform.runLater(new Runnable() {
+			       public void run() {
+			    	   String proscessados = "";
+			    	   RetornosApplication application = new RetornosApplication();
+			    	   Integer quantidade = application.consultarQuantidadeRetornosDoDia();
+			    	   Integer quantidadeTotalCedentes = application.consultarQuantidadeTotalCedentes();
+			    	   
+			    	   
+			    	   if(application.processamentoRetornoDoDiaJaRealizado()){
+			    		   proscessados = "Finalizado. ";
+			    	   }else{
+			    		   proscessados = "Ag. Processamento. ";
+			    	   }
+			    	   
+			    	   
+			    	   if (quantidadeTotalCedentes == 0) {
+			    		   Label lblRetornos = new Label("Sem cedentes para processamento");
+				   		   btnRetorno.setGraphic(lblRetornos);
+			    	   }else{
+				    	   Label lblRetornos = new Label("RETORNOS: "+DateUtils.converterLocalDateParaString(DateUtils.getUltimoDiaUtil())+" \n"
+				   				+ "STATUS: "+proscessados+" \n"
+				   				+ "PROCESSADOS : "+quantidade+" / "+quantidadeTotalCedentes);
+				   		
+				   		   btnRetorno.setGraphic(lblRetornos);
+			   		   }
+			       }
 			    });
 			}
 		},2000, 60000);

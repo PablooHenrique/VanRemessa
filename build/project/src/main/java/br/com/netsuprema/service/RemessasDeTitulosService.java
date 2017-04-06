@@ -296,7 +296,7 @@ public class RemessasDeTitulosService {
 			ScannerFilesThread.logErros.add("Processar Contas");
 			
 			for (Conta conta : contas) {
-					processarConta(cedente, conta);
+				processarConta(cedente, conta);
 			}
 			
 		} catch (Exception e) {

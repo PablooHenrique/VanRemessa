@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXButton.ButtonType;
 import br.com.netsuprema.application.ParametrosApplication;
 import br.com.netsuprema.dominio.enuns.FormatoRemessa;
 import br.com.netsuprema.dominio.parametros.Cooperativa;
+import br.com.netsuprema.dominio.parametros.FormatoRetornoLiquidacao;
 import br.com.netsuprema.dominio.parametros.Parametros;
 import br.com.netsuprema.utils.ConfigUtils;
 import br.com.netsuprema.view.utils.ViewUtils;
@@ -35,6 +36,8 @@ public class ConfiguracoesServicoController extends AbstractController{
 	@FXML
 	private ComboBox<String> comboBoxFormatoRemessa;
 	@FXML
+	private ComboBox<String> comboBoxFormatoRetorno;
+	@FXML
 	private TextField edtUsuario;
 	@FXML
 	private TextField edtEmail;
@@ -47,8 +50,9 @@ public class ConfiguracoesServicoController extends AbstractController{
 	@FXML
 	private ImageView imgLogo;
 	
-	ObservableList<String> cooperativas = FXCollections.observableArrayList();
-	ObservableList<String> formatoRemessa = FXCollections.observableArrayList();
+	ObservableList<String> cooperativas 	= FXCollections.observableArrayList();
+	ObservableList<String> formatoRemessa 	= FXCollections.observableArrayList();
+	ObservableList<String> formatoRetorno 	= FXCollections.observableArrayList();
 	
 	public ConfiguracoesServicoController() {
 		setApplication(new ParametrosApplication());
@@ -83,6 +87,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 		
 		preencherInformacoesComboCooperativa(parametros);
 		preencherInformacoesComboFormatoRemessa(parametros);
+		preencherInformacoesComboFormatoRetorno(parametros);
 	}
 
 	public void preencherInformacoesComboFormatoRemessa(Parametros parametros) {
@@ -114,11 +119,27 @@ public class ConfiguracoesServicoController extends AbstractController{
 			}
 		}
 	}
+	
+	public void preencherInformacoesComboFormatoRetorno(Parametros parametros) {
+		SingleSelectionModel<String> selectionModel = comboBoxFormatoRetorno.getSelectionModel();
+		
+		for (int i = 0; i < formatoRetorno.size(); i++) {
+			if (!formatoRetorno.get(i).trim().isEmpty()) {
+				String[] itens = formatoRetorno.get(i).split("-");
+				
+				if (Integer.valueOf(itens[0]) == parametros.getFormatoRetornoLiquidacao().getCodigo()) {
+					selectionModel.select(formatoRetorno.get(i));
+					break;
+				}
+			}
+		}
+	}
 
 	public void initializeComponents() throws Exception{
 		inicializarCooperativas();
 		carregarComboCooperativa();
 		carregarComboFormatoRemessa();
+		carregarComboFormatoRetorno();
 		
 		String url = ConfigUtils.PATH_RESOURCE_PADRAO + "imagens/voltar.png";
 		ImageView image = new ImageView(url);
@@ -132,6 +153,12 @@ public class ConfiguracoesServicoController extends AbstractController{
 		imgLogo.setImage(new Image(ConfigUtils.PATH_RESOURCE_PADRAO+"imagens/logo.png"));
 	}
 	
+	private void carregarComboFormatoRetorno() {
+		List<FormatoRetornoLiquidacao> list = Arrays.asList(FormatoRetornoLiquidacao.values());
+		list.stream().forEach(x-> this.formatoRetorno.add(x.getCodigo() +"-"+x.getDescricao().toUpperCase()));
+		comboBoxFormatoRetorno.setItems(this.formatoRetorno);
+	}
+
 	public void inicializarCooperativas() throws Exception {
 		List<Cooperativa> cooperativas;
 		
@@ -214,8 +241,27 @@ public class ConfiguracoesServicoController extends AbstractController{
 		parametros.setCooperativa(null);
 		parametros.setCooperativa(criarCooperativa());
 		parametros.setFormatoRemessa(criarFormatoRemessa());
+		parametros.setFormatoRetornoLiquidacao(criarFormatoRetornoLiquidacao());
 		
 		return parametros;
+	}
+
+	private FormatoRetornoLiquidacao criarFormatoRetornoLiquidacao() {
+		SingleSelectionModel<String> selectionModel = comboBoxFormatoRetorno.getSelectionModel();
+		String item = selectionModel.getSelectedItem();
+		
+		if (!item.trim().isEmpty()) {
+			String[] itens = item.split("-");
+			
+			FormatoRetornoLiquidacao[] values = FormatoRetornoLiquidacao.values();
+			for (int i = 0; i < values.length; i++) {
+				if (values[i].getCodigo() == Integer.valueOf(itens[0])) {
+					return values[i];
+				}
+			}
+		}
+		
+		return null;
 	}
 
 	public FormatoRemessa criarFormatoRemessa() {
@@ -266,7 +312,15 @@ public class ConfiguracoesServicoController extends AbstractController{
 		index = selectionModel.getSelectedIndex();
 		
 		if (index == -1) {
-			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Selecione um formato");
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Selecione um formato de remessa");
+			return false;
+		}
+		
+		selectionModel = comboBoxFormatoRetorno.getSelectionModel();
+		index = selectionModel.getSelectedIndex();
+		
+		if (index == -1) {
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Selecione um formato de retorno");
 			return false;
 		}
 		

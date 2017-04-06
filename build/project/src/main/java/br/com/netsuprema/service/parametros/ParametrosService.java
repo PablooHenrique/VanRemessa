@@ -28,7 +28,6 @@ public class ParametrosService {
 		Transaction transaction = null;
 		try {
 			try {
-				
 				parametros.setSenha(parametros.gerarMD5Senha(parametros.getLogin()));
 				
 				session = this.getSessionFactory().openSession();
@@ -66,12 +65,55 @@ public class ParametrosService {
 		}
 	}
 	
+	public void salvarDiretorio(String dir){
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			try {
+				Parametros parametro = new Parametros();
+				List<Parametros> parametros = listarParametros();
+				if (parametros!=null) {
+					parametro = parametros.get(0);
+				}
+				
+				parametro.setDiretorioRetornos(dir);
+				
+				session = this.getSessionFactory().openSession();
+				ParametrosRepository repository = new ParametrosRepository(session);
+				
+				transaction = session.beginTransaction();
+				repository.atualizar(parametro);
+				transaction.commit();
+			
+			} catch (Exception e) {
+				if ((session != null) && (session.isOpen())) {
+					if (transaction.isActive()) {
+						transaction.rollback();
+					}
+				}
+				
+				StringBuilder exception = new StringBuilder();
+				exception.append("Não foi possível salvar os parametros.")
+						 .append("Motivo: " + e.getMessage())
+						 .append("Causa: " + e.getMessage());
+				
+				throw e;
+			}
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+	
 	public void atualizarParametros(Parametros parametrosBanco, Parametros parametros){
 		parametrosBanco.setCooperativa(parametros.getCooperativa());
 		parametrosBanco.setFormatoRemessa(parametros.getFormatoRemessa());
 		parametrosBanco.setEmail(parametros.getEmail());
 		parametrosBanco.setLogin(parametros.getLogin());
 		parametrosBanco.setSenha(parametros.getSenha());
+		parametrosBanco.setFormatoRetornoLiquidacao(parametros.getFormatoRetornoLiquidacao());
+		parametrosBanco.setDiretorioRetornos(parametrosBanco.getDiretorioRetornos());
 	}
 	
 	public List<Parametros> listarParametros(){
