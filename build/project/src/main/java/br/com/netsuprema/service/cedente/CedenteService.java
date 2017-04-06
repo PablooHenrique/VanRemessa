@@ -9,9 +9,11 @@ import org.hibernate.Transaction;
 import br.com.netsuprema.dominio.cedente.Cedente;
 import br.com.netsuprema.dominio.exceptions.DiretoriosInvalidosExceptions;
 import br.com.netsuprema.dominio.remessa.Remessa;
+import br.com.netsuprema.dominio.retornoliquidacao.RetornoLiquidacao;
 import br.com.netsuprema.repository.Application;
 import br.com.netsuprema.repository.CedenteRepository;
 import br.com.netsuprema.repository.RemessaRepository;
+import br.com.netsuprema.repository.RetornosLiquidacaoRepository;
 
 public class CedenteService {
 	private SessionFactory sessionFactory;
@@ -165,6 +167,12 @@ public class CedenteService {
 		List<Remessa> remessas = repository.listarPorCodigoCedente(codigo);
 		remessas.stream().forEach(x->x.setCedente(null));
 		remessas.stream().forEach(x->repository.remover(x.getId()));
+		
+		RetornosLiquidacaoRepository retornoRep = new RetornosLiquidacaoRepository(session);
+		List<RetornoLiquidacao> retornos = retornoRep.listarPorCodigoCedente(codigo);
+		retornos.stream().forEach(x->x.setCedente(null));
+		retornos.stream().forEach(x->retornoRep.remover(x.getId()));
+		
 	}
 
 	public void abrirDiretorio(Integer codigo){

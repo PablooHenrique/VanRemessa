@@ -61,6 +61,7 @@ public class RetornosController extends AbstractController{
 		inicializarDiretorio();
 		inicializarTabela();
 		inicializarDatas();
+		handlePesquisar();
 	}
 
 	private void inicializarDatas() {

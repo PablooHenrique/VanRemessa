@@ -96,8 +96,6 @@ public class RetornosLiquidacaoService {
 			RetornoLiquidacao ret = consultarRetornoLiquidacaoCedenteConta(cedente.getCodigo(), conta.getNumeroConta(), DateUtils.getUltimoDiaUtil(), session);
 			if (ret!=null) {
 				retornoLiquidacao = ret;
-				retornoLiquidacao.setCedente(cedente);
-				retornoLiquidacao.getNumeroConta();
 				retornoLiquidacao.setParametros(parametro);
 			}
 			

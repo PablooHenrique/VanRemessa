@@ -81,5 +81,18 @@ public class RetornosLiquidacaoRepository extends AbstractRepository<RetornoLiqu
 			return null;
 		}
 	}
-	
+
+	public List<RetornoLiquidacao> listarPorCodigoCedente(Integer codigoCedente) {
+		StringBuilder jpql = new StringBuilder(); 
+		jpql.append("select a from retornoliquidacao a ")
+			.append(" inner join a.logEnvioRetornoLiquidacao l on a.logEnvioRetornoLiquidacao.id = l.id ")
+			.append(" inner join a.cedente c on a.cedente.id = c.id ")
+			.append(" where c.codigo = :codigoCedente ");
+		
+		HashMap<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("codigoCedente", codigoCedente);
+		
+		List<RetornoLiquidacao> retornos = select(jpql.toString(), parametros);
+		return retornos;
+	}
 }
