@@ -1,6 +1,15 @@
 package br.com.netsuprema;
 
+import java.awt.AWTException;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
 
 import br.com.netsuprema.application.dto.CedenteDto;
 import br.com.netsuprema.application.dto.RemessaDto;
@@ -18,22 +27,36 @@ import br.com.netsuprema.view.RetornosController;
 import br.com.netsuprema.view.StatusServicoController;
 import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class MainApp extends Application{
 	
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	
+	private boolean firstTime;
+    private TrayIcon trayIcon;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			startBanco();
+			
+			try {
+				createTrayIcon(primaryStage);
+				firstTime = true;
+				Platform.setImplicitExit(false);
+			} catch (Exception e) {
+			}
+			
 		
 			this.setPrimaryStage(primaryStage);
 			this.getPrimaryStage().setTitle("Sistema SIG Cobrança - SigVan");
@@ -257,4 +280,92 @@ public class MainApp extends Application{
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
+
+	public void createTrayIcon(final Stage stage) {
+        if (SystemTray.isSupported()) {
+            // get the SystemTray instance
+            SystemTray tray = SystemTray.getSystemTray();
+            // load an image
+            java.awt.Image image = null;
+            try {
+                URL url = new URL("file:resources/imagens/iconepng15px.png");
+                image = ImageIO.read(url);
+            } catch (IOException ex) {
+            }
+
+
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent t) {
+                    hide(stage);
+                }
+            });
+            // create a action listener to listen for default action executed on the tray icon
+            final ActionListener closeListener = new ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    System.exit(0);
+                }
+            };
+
+            ActionListener showListener = new ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            stage.show();
+                        }
+                    });
+                }
+            };
+            // create a popup menu
+            PopupMenu popup = new PopupMenu();
+
+            MenuItem showItem = new MenuItem("Show");
+            showItem.addActionListener(showListener);
+            popup.add(showItem);
+
+            MenuItem closeItem = new MenuItem("Close");
+            closeItem.addActionListener(closeListener);
+            popup.add(closeItem);
+            /// ... add other items
+            // construct a TrayIcon
+            trayIcon = new TrayIcon(image, "SigVan", popup);
+            // set the TrayIcon properties
+            trayIcon.addActionListener(showListener);
+            // ...
+            // add the tray image
+            try {
+                tray.add(trayIcon);
+            } catch (AWTException e) {
+                System.err.println(e);
+            }
+            // ...
+        }
+    }
+
+    public void showProgramIsMinimizedMsg() {
+        if (firstTime) {
+            trayIcon.displayMessage("SigVan.",
+                    "Processando Dados.",
+                    TrayIcon.MessageType.INFO);
+            firstTime = false;
+        }
+    }
+
+    private void hide(final Stage stage) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if (SystemTray.isSupported()) {
+                    stage.hide();
+                    showProgramIsMinimizedMsg();
+                } else {
+                    System.exit(0);
+                }
+            }
+        });
+    }
+
 }

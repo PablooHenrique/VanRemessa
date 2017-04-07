@@ -63,10 +63,12 @@ public class RetornosLiquidacaoService {
 			try {
 				try {
 					
-					session = factory.openSession();
-					transaction = session.beginTransaction();
-					processarConta(cedente, conta, parametro, session);
-					transaction.commit();
+					if (cedenteTeveArquivoProcessadoNaData(cedente.getCodigo(), conta.getNumeroConta(), DateUtils.getUltimoDiaUtil())) {
+						session = factory.openSession();
+						transaction = session.beginTransaction();
+						processarConta(cedente, conta, parametro, session);
+						transaction.commit();
+					}
 					
 				} catch (Exception e) {
 					if ((session != null) && (session.isOpen())) {
@@ -135,6 +137,24 @@ public class RetornosLiquidacaoService {
 				RetornosLiquidacaoRepository repository = new RetornosLiquidacaoRepository(session);
 				List<RetornoLiquidacao> retornos = repository.consultarRetornosPorPeriodo(dataInicial, dataFinal);
 				return retornos;
+			} catch (Exception e) {
+				throw e;
+			}
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+	
+	public boolean cedenteTeveArquivoProcessadoNaData(int codigoCedente, int numeroConta, LocalDate data){
+		SessionFactory factory = Application.getInstance().getSessionFactory();
+		Session session = null;
+		try {
+			try {
+				session = factory.openSession();
+				RetornosLiquidacaoRepository repository = new RetornosLiquidacaoRepository(session);
+				return repository.consultarSeCedenteTeveArquivoProcessadoNaData(data, codigoCedente, numeroConta);
 			} catch (Exception e) {
 				throw e;
 			}

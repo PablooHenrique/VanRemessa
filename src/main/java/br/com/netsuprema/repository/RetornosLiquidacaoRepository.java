@@ -35,6 +35,36 @@ public class RetornosLiquidacaoRepository extends AbstractRepository<RetornoLiqu
 		
 		return retornos;
 	}
+	
+	public boolean consultarSeCedenteTeveArquivoProcessadoNaData(LocalDate data, int codigoCedente, int numeroConta) {
+		try {
+			StringBuilder jpql = new StringBuilder(); 
+			jpql.append("select a from retornoliquidacao a ")
+			.append(" inner join a.logEnvioRetornoLiquidacao l on a.logEnvioRetornoLiquidacao.id = l.id ")
+			.append(" inner join a.cedente c on a.cedente.id = c.id ")
+			.append(" where l.dataRetorno = :dataRetorno ")
+			.append(" and ((l.situacao = :situacaoOk) OR (l.situacao = :situacaoSemArquivo)) ")
+			.append(" and c.codigo = :codigoCedente ")
+			.append(" and a.numeroConta = :numeroConta");
+			
+			HashMap<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("dataRetorno", data);
+			parametros.put("situacaoOk", SituacaoRetornoLiquidacao.ARQUIVO_PROCESSADO_SUCESSO);
+			parametros.put("situacaoSemArquivo", SituacaoRetornoLiquidacao.SEM_RETORNO_PARA_CEDENTE);
+			parametros.put("codigoCedente", codigoCedente);
+			parametros.put("numeroConta", numeroConta);
+			
+			List<RetornoLiquidacao> retornos = select(jpql.toString(), parametros);
+			
+			return retornos.isEmpty();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
+	
+	
 
 	public RetornoLiquidacao consultarRetornoLiquidacaoCedenteConta(int codigoCedente, int numeroConta, LocalDate data) {
 		try {

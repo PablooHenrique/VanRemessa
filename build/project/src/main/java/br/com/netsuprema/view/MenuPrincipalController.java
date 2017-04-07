@@ -53,7 +53,6 @@ public class MenuPrincipalController extends AbstractController{
 	
 	@FXML
 	private void initialize(){
-		
 		imgLogo.setImage(new Image("file:resources/imagens/logo.png"));
 		inicializarVerificacaoServicoRemessa();
 		inicializarConfigurações();
@@ -264,7 +263,7 @@ public class MenuPrincipalController extends AbstractController{
 			    	   
 			    	   
 			    	   if (quantidadeTotalCedentes == 0) {
-			    		   Label lblRetornos = new Label("Sem cedentes para processamento");
+			    		   Label lblRetornos = new Label("Sem cedentes \n para processamento");
 				   		   btnRetorno.setGraphic(lblRetornos);
 			    	   }else{
 				    	   Label lblRetornos = new Label("RETORNOS: "+DateUtils.converterLocalDateParaString(DateUtils.getUltimoDiaUtil())+" \n"

@@ -14,9 +14,7 @@ public class ReturnProcessWatcherThread implements Runnable{
 				try {
 					
 					RetornosLiquidacaoService service = new RetornosLiquidacaoService();
-					if(!service.processamentoDoDiaJaRealizado()){
-						service.processar();
-					}
+					service.processar();
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
