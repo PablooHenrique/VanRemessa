@@ -1,17 +1,23 @@
 package br.com.netsuprema.service.parametros;
 
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.json.JSONException;
 
+import br.com.netsuprema.dominio.Versao;
 import br.com.netsuprema.dominio.parametros.ConfiguracoesGeraisProjeto;
 import br.com.netsuprema.dominio.parametros.Cooperativa;
 import br.com.netsuprema.dominio.parametros.Parametros;
 import br.com.netsuprema.repository.Application;
 import br.com.netsuprema.repository.ConfiguracoesGeraisProjetoRepository;
+import br.com.netsuprema.service.ProcessingWatcherThread;
+import br.com.netsuprema.service.ScannerFilesThread;
+import br.com.netsuprema.service.retornos.ReturnProcessWatcherThread;
 
 public class ConfiguracoesGeraisProjetoService {
 	
@@ -98,12 +104,101 @@ public class ConfiguracoesGeraisProjetoService {
 		return "";
 	}
 	
+	public ConfiguracoesGeraisProjeto carregarConfiguracoesGeraisProjeto() {
+		Session session = null;
+		try {
+			session = factory.openSession();
+			ConfiguracoesGeraisProjetoRepository repository = new ConfiguracoesGeraisProjetoRepository(session);
+			List<ConfiguracoesGeraisProjeto> configs = repository.listar();
+			if (!configs.isEmpty()) {
+				return configs.get(0);
+			}
+			return new ConfiguracoesGeraisProjeto();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	public void inicializarVersao(ConfiguracoesGeraisProjeto config) throws Exception {
+		try {
+			if (config.acessoParaConsultaEstaLiberado()) {
+				config.consultarVersao();
+				atualizarDataHoraConsultaVersao(config);
+			}else{
+				config.inicializarVersaoLiberada();
+			}
+		} catch (JSONException | URISyntaxException e) {
+			throw e;
+		}
+	}
+	
+	private void atualizarDataHoraConsultaVersao(ConfiguracoesGeraisProjeto config) {
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			try {
+				session = factory.openSession();
+				
+				config.setUltimaHoraValidacaoVersao(LocalDateTime.now());
+				
+				transaction = session.beginTransaction();
+				session.merge(config);
+				transaction.commit();
+			
+			} catch (Exception e) {
+				if ((session != null) && (session.isOpen())) {
+					if (transaction.isActive()) {
+						transaction.rollback();
+					}
+					session.close();
+				}
+				session.close();
+				e.printStackTrace();
+			}
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				if (transaction.isActive()) {
+					transaction.rollback();
+				}
+				session.close();
+			}
+		}
+	}
+
+	public String carregarMensagemBloqueio(ConfiguracoesGeraisProjeto config) {
+		return config.carregarMensagem();
+	}
+	
+	public void inicializarThreads() {
+		inicializarThreadProcessamentoRemessa();	
+		inicializarThreadConsultaProcessamentoRemessa();
+		inicializarThreadRetorno();
+	}
+
+	private void inicializarThreadRetorno() {
+		ReturnProcessWatcherThread returnProcessWatcherThread = new ReturnProcessWatcherThread();
+		Thread tdDois = new Thread(returnProcessWatcherThread);
+		tdDois.start();
+	}
+
+	private void inicializarThreadConsultaProcessamentoRemessa() {
+		ProcessingWatcherThread processingWatcherThread = new ProcessingWatcherThread(); 
+		Thread td = new Thread(processingWatcherThread);
+		td.start();
+	}
+
+	private void inicializarThreadProcessamentoRemessa() {
+		ScannerFilesThread instance = ScannerFilesThread.getInstance();
+		instance.startProcessamento();
+	}
+	
 	public SessionFactory getFactory() {
 		return factory;
 	}
-
+	
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
 	}
-
 }

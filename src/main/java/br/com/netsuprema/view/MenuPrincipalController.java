@@ -10,6 +10,7 @@ import br.com.netsuprema.application.RetornosApplication;
 import br.com.netsuprema.application.ServicosApplication;
 import br.com.netsuprema.dominio.DateUtils;
 import br.com.netsuprema.dominio.parametros.Parametros;
+import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
 import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -53,12 +54,37 @@ public class MenuPrincipalController extends AbstractController{
 	
 	@FXML
 	private void initialize(){
+		boolean inicializarRotina = inicializarVerificacaoVersaoServidor();
 		imgLogo.setImage(new Image("file:resources/imagens/logo.png"));
 		inicializarVerificacaoServicoRemessa();
-		inicializarConfigurações();
+		
+		if (inicializarRotina) {
+			inicializarConfigurações();
+		}
+		
 		inicializarImagensBtns();
 	}
 	
+	private boolean inicializarVerificacaoVersaoServidor() {
+		try {
+			ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
+			config.inicializarVersao();
+			if(config.versaoEstaAtualizada()){
+				return true;
+			}else{
+				String linkPadrao = config.getVersao().getLinkPadrao();
+				String ultimaVersaoLiberada = config.getVersao().getVersoesLiberadas().get(0).getNumero();
+				
+				String msg = "Sua versão do sistema esta desatualizada .\nAcesse o link: " +linkPadrao+ " para baixar a nova versão: " + ultimaVersaoLiberada;
+				labelMsg.setText(msg);
+				desabilitarBtns(true, true);
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	private void inicializarImagensBtns() {
 		inicializarBtnConfiguracoes();
 		inicializarBtnDiretorioEnvio();
@@ -133,12 +159,12 @@ public class MenuPrincipalController extends AbstractController{
 			Parametros parametros = parametrosApplication.consultarParametros();
 			
 			if (parametros == null) {
-				habilitarBtns(true);
+				desabilitarBtns(true, false);
 				
 				return false;
 			}
 			
-			habilitarBtns(false);
+			desabilitarBtns(false, false);
 			return true;
 		} catch (Exception e) {
 			StringBuilder exception = new StringBuilder();
@@ -151,11 +177,15 @@ public class MenuPrincipalController extends AbstractController{
 		return false;
 	}
 
-	private void habilitarBtns(boolean habiitar) {
+	private void desabilitarBtns(boolean habiitar, boolean todos) {
 		btnDiretoriosEnvio.setDisable(habiitar);
 		btnEnviosDetalhados.setDisable(habiitar);
 		btnResumoEnvio.setDisable(habiitar);
 		btnRetorno.setDisable(habiitar);
+		
+		if (todos) {
+			btnConfiguracoes.setDisable(habiitar);
+		}
 	}
 
 	private void inicializarVerificacaoServicoRemessa() {
@@ -291,5 +321,10 @@ public class MenuPrincipalController extends AbstractController{
 				stackPane.getChildren().add(box);
 			}
 		});
+	}
+
+	public void bloquearAplicacao(String msgBloqueio) {
+		// TODO Auto-generated method stub
+		
 	}
 }

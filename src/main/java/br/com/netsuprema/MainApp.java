@@ -13,9 +13,7 @@ import javax.imageio.ImageIO;
 
 import br.com.netsuprema.application.dto.CedenteDto;
 import br.com.netsuprema.application.dto.RemessaDto;
-import br.com.netsuprema.service.ProcessingWatcherThread;
-import br.com.netsuprema.service.ScannerFilesThread;
-import br.com.netsuprema.service.retornos.ReturnProcessWatcherThread;
+import br.com.netsuprema.controller.MainAppController;
 import br.com.netsuprema.view.CadastroDiretorioEnvioController;
 import br.com.netsuprema.view.ConfiguracoesServicoController;
 import br.com.netsuprema.view.DetalhesRemessaController;
@@ -56,7 +54,6 @@ public class MainApp extends Application{
 				Platform.setImplicitExit(false);
 			} catch (Exception e) {
 			}
-			
 		
 			this.setPrimaryStage(primaryStage);
 			this.getPrimaryStage().setTitle("Sistema SIG Cobrança - SigVan");
@@ -66,18 +63,15 @@ public class MainApp extends Application{
 			
 			initRootLayout();
 			
-			showMenuPrincipal(this, getRootLayout());
+			MainAppController controller = new MainAppController();
+			controller.inicializarServicos();
 			
-			ScannerFilesThread instance = ScannerFilesThread.getInstance();
-			instance.startProcessamento();	
+			String msgBloqueio = "";
+			if (controller.isBloquearAplicacao()) {
+				msgBloqueio = controller.getMensagemAlerta();
+			}
 			
-			ProcessingWatcherThread processingWatcherThread = new ProcessingWatcherThread(); 
-			Thread td = new Thread(processingWatcherThread);
-			td.start();
-			
-			ReturnProcessWatcherThread returnProcessWatcherThread = new ReturnProcessWatcherThread();
-			Thread tdDois = new Thread(returnProcessWatcherThread);
-			tdDois.start();
+			showMenuPrincipal(this, getRootLayout(), controller.isBloquearAplicacao(), msgBloqueio);
 			
 		} catch (Exception e) {
 			ViewUtils.exibirMensagemErro("Erro", "Falha no acesso ao banco", "Falha ao acessar o banco de dados, uma nova instancia do processo ja está iniciada");
@@ -105,7 +99,7 @@ public class MainApp extends Application{
 		}
 	}
 	
-	public void showMenuPrincipal(MainApp mainApp, BorderPane rootLayout){
+	public void showMenuPrincipal(MainApp mainApp, BorderPane rootLayout, boolean bloquearAplicacao, String msgBloqueio){
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/MenuPrincipal.fxml"));
@@ -115,7 +109,10 @@ public class MainApp extends Application{
 			MenuPrincipalController controller = loader.getController();
 			controller.setMainApp(mainApp);
 			
-			System.out.println("Finalizou o menuPrincipal");
+			if (bloquearAplicacao) {
+				controller.bloquearAplicacao(msgBloqueio);
+			}
+			
 		} catch (IOException e) {
 			System.out.println(e.getCause().getMessage());
 			System.out.println(e.getMessage());

@@ -17,7 +17,4 @@ public class VersoesLiberadasParaAtualizacao {
 	public void setDescricaoAlteracao(String descricaoAlteracao) {
 		this.descricaoAlteracao = descricaoAlteracao;
 	}
-	
-	
-	
 }
