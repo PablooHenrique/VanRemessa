@@ -7,6 +7,8 @@
 
 package NetSupremaSicoobRetorno.server;
 
+import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
+
 public class RegistrosDoWSDLLocator extends org.apache.axis.client.Service implements NetSupremaSicoobRetorno.server.RegistrosDoWSDL {
 
     public RegistrosDoWSDLLocator() {
@@ -22,7 +24,9 @@ public class RegistrosDoWSDLLocator extends org.apache.axis.client.Service imple
     }
 
     // Use to get a proxy class for RegistrosDoWSDLPort
-    private java.lang.String RegistrosDoWSDLPort_address = "http://192.168.7.205/joao/aplication/webservice_retorno.php";
+    //private java.lang.String RegistrosDoWSDLPort_address = "http://192.168.7.205/joao/aplication/webservice_retorno.php";
+    private java.lang.String RegistrosDoWSDLPort_address = new ConfiguracoesGeraisProjetoService().carregarLinkCooperativaEscolhida() + "webservice_retorno.php";
+    
 
     public java.lang.String getRegistrosDoWSDLPortAddress() {
         return RegistrosDoWSDLPort_address;

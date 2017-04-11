@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="VanRemessa.jar" size="193577" download="eager" />
+    <jar href="VanRemessa.jar" size="193628" download="eager" />
     <jar href="libs\antlr-2.7.7.jar" size="445288" download="eager" />
     <jar href="libs\aopalliance-1.0.jar" size="4467" download="eager" />
     <jar href="libs\axis.jar" size="1599570" download="eager" />
@@ -39,7 +39,6 @@
     <jar href="libs\junit-4.11.jar" size="245039" download="eager" />
     <jar href="libs\log4j-1.2.17.jar" size="489884" download="eager" />
     <jar href="libs\modelmapper-0.6.3.jar" size="384714" download="eager" />
-    <jar href="libs\mysql-connector-java-5.1.39.jar" size="989495" download="eager" />
     <jar href="libs\org.apache.commons.logging_1.1.1.v201101211721.jar" size="73633" download="eager" />
     <jar href="libs\saaj.jar" size="18979" download="eager" />
     <jar href="libs\spring-aop-4.2.5.RELEASE.jar" size="370067" download="eager" />
