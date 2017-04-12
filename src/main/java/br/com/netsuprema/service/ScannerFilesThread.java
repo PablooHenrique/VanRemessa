@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import br.com.netsuprema.dominio.parametros.ConfiguracoesGeraisProjeto;
 import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
 
 public class ScannerFilesThread implements Runnable{
@@ -35,12 +36,13 @@ public class ScannerFilesThread implements Runnable{
 					
 					try {
 						
-						new ConfiguracoesGeraisProjetoService();
-						if () {
-							
+						ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
+						ConfiguracoesGeraisProjeto configuracoesGeraisProjeto = config.inicializar();
+						
+						if(configuracoesGeraisProjeto.getVersao().isVersaoEstaAtualizada()){
+							new RemessasDeTitulosService().processar();
 						}
 						
-						new RemessasDeTitulosService().processar();
 					} catch (Exception e) {
 						logErros.add("Processamento Falhou");
 					}

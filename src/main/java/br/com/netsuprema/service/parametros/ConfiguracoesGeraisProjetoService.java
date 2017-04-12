@@ -293,4 +293,10 @@ public class ConfiguracoesGeraisProjetoService {
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
 	}
+
+	public ConfiguracoesGeraisProjeto inicializar() throws Exception {
+		ConfiguracoesGeraisProjeto configuracoesGeraisProjeto = carregarConfiguracoesGeraisProjeto();
+		inicializarVersao(configuracoesGeraisProjeto);
+		return configuracoesGeraisProjeto;
+	}
 }
