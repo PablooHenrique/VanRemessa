@@ -10,7 +10,6 @@ import br.com.netsuprema.application.RetornosApplication;
 import br.com.netsuprema.application.ServicosApplication;
 import br.com.netsuprema.dominio.DateUtils;
 import br.com.netsuprema.dominio.parametros.Parametros;
-import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
 import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -48,43 +47,22 @@ public class MenuPrincipalController extends AbstractController{
 	@FXML
 	private Pane paneOnOffStatusServicoRemessa;
 	@FXML
+	private Pane paneOnOffStatusServicoProcessamentoRetorno;
+	@FXML
+	private Pane paneOnOffStatusServicoProcessamentoRemessa;
+	@FXML
 	private Label labelMsg;
 	@FXML
 	private Button btnTesteSpinner;
 	
+	private boolean applicacaoBloqueada;
+	
 	@FXML
 	private void initialize(){
-		boolean inicializarRotina = inicializarVerificacaoVersaoServidor();
 		imgLogo.setImage(new Image("file:resources/imagens/logo.png"));
-		inicializarVerificacaoServicoRemessa();
-		
-		if (inicializarRotina) {
-			inicializarConfigurações();
-		}
-		
 		inicializarImagensBtns();
 	}
 	
-	private boolean inicializarVerificacaoVersaoServidor() {
-		try {
-			ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
-			config.inicializarVersao();
-			if(config.versaoEstaAtualizada()){
-				return true;
-			}else{
-				String linkPadrao = config.getVersao().getLinkPadrao();
-				String ultimaVersaoLiberada = config.getVersao().getVersoesLiberadas().get(0).getNumero();
-				
-				String msg = "Sua versão do sistema esta desatualizada .\nAcesse o link: " +linkPadrao+ " para baixar a nova versão: " + ultimaVersaoLiberada;
-				labelMsg.setText(msg);
-				desabilitarBtns(true, true);
-				return false;
-			}
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
 	private void inicializarImagensBtns() {
 		inicializarBtnConfiguracoes();
 		inicializarBtnDiretorioEnvio();
@@ -125,7 +103,7 @@ public class MenuPrincipalController extends AbstractController{
 		btnRetorno.setGraphic(lblRetornos);
 	}
 
-	private void inicializarConfigurações() {
+	public void inicializarConfigurações() {
 		
 		if (parametrosArquivoRetornoEValido()) {
 			processingWhatcherReturnsThread();
@@ -133,6 +111,8 @@ public class MenuPrincipalController extends AbstractController{
 		
 		if (parametrosSaoValidos()) {
 			processingWhatcherThread();
+			processingWhatcherThreadProcessamentoEnvioRemessa();
+			processingWhatcherThreadEnvioRetorno();
 		}else{
 			labelMsg.setText("Cadastre os parâmetros para inicializar o processamento dos dados");
 		}
@@ -188,7 +168,7 @@ public class MenuPrincipalController extends AbstractController{
 		}
 	}
 
-	private void inicializarVerificacaoServicoRemessa() {
+	public void inicializarVerificacaoServicoEnvioRemessa() {
 		boolean status = new ServicosApplication().verificarServicoRemessa();
 		if (status) {
 			paneOnOffStatusServicoRemessa.getStyleClass().remove("floatingOff");
@@ -196,6 +176,28 @@ public class MenuPrincipalController extends AbstractController{
 		}else{
 			paneOnOffStatusServicoRemessa.getStyleClass().remove("floatingOn");
 			paneOnOffStatusServicoRemessa.getStyleClass().add("floatingOff");
+		}
+	}
+	
+	public void inicializarVerificacaoServicoEnvioRetorno() {
+		boolean status = new ServicosApplication().verificarServicoEnvioRetorno();
+		if (status) {
+			paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().remove("floatingOff");
+			paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().add("floatingOn");
+		}else{
+			paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().remove("floatingOn");
+			paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().add("floatingOff");
+		}
+	}
+	
+	public void inicializarVerificacaoServicoProcessamentoRemessa() {
+		boolean status = new ServicosApplication().verificarServicoProcessamentoRemessa();
+		if (status) {
+			paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().remove("floatingOff");
+			paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().add("floatingOn");
+		}else{
+			paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().remove("floatingOn");
+			paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().add("floatingOff");
 		}
 	}
 	
@@ -259,13 +261,41 @@ public class MenuPrincipalController extends AbstractController{
 			    public void run() {
 			    Platform.runLater(new Runnable() {
 			       public void run() {
-			    	   inicializarVerificacaoServicoRemessa();
+			    	   inicializarVerificacaoServicoEnvioRemessa();
 			    	   String msg = verificarErrosProcessamento();
 			    	   if (msg.equals("")) {
 			    		   setMsg("Processando");
 			    	   }else{
 			    		   setMsg(msg);
 			    	   }
+			      }
+			    });
+			}
+		},2000, 60000);
+	}
+	
+	public void processingWhatcherThreadEnvioRetorno(){
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			    public void run() {
+			    Platform.runLater(new Runnable() {
+			       public void run() {
+			    	   inicializarVerificacaoServicoEnvioRetorno();
+			      }
+			    });
+			}
+		},2000, 60000);
+	}
+	
+	public void processingWhatcherThreadProcessamentoEnvioRemessa(){
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			    public void run() {
+			    Platform.runLater(new Runnable() {
+			       public void run() {
+			    	   inicializarVerificacaoServicoProcessamentoRemessa();
 			      }
 			    });
 			}
@@ -324,7 +354,28 @@ public class MenuPrincipalController extends AbstractController{
 	}
 
 	public void bloquearAplicacao(String msgBloqueio) {
-		// TODO Auto-generated method stub
+		labelMsg.setText(msgBloqueio);
+		desabilitarBtns(true, true);
 		
+		desabilitarProcessamento();
+	}
+
+	private void desabilitarProcessamento() {
+		paneOnOffStatusServicoRemessa.getStyleClass().add("floatingOff");
+		paneOnOffStatusServicoRemessa.getStyleClass().remove("floatingOn");
+		
+		paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().add("floatingOff");
+		paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().remove("floatingOn");
+		
+		paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().add("floatingOff");
+		paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().remove("floatingOn");
+	}
+
+	public boolean isApplicacaoBloqueada() {
+		return applicacaoBloqueada;
+	}
+
+	public void setApplicacaoBloqueada(boolean applicacaoBloqueada) {
+		this.applicacaoBloqueada = applicacaoBloqueada;
 	}
 }

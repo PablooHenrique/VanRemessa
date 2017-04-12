@@ -9,7 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.json.JSONException;
 
-import br.com.netsuprema.dominio.Versao;
 import br.com.netsuprema.dominio.parametros.ConfiguracoesGeraisProjeto;
 import br.com.netsuprema.dominio.parametros.Cooperativa;
 import br.com.netsuprema.dominio.parametros.Parametros;
@@ -30,8 +29,8 @@ public class ConfiguracoesGeraisProjetoService {
 	private void salvar(Session session, ConfiguracoesGeraisProjeto config){
 		new ConfiguracoesGeraisProjetoRepository(session).atualizar(config);
 	}
-
-	public void atualizarDataHoraEnvio() {
+	
+	public void atualizarDataHoraEnvioRetorno(){
 		Session session = null;
 		Transaction transaction = null;
 		try {
@@ -48,7 +47,93 @@ public class ConfiguracoesGeraisProjetoService {
 					config = new ConfiguracoesGeraisProjeto();
 				}
 				
-				config.setUltimaDataHoraEnvio(LocalDateTime.now());
+				config.setUltimaDataHoraEnvioRetorno(LocalDateTime.now());
+				
+				transaction = session.beginTransaction();
+				salvar(session, config);
+				transaction.commit();
+			
+			} catch (Exception e) {
+				if ((session != null) && (session.isOpen())) {
+					if (transaction.isActive()) {
+						transaction.rollback();
+					}
+					session.close();
+				}
+				session.close();
+				e.printStackTrace();
+			}
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				if (transaction.isActive()) {
+					transaction.rollback();
+				}
+				session.close();
+			}
+		}
+	}
+	
+	public void atualizarDataHoraProcessamentoRemessa(){
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			
+			try {
+			
+				ConfiguracoesGeraisProjeto config;
+				
+				session = factory.openSession();
+				List<ConfiguracoesGeraisProjeto> configs = new ConfiguracoesGeraisProjetoRepository(session).listar();
+				if(!configs.isEmpty()){
+					config = configs.get(0);
+				}else{
+					config = new ConfiguracoesGeraisProjeto();
+				}
+				
+				config.setUltimaDataHoraProcessamentoRemessa(LocalDateTime.now());
+				
+				transaction = session.beginTransaction();
+				salvar(session, config);
+				transaction.commit();
+			
+			} catch (Exception e) {
+				if ((session != null) && (session.isOpen())) {
+					if (transaction.isActive()) {
+						transaction.rollback();
+					}
+					session.close();
+				}
+				session.close();
+				e.printStackTrace();
+			}
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				if (transaction.isActive()) {
+					transaction.rollback();
+				}
+				session.close();
+			}
+		}
+	}
+
+	public void atualizarDataHoraEnvioRemessa() {
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			
+			try {
+			
+				ConfiguracoesGeraisProjeto config;
+				
+				session = factory.openSession();
+				List<ConfiguracoesGeraisProjeto> configs = new ConfiguracoesGeraisProjetoRepository(session).listar();
+				if(!configs.isEmpty()){
+					config = configs.get(0);
+				}else{
+					config = new ConfiguracoesGeraisProjeto();
+				}
+				
+				config.setUltimaDataHoraEnvioRemessa(LocalDateTime.now());
 				
 				transaction = session.beginTransaction();
 				salvar(session, config);
@@ -123,18 +208,24 @@ public class ConfiguracoesGeraisProjetoService {
 
 	public void inicializarVersao(ConfiguracoesGeraisProjeto config) throws Exception {
 		try {
-			if (config.acessoParaConsultaEstaLiberado()) {
+			
+			if (!config.isUltimoResultadoValidacaoVersao()) {
 				config.consultarVersao();
-				atualizarDataHoraConsultaVersao(config);
+				atualizarUltimoResultadoVersao(config);
 			}else{
-				config.inicializarVersaoLiberada();
+				if(config.acessoParaConsultaEstaLiberado()){
+					config.consultarVersao();
+					atualizarUltimoResultadoVersao(config);
+				}else{
+					config.inicializarVersaoLiberada();
+				}
 			}
 		} catch (JSONException | URISyntaxException e) {
 			throw e;
 		}
 	}
 	
-	private void atualizarDataHoraConsultaVersao(ConfiguracoesGeraisProjeto config) {
+	private void atualizarUltimoResultadoVersao(ConfiguracoesGeraisProjeto config) {
 		Session session = null;
 		Transaction transaction = null;
 		try {
@@ -142,6 +233,7 @@ public class ConfiguracoesGeraisProjetoService {
 				session = factory.openSession();
 				
 				config.setUltimaHoraValidacaoVersao(LocalDateTime.now());
+				config.setUltimoResultadoValidacaoVersao(config.getVersao().isVersaoEstaAtualizada());
 				
 				transaction = session.beginTransaction();
 				session.merge(config);

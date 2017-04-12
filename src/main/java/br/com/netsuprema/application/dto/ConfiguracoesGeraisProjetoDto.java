@@ -1,52 +1,27 @@
 package br.com.netsuprema.application.dto;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 public class ConfiguracoesGeraisProjetoDto {
 	
-	private LocalDateTime ultimaDataHoraEnvioRemessa;
-	private LocalDateTime ultimaHoraValidacaoVersao;
-	private String numeroVersaoSistema;
-	private boolean versaoEstaAtualizada;
-	private String linkPadrao;
-	private List<VersoesLiberadasParaAtualizacaoDto> versoes;
+	private String ultimaDataHoraEnvioRemessa;
+	private String ultimaHoraValidacaoVersao;
+	private VersaoDto versao;
 	
-	
-	public LocalDateTime getUltimaDataHoraEnvioRemessa() {
+	public String getUltimaDataHoraEnvioRemessa() {
 		return ultimaDataHoraEnvioRemessa;
 	}
-	public void setUltimaDataHoraEnvioRemessa(LocalDateTime ultimaDataHoraEnvioRemessa) {
+	public void setUltimaDataHoraEnvioRemessa(String ultimaDataHoraEnvioRemessa) {
 		this.ultimaDataHoraEnvioRemessa = ultimaDataHoraEnvioRemessa;
 	}
-	public LocalDateTime getUltimaHoraValidacaoVersao() {
+	public String getUltimaHoraValidacaoVersao() {
 		return ultimaHoraValidacaoVersao;
 	}
-	public void setUltimaHoraValidacaoVersao(LocalDateTime ultimaHoraValidacaoVersao) {
+	public void setUltimaHoraValidacaoVersao(String ultimaHoraValidacaoVersao) {
 		this.ultimaHoraValidacaoVersao = ultimaHoraValidacaoVersao;
 	}
-	public String getNumeroVersaoSistema() {
-		return numeroVersaoSistema;
+	public VersaoDto getVersao() {
+		return versao;
 	}
-	public void setNumeroVersaoSistema(String numeroVersaoSistema) {
-		this.numeroVersaoSistema = numeroVersaoSistema;
-	}
-	public boolean isVersaoEstaAtualizada() {
-		return versaoEstaAtualizada;
-	}
-	public void setVersaoEstaAtualizada(boolean versaoEstaAtualizada) {
-		this.versaoEstaAtualizada = versaoEstaAtualizada;
-	}
-	public String getLinkPadrao() {
-		return linkPadrao;
-	}
-	public void setLinkPadrao(String linkPadrao) {
-		this.linkPadrao = linkPadrao;
-	}
-	public List<VersoesLiberadasParaAtualizacaoDto> getVersoes() {
-		return versoes;
-	}
-	public void setVersoes(List<VersoesLiberadasParaAtualizacaoDto> versoes) {
-		this.versoes = versoes;
+	public void setVersao(VersaoDto versao) {
+		this.versao = versao;
 	}
 }

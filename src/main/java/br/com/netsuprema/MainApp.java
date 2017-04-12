@@ -111,6 +111,12 @@ public class MainApp extends Application{
 			
 			if (bloquearAplicacao) {
 				controller.bloquearAplicacao(msgBloqueio);
+			}else{
+				controller.inicializarConfigurações();
+				
+				controller.inicializarVerificacaoServicoEnvioRemessa();
+				controller.inicializarVerificacaoServicoEnvioRetorno();
+				controller.inicializarVerificacaoServicoProcessamentoRemessa();
 			}
 			
 		} catch (IOException e) {

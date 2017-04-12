@@ -15,7 +15,45 @@ public class ServicosApplication {
 		Duration duration;
 		
 		try {
-			duration = Duration.between(config.getUltimaDataHoraEnvio(), LocalDateTime.now());
+			duration = Duration.between(config.getUltimaDataHoraEnvioRemessa(), LocalDateTime.now());
+		} catch (Exception e) {
+			return false;
+		}
+				
+		long minutes = duration.toMinutes();
+		
+		if (minutes >= 5) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean verificarServicoEnvioRetorno() {
+		ConfiguracoesGeraisProjeto config = new ConfiguracoesGeraisProjetoService().listarConfig();
+		
+		Duration duration;
+		
+		try {
+			duration = Duration.between(config.getUltimaDataHoraEnvioRetorno(), LocalDateTime.now());
+		} catch (Exception e) {
+			return false;
+		}
+				
+		long minutes = duration.toMinutes();
+		
+		if (minutes >= 5) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean verificarServicoProcessamentoRemessa() {
+		ConfiguracoesGeraisProjeto config = new ConfiguracoesGeraisProjetoService().listarConfig();
+		
+		Duration duration;
+		
+		try {
+			duration = Duration.between(config.getUltimaDataHoraProcessamentoRemessa(), LocalDateTime.now());
 		} catch (Exception e) {
 			return false;
 		}

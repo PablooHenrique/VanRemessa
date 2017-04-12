@@ -30,10 +30,16 @@ public class ScannerFilesThread implements Runnable{
 				logErros.clear();
 				
 				try {
-					new ConfiguracoesGeraisProjetoService().atualizarDataHoraEnvio();
+					new ConfiguracoesGeraisProjetoService().atualizarDataHoraEnvioRemessa();
 					logErros.add("Vai Iniciar o processamento");
 					
 					try {
+						
+						new ConfiguracoesGeraisProjetoService();
+						if () {
+							
+						}
+						
 						new RemessasDeTitulosService().processar();
 					} catch (Exception e) {
 						logErros.add("Processamento Falhou");

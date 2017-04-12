@@ -13,7 +13,6 @@ public class ConfiguracoesGeraisProjetoApplication {
 	private ConfiguracoesGeraisProjeto config;
 	
 	public ConfiguracoesGeraisProjetoApplication() throws Exception {
-		super();
 		setService(new ConfiguracoesGeraisProjetoService());
 		inicializarConfiguracoesGeraisProjeto();
 	}
@@ -40,7 +39,7 @@ public class ConfiguracoesGeraisProjetoApplication {
 	}
 	
 	public boolean versaoEstaAtualizada(){
-		return this.configuracoesGeraisProjetoDto.isVersaoEstaAtualizada();
+		return this.configuracoesGeraisProjetoDto.getVersao().isVersaoEstaAtualizada();
 	}
 
 	public ConfiguracoesGeraisProjetoService getService() {
@@ -49,10 +48,5 @@ public class ConfiguracoesGeraisProjetoApplication {
 
 	public void setService(ConfiguracoesGeraisProjetoService service) {
 		this.service = service;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		ConfiguracoesGeraisProjetoApplication aplication = new ConfiguracoesGeraisProjetoApplication();
-		aplication.inicializarConfiguracoesGeraisProjeto();
 	}
 }

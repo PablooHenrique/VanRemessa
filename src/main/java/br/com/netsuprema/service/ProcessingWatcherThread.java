@@ -3,6 +3,8 @@ package br.com.netsuprema.service;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
+
 public class ProcessingWatcherThread implements Runnable{
 
 	@Override
@@ -12,6 +14,7 @@ public class ProcessingWatcherThread implements Runnable{
 			@Override
 			public void run() {
 				try {
+					new ConfiguracoesGeraisProjetoService().atualizarDataHoraProcessamentoRemessa();
 					new RemessasDeTitulosService().reprocessarRemessasEnviadasAoServidor();
 				} catch (Exception e) {
 					e.printStackTrace();

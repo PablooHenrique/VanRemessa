@@ -36,8 +36,13 @@ public class ConfiguracoesGeraisProjeto {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	private LocalDateTime ultimaDataHoraEnvio;
+	private LocalDateTime ultimaDataHoraEnvioRemessa;
+	
 	private LocalDateTime ultimaHoraValidacaoVersao;
+	private boolean ultimoResultadoValidacaoVersao;
+	
+	private LocalDateTime ultimaDataHoraProcessamentoRemessa;
+	private LocalDateTime ultimaDataHoraEnvioRetorno;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "versao")
@@ -111,14 +116,6 @@ public class ConfiguracoesGeraisProjeto {
 		return true;
 	}
 
-	public LocalDateTime getUltimaDataHoraEnvio() {
-		return ultimaDataHoraEnvio;
-	}
-
-	public void setUltimaDataHoraEnvio(LocalDateTime ultimaDataHoraEnvio) {
-		this.ultimaDataHoraEnvio = ultimaDataHoraEnvio;
-	}
-
 	public String getUrl() {
 		return url;
 	}
@@ -148,8 +145,46 @@ public class ConfiguracoesGeraisProjeto {
 	public String carregarMensagem() {
 		String numeroUltimaVersaoLiberada = this.versao.getVersoesLiberadas().get(0).getNumero();
 		String linkPadraoDownloadVersao = this.versao.getLinkPadrao();
-		String msg = "Sua versão do sistema esta desatualizada .\nAcesse o link: " + linkPadraoDownloadVersao + " para baixar a nova versão: " + numeroUltimaVersaoLiberada;
+		String msg = "Sua versão do sistema esta desatualizada .\nAcesse o link: " + linkPadraoDownloadVersao + " \npara baixar a nova versão: " + numeroUltimaVersaoLiberada;
 		
 		return msg;
+	}
+
+	public LocalDateTime getUltimaDataHoraEnvioRemessa() {
+		return ultimaDataHoraEnvioRemessa;
+	}
+
+	public void setUltimaDataHoraEnvioRemessa(LocalDateTime ultimaDataHoraEnvioRmessa) {
+		this.ultimaDataHoraEnvioRemessa = ultimaDataHoraEnvioRmessa;
+	}
+
+	public LocalDateTime getUltimaDataHoraProcessamentoRemessa() {
+		return ultimaDataHoraProcessamentoRemessa;
+	}
+
+	public void setUltimaDataHoraProcessamentoRemessa(LocalDateTime ultimaDataHoraProcessamentoRemessa) {
+		this.ultimaDataHoraProcessamentoRemessa = ultimaDataHoraProcessamentoRemessa;
+	}
+
+	public LocalDateTime getUltimaDataHoraEnvioRetorno() {
+		return ultimaDataHoraEnvioRetorno;
+	}
+
+	public void setUltimaDataHoraEnvioRetorno(LocalDateTime ultimaDataHoraEnvioRetorno) {
+		this.ultimaDataHoraEnvioRetorno = ultimaDataHoraEnvioRetorno;
+	}
+
+	public boolean isUltimoResultadoValidacaoVersao() {
+		return ultimoResultadoValidacaoVersao;
+	}
+
+	public void setUltimoResultadoValidacaoVersao(boolean ultimoResultadoValidacaoVersao) {
+		this.ultimoResultadoValidacaoVersao = ultimoResultadoValidacaoVersao;
+	}
+
+	public void inicializarVersaoNaoLiberada() {
+		Versao versao = new Versao();
+		versao.setVersaoEstaAtualizada(false);
+		this.versao = versao;
 	}
 }
