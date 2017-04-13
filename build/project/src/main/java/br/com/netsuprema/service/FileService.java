@@ -172,7 +172,6 @@ public class FileService {
         BufferedWriter buffW = new BufferedWriter (fileW);
         
 		buffW.write(conteudo);
-		buffW.newLine();
     
         buffW.close();
         fileW.close();

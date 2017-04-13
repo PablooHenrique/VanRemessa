@@ -389,12 +389,10 @@
 		<fx:application id="fxApplication"
 			name="SigVan"
 			mainClass="br.com.netsuprema.MainApp"
-			version="1.1.16"
+			version="1.1.17"
 		/>
 	
 		<mkdir dir="build/classes/META-INF" />
-	
-	
 	
 		<fx:jar destfile="dist/VanRemessa.jar">
 			<fx:application refid="fxApplication"/>
@@ -405,7 +403,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="SigVan"/>
 				<attribute name="Implementation-Title" value="SigVan"/>
-				<attribute name="Implementation-Version" value="1.1.16"/>
+				<attribute name="Implementation-Version" value="1.1.17"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>
