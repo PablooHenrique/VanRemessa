@@ -171,8 +171,8 @@ public class FileService {
 		FileWriter fileW = new FileWriter (file, true);
         BufferedWriter buffW = new BufferedWriter (fileW);
         
-        buffW.newLine();
 		buffW.write(conteudo);
+		buffW.newLine();
     
         buffW.close();
         fileW.close();
