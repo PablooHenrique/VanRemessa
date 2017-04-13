@@ -1,45 +1,29 @@
 package br.com.netsuprema.controller;
 
+import org.json.JSONException;
+
 import br.com.netsuprema.application.ConfiguracoesGeraisProjetoApplication;
 
 public class MainAppController {
 	
-	private ConfiguracoesGeraisProjetoApplication configApplication;
-	private boolean bloquearAplicacao;
+	private String msgErroProcessamento;
 	
-	public MainAppController() {
-		super();
-		try {
-			setConfigApplication(new ConfiguracoesGeraisProjetoApplication());
-			this.bloquearAplicacao = false;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public boolean processarThreadsRotina() throws JSONException{
+		ConfiguracoesGeraisProjetoApplication application = new ConfiguracoesGeraisProjetoApplication();
+		boolean threadsProcessadas = application.processarThreadsRotina();
+		this.msgErroProcessamento = application.carregarMensagemBloqueio();
+		
+		return threadsProcessadas;
 	}
 	
-	public void inicializarServicos(){
-		if (getConfigApplication().versaoEstaAtualizada()) {
-			configApplication.inicializarThreads();
-		}else{
-			this.bloquearAplicacao = true;
-		}
-	}
-	
-	public String getMensagemAlerta() {
-		String msg = configApplication.carregarMensagemBloqueio();
-		return msg;
+	public boolean rotinaEstaAtualizada() throws JSONException{
+		ConfiguracoesGeraisProjetoApplication application = new ConfiguracoesGeraisProjetoApplication();
+		boolean rotinaEstaAtualizada = application.rotinaEstaAtualizada();
+		this.msgErroProcessamento = application.carregarMensagemBloqueio();
+		return rotinaEstaAtualizada;
 	}
 
-	private ConfiguracoesGeraisProjetoApplication getConfigApplication() {
-		return configApplication;
+	public String getMsgErroProcessamento() {
+		return msgErroProcessamento;
 	}
-
-	private void setConfigApplication(ConfiguracoesGeraisProjetoApplication configApplication) {
-		this.configApplication = configApplication;
-	}
-
-	public boolean isBloquearAplicacao() {
-		return bloquearAplicacao;
-	}
-
 }

@@ -1,6 +1,6 @@
 package br.com.netsuprema.service.parametros;
 
-import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +21,7 @@ import br.com.netsuprema.service.retornos.ReturnProcessWatcherThread;
 public class ConfiguracoesGeraisProjetoService {
 	
 	private SessionFactory factory;
+	private ConfiguracoesGeraisProjeto config;
 	
 	public ConfiguracoesGeraisProjetoService() {
 		factory = Application.getInstance().getSessionFactory();
@@ -206,25 +207,6 @@ public class ConfiguracoesGeraisProjetoService {
 		}
 	}
 
-	public void inicializarVersao(ConfiguracoesGeraisProjeto config) throws Exception {
-		try {
-			
-			if (!config.isUltimoResultadoValidacaoVersao()) {
-				config.consultarVersao();
-				atualizarUltimoResultadoVersao(config);
-			}else{
-				if(config.acessoParaConsultaEstaLiberado()){
-					config.consultarVersao();
-					atualizarUltimoResultadoVersao(config);
-				}else{
-					config.inicializarVersaoLiberada();
-				}
-			}
-		} catch (JSONException | URISyntaxException e) {
-			throw e;
-		}
-	}
-	
 	private void atualizarUltimoResultadoVersao(ConfiguracoesGeraisProjeto config) {
 		Session session = null;
 		Transaction transaction = null;
@@ -233,7 +215,6 @@ public class ConfiguracoesGeraisProjetoService {
 				session = factory.openSession();
 				
 				config.setUltimaHoraValidacaoVersao(LocalDateTime.now());
-				config.setUltimoResultadoValidacaoVersao(config.getVersao().isVersaoEstaAtualizada());
 				
 				transaction = session.beginTransaction();
 				session.merge(config);
@@ -259,10 +240,6 @@ public class ConfiguracoesGeraisProjetoService {
 		}
 	}
 
-	public String carregarMensagemBloqueio(ConfiguracoesGeraisProjeto config) {
-		return config.carregarMensagem();
-	}
-	
 	public void inicializarThreads() {
 		inicializarThreadProcessamentoRemessa();	
 		inicializarThreadConsultaProcessamentoRemessa();
@@ -286,6 +263,64 @@ public class ConfiguracoesGeraisProjetoService {
 		instance.startProcessamento();
 	}
 	
+
+	public boolean processarThreadsRotina() throws JSONException{
+		if (rotinaEstaAtualizada()) {
+			inicializarThreads();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean rotinaEstaAtualizada() throws JSONException{
+		this.config = carregarConfiguracoesGeraisProjeto();
+		if(acessoEstaLiberadoParaConsultaVersao(config)){
+			config.getAtualizacoesSistema();
+			atualizarUltimoResultadoVersao(config);
+			return config.isVersaoEstaAtualizada();
+		}else{
+			if(config.isVersaoEstaAtualizada()){
+				return true;
+			}else{
+				config.getAtualizacoesSistema();
+				atualizarUltimoResultadoVersao(config);
+				return config.isVersaoEstaAtualizada();
+			}
+		}
+	}
+
+	private boolean acessoEstaLiberadoParaConsultaVersao(ConfiguracoesGeraisProjeto config) {
+		if (config.getUltimaHoraValidacaoVersao() != null) {
+			Duration duration;
+			
+			try {
+				duration = Duration.between(config.getUltimaHoraValidacaoVersao(), LocalDateTime.now());
+			} catch (Exception e) {
+				return true;
+			}
+			
+			long hours = duration.toHours();
+			if (hours >= 1) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public String carregarMensagemBloqueioRotina() {
+		if (config != null) {
+			String numeroUltimaVersaoLiberada = config.getAutalizacao().getVersaoAtualSistemaRemoto().getNumero();
+			String linkPadraoDownloadVersao = config.getAutalizacao().getLinkAtualizacao();
+			String msg = "Sua versão do sistema esta desatualizada .\nAcesse o link: " + linkPadraoDownloadVersao + " \npara baixar a nova versão: " + numeroUltimaVersaoLiberada;
+			
+			return msg;
+		}
+		
+		return "";
+	}
+	
 	public SessionFactory getFactory() {
 		return factory;
 	}
@@ -293,10 +328,15 @@ public class ConfiguracoesGeraisProjetoService {
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
 	}
-
-	public ConfiguracoesGeraisProjeto inicializar() throws Exception {
-		ConfiguracoesGeraisProjeto configuracoesGeraisProjeto = carregarConfiguracoesGeraisProjeto();
-		inicializarVersao(configuracoesGeraisProjeto);
-		return configuracoesGeraisProjeto;
-	}
 }
+
+
+
+
+
+
+
+
+
+
+

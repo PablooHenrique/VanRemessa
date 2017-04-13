@@ -11,6 +11,7 @@ import org.json.JSONException;
 import br.com.netsuprema.dominio.parametros.Cooperativa;
 import br.com.netsuprema.dominio.parametros.Parametros;
 import br.com.netsuprema.repository.Application;
+import br.com.netsuprema.repository.CooperativaRepository;
 import br.com.netsuprema.repository.ParametrosRepository;
 import br.com.netsuprema.service.parametros.cooperativa.CooperativaService;
 import br.com.netsuprema.service.parametros.cooperativa.CooperativaWebService;
@@ -158,6 +159,39 @@ public class ParametrosService {
 		}
 	}
 	
+	public void removerCooperativas() {
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			try {
+				session = this.getSessionFactory().openSession();
+				CooperativaRepository repository = new CooperativaRepository(session);
+				
+				transaction = session.beginTransaction();
+				repository.limparTabela();
+				transaction.commit();
+			
+			} catch (Exception e) {
+				if ((session != null) && (session.isOpen())) {
+					if (transaction.isActive()) {
+						transaction.rollback();
+					}
+				}
+				
+				StringBuilder exception = new StringBuilder();
+				exception.append("Não foi possível remover as cooperativas.")
+						 .append("Motivo: " + e.getMessage())
+						 .append("Causa: " + e.getMessage());
+				
+				throw e;
+			}
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+	
 	public List<Cooperativa> listarCooperativas(){
 		return new CooperativaService().listarCooperativas();
 	}
@@ -169,4 +203,5 @@ public class ParametrosService {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+
 }

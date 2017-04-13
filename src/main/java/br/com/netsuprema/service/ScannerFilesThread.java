@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import br.com.netsuprema.dominio.parametros.ConfiguracoesGeraisProjeto;
 import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
 
 public class ScannerFilesThread implements Runnable{
@@ -37,10 +36,12 @@ public class ScannerFilesThread implements Runnable{
 					try {
 						
 						ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
-						ConfiguracoesGeraisProjeto configuracoesGeraisProjeto = config.inicializar();
+						boolean rotinaEstaAtualizada = config.rotinaEstaAtualizada();
 						
-						if(configuracoesGeraisProjeto.getVersao().isVersaoEstaAtualizada()){
+						if(rotinaEstaAtualizada){
 							new RemessasDeTitulosService().processar();
+						}else{
+							logErros.add("Rotina não está atualizada.");
 						}
 						
 					} catch (Exception e) {

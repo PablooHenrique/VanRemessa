@@ -1,8 +1,5 @@
 package br.com.netsuprema.dominio.parametros;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,100 +21,113 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
+import br.com.netsuprema.dominio.Atualizacao;
 import br.com.netsuprema.dominio.Versao;
-import br.com.netsuprema.dominio.VersoesLiberadasParaAtualizacao;
 
 @Entity(name = "configuracoesgeraisprojeto")
 public class ConfiguracoesGeraisProjeto {
+	
 	@Transient
-	private final String url = "http://192.168.7.205/geovany/aplication/sigvan_consultar_atualizacao_rotina.php?&versao=1.0.13";
+	private static final String VERSAO = "1.0.15";
+	
+	public static String getVersao(){
+		return VERSAO;
+	}
+	
+	@Transient
+	private final String url = "http://192.168.7.205/geovany/aplication/sigvan_consultar_atualizacao_rotina.php?&versao=";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
 	private LocalDateTime ultimaDataHoraEnvioRemessa;
-	
 	private LocalDateTime ultimaHoraValidacaoVersao;
-	private boolean ultimoResultadoValidacaoVersao;
-	
 	private LocalDateTime ultimaDataHoraProcessamentoRemessa;
 	private LocalDateTime ultimaDataHoraEnvioRetorno;
 	
+	private boolean versaoEstaAtualizada;
+	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "versao")
-	private Versao versao;
+	@JoinColumn(name = "versaoSistema")
+	private Versao versaoSistema;
 	
-	public boolean rotinaEstaAtualizada(){
-		return false;
-	}
+	@Transient
+	private Atualizacao autalizacao;
 	
-	public Versao consultarVersao() throws JSONException, URISyntaxException{
-		String atualizacoes = getAtualizacoes();
-		this.versao = converterJsonParaVersao(atualizacoes);
-		return versao;
-	}
-	
-	public List<VersoesLiberadasParaAtualizacao> consultarVersoesLiberadasDoServidor() throws URISyntaxException, JSONException{
-		Versao versao = consultarVersao();
-		return versao.getVersoesLiberadas();
+	public ConfiguracoesGeraisProjeto() {
+		super();
+		if (this.versaoSistema == null) {
+			this.versaoSistema = new Versao(getVersao(), "");
+		}
 	}
 
-	private List<VersoesLiberadasParaAtualizacao> converterJsonParaListaVersoesLiberadas(String atualizacoes) throws JSONException {
-		List<VersoesLiberadasParaAtualizacao> versoesLiberadasParaAtualizacaos = new ArrayList<VersoesLiberadasParaAtualizacao>();
+	public void getAtualizacoesSistema() throws JSONException{
+		System.out.println("");
+		RestTemplate restTemplate = new RestTemplate();
+		String url = getUrl() + getVersao();
+		ResponseEntity<String> json = restTemplate.getForEntity(url, String.class);
+		this.versaoEstaAtualizada = converterJsonPropertyVersaoDoSistemaEstaAtualizada(json.getBody());
+		setAutalizacao(converterJsonParaAtualizacao(json.getBody()));
+	}
+
+	private Atualizacao converterJsonParaAtualizacao(String json) throws JSONException {
+		Atualizacao atualizacao = new Gson().fromJson(json, Atualizacao.class);
+		List<Versao> versoes = converterJsonParaVersoesLiberadas(json);
+		Versao versao = converterJsonParaUltimaVersaoSistemaRemoto(json);
+		atualizacao.setVersaoAtualSistemaRemoto(versao);
+		atualizacao.setUltimasVersoesLiberadas(versoes);
+		return atualizacao;
+	}
+
+	private Versao converterJsonParaUltimaVersaoSistemaRemoto(String json) throws JSONException {
+		JSONObject jsonObject = new JSONObject(json);
+		String ultimaVersaoSistema = jsonObject.getString("ultimaVersaoSistema");
+		return new Versao(ultimaVersaoSistema, "");
+	}
+	
+	private boolean converterJsonPropertyVersaoDoSistemaEstaAtualizada(String json) throws JSONException {
+		JSONObject jsonObject = new JSONObject(json);
+		String versaoEstaAtualizada = jsonObject.getString("versaoEstaAtualizada");
+		if (versaoEstaAtualizada.toUpperCase().equals("FALSE")) {
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	private List<Versao> converterJsonParaVersoesLiberadas(String json) throws JSONException {
 		
-		JSONObject jsonObject = new JSONObject(atualizacoes);
-		JSONArray jsonArray = jsonObject.getJSONArray("versoesLiberadasParaAtualizacao");
+		List<Versao> versoes = new ArrayList<Versao>();
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray jsonArray = jsonObject.getJSONArray("ultimasVersoesLiberadas");
 		
 		for (int i = 0; i < jsonArray.length(); i++) {
-			versoesLiberadasParaAtualizacaos.add(converterJsonParaVersoesLiberadas(jsonArray.getString(i)));
+			versoes.add(converterJsonParaVersao(jsonArray.getString(i)));
 		}
 		
-		return versoesLiberadasParaAtualizacaos;
+		return versoes;
 	}
 
-	private Versao converterJsonParaVersao(String json) throws JSONException {
+	private Versao converterJsonParaVersao(String json) {
 		Versao versao = new Gson().fromJson(json, Versao.class);
-		List<VersoesLiberadasParaAtualizacao> versoesLiberadasParaAtualizacaos = converterJsonParaListaVersoesLiberadas(json);
-		versao.setVersoesLiberadas(versoesLiberadasParaAtualizacaos);
 		return versao;
 	}
 
-	private VersoesLiberadasParaAtualizacao converterJsonParaVersoesLiberadas(String json) {
-		VersoesLiberadasParaAtualizacao versoesLiberadasParaAtualizacao = new Gson().fromJson(json, VersoesLiberadasParaAtualizacao.class);
-		return versoesLiberadasParaAtualizacao;
+	public long getId() {
+		return id;
 	}
 
-	private String getAtualizacoes() throws URISyntaxException {
-		RestTemplate restTemplate = new RestTemplate();
-		URI uri = new URI(getUrl());
-		ResponseEntity<String> atualizacao = restTemplate.getForEntity(uri, String.class);
-		String atualizacoes = atualizacao.getBody();
-		return atualizacoes;
-	}
-	
-	public boolean acessoParaConsultaEstaLiberado(){
-		if (ultimaHoraValidacaoVersao != null) {
-			Duration duration;
-			
-			try {
-				duration = Duration.between(this.ultimaHoraValidacaoVersao, LocalDateTime.now());
-			} catch (Exception e) {
-				return true;
-			}
-			
-			long hours = duration.toHours();
-			if (hours >= 1) {
-				return true;
-			}else{
-				return false;
-			}
-		}
-		return true;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public String getUrl() {
-		return url;
+	public LocalDateTime getUltimaDataHoraEnvioRemessa() {
+		return ultimaDataHoraEnvioRemessa;
+	}
+
+	public void setUltimaDataHoraEnvioRemessa(LocalDateTime ultimaDataHoraEnvioRemessa) {
+		this.ultimaDataHoraEnvioRemessa = ultimaDataHoraEnvioRemessa;
 	}
 
 	public LocalDateTime getUltimaHoraValidacaoVersao() {
@@ -126,36 +136,6 @@ public class ConfiguracoesGeraisProjeto {
 
 	public void setUltimaHoraValidacaoVersao(LocalDateTime ultimaHoraValidacaoVersao) {
 		this.ultimaHoraValidacaoVersao = ultimaHoraValidacaoVersao;
-	}
-
-	public Versao getVersao() {
-		return versao;
-	}
-
-	public void setVersao(Versao versao) {
-		this.versao = versao;
-	}
-
-	public void inicializarVersaoLiberada() {
-		Versao versao = new Versao();
-		versao.setVersaoEstaAtualizada(true);
-		this.versao = versao;
-	}
-
-	public String carregarMensagem() {
-		String numeroUltimaVersaoLiberada = this.versao.getVersoesLiberadas().get(0).getNumero();
-		String linkPadraoDownloadVersao = this.versao.getLinkPadrao();
-		String msg = "Sua versão do sistema esta desatualizada .\nAcesse o link: " + linkPadraoDownloadVersao + " \npara baixar a nova versão: " + numeroUltimaVersaoLiberada;
-		
-		return msg;
-	}
-
-	public LocalDateTime getUltimaDataHoraEnvioRemessa() {
-		return ultimaDataHoraEnvioRemessa;
-	}
-
-	public void setUltimaDataHoraEnvioRemessa(LocalDateTime ultimaDataHoraEnvioRmessa) {
-		this.ultimaDataHoraEnvioRemessa = ultimaDataHoraEnvioRmessa;
 	}
 
 	public LocalDateTime getUltimaDataHoraProcessamentoRemessa() {
@@ -174,17 +154,31 @@ public class ConfiguracoesGeraisProjeto {
 		this.ultimaDataHoraEnvioRetorno = ultimaDataHoraEnvioRetorno;
 	}
 
-	public boolean isUltimoResultadoValidacaoVersao() {
-		return ultimoResultadoValidacaoVersao;
+	public boolean isVersaoEstaAtualizada() {
+		return versaoEstaAtualizada;
 	}
 
-	public void setUltimoResultadoValidacaoVersao(boolean ultimoResultadoValidacaoVersao) {
-		this.ultimoResultadoValidacaoVersao = ultimoResultadoValidacaoVersao;
+	public void setVersaoEstaAtualizada(boolean versaoEstaAtualizada) {
+		this.versaoEstaAtualizada = versaoEstaAtualizada;
 	}
 
-	public void inicializarVersaoNaoLiberada() {
-		Versao versao = new Versao();
-		versao.setVersaoEstaAtualizada(false);
-		this.versao = versao;
+	public Versao getVersaoSistema() {
+		return versaoSistema;
+	}
+
+	public void setVersaoSistema(Versao versaoSistema) {
+		this.versaoSistema = versaoSistema;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public Atualizacao getAutalizacao() {
+		return autalizacao;
+	}
+
+	public void setAutalizacao(Atualizacao autalizacao) {
+		this.autalizacao = autalizacao;
 	}
 }

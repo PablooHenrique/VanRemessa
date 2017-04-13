@@ -14,8 +14,15 @@ public class ProcessingWatcherThread implements Runnable{
 			@Override
 			public void run() {
 				try {
-					new ConfiguracoesGeraisProjetoService().atualizarDataHoraProcessamentoRemessa();
-					new RemessasDeTitulosService().reprocessarRemessasEnviadasAoServidor();
+					
+					ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
+					boolean rotinaEstaAtualizada = config.rotinaEstaAtualizada();
+					
+					if(rotinaEstaAtualizada){
+						new ConfiguracoesGeraisProjetoService().atualizarDataHoraProcessamentoRemessa();
+						new RemessasDeTitulosService().reprocessarRemessasEnviadasAoServidor();
+					}
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

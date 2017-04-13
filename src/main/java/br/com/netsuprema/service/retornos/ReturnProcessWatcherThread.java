@@ -14,9 +14,14 @@ public class ReturnProcessWatcherThread implements Runnable{
 			@Override
 			public void run() {
 				try {
-					new ConfiguracoesGeraisProjetoService().atualizarDataHoraEnvioRetorno();
-					RetornosLiquidacaoService service = new RetornosLiquidacaoService();
-					service.processar();
+					ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
+					boolean rotinaEstaAtualizada = config.rotinaEstaAtualizada();
+					
+					if(rotinaEstaAtualizada){
+						config.atualizarDataHoraEnvioRetorno();
+						RetornosLiquidacaoService service = new RetornosLiquidacaoService();
+						service.processar();
+					}
 				} catch (Exception e) {
 					// TODO: handle exception
 				}

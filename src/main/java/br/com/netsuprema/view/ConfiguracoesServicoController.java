@@ -3,6 +3,7 @@ package br.com.netsuprema.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -43,6 +44,8 @@ public class ConfiguracoesServicoController extends AbstractController{
 	private TextField edtEmail;
 	@FXML
 	private TextField edtSenha;
+	@FXML
+	private TextField edtCooperativa;
 	@FXML
 	private JFXButton btnVoltar;
 	@FXML
@@ -141,6 +144,8 @@ public class ConfiguracoesServicoController extends AbstractController{
 		carregarComboFormatoRemessa();
 		carregarComboFormatoRetorno();
 		
+		addTextLimiter(edtCooperativa, 4);
+		
 		String url = ConfigUtils.PATH_RESOURCE_PADRAO + "imagens/voltar.png";
 		ImageView image = new ImageView(url);
 		btnVoltar.setPrefHeight(49);
@@ -164,10 +169,22 @@ public class ConfiguracoesServicoController extends AbstractController{
 		
 		cooperativas = obterCooperativasBanco();
 		
+		boolean anyMatch = cooperativas.stream().anyMatch(x->String.valueOf(x.getCodigoCooperativa()).length() < 4);
+		
+		if (anyMatch) {
+			removerCooperativas();
+			cooperativas = obterCooperativasViaWebService();
+			application.salvarCooperativas(cooperativas);
+		}
+		
 		if (cooperativas.isEmpty()) {
 			cooperativas = obterCooperativasViaWebService();
 			application.salvarCooperativas(cooperativas);
 		}
+	}
+
+	private void removerCooperativas() {
+		application.removerCooperativas();
 	}
 
 	public List<Cooperativa> obterCooperativasBanco() throws Exception {
@@ -283,13 +300,12 @@ public class ConfiguracoesServicoController extends AbstractController{
 	}
 
 	public Cooperativa criarCooperativa() throws NumberFormatException, Exception {
-		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
-		String item = selectionModel.getSelectedItem();
-		
-		if (!item.trim().isEmpty()) {
-			String[] itens = item.split("-");
-			Cooperativa cooperativa = getApplication().consultarCooperativaPorKey(Integer.valueOf(itens[0]));
-			return cooperativa;
+		for (String string : cooperativas) {
+			String[] itens = string.split("-");
+			if (itens[0].equals(edtCooperativa.getText())) {
+				Cooperativa cooperativa = getApplication().consultarCooperativaPorKey(Integer.valueOf(itens[0]));
+				return cooperativa;
+			}
 		}
 		
 		return null;
@@ -336,6 +352,16 @@ public class ConfiguracoesServicoController extends AbstractController{
 		
 		if (edtUsuario.getText().trim().equals("")) {
 			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um usuario valido");
+			return false;
+		}
+		
+		if (edtCooperativa.getText().trim().equals("")) {
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um código de cooperativa valido");
+			return false;
+		}
+		
+		if(!application.codigoCooperativaEValido(Long.valueOf(String.valueOf(edtCooperativa.getText())))){
+			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um código de cooperativa valido");
 			return false;
 		}
 		

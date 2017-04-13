@@ -3,8 +3,11 @@ package br.com.netsuprema.view;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.json.JSONException;
+
 import com.jfoenix.controls.JFXButton;
 
+import br.com.netsuprema.application.ConfiguracoesGeraisProjetoApplication;
 import br.com.netsuprema.application.ParametrosApplication;
 import br.com.netsuprema.application.RetornosApplication;
 import br.com.netsuprema.application.ServicosApplication;
@@ -104,7 +107,6 @@ public class MenuPrincipalController extends AbstractController{
 	}
 
 	public void inicializarConfigurações() {
-		
 		if (parametrosArquivoRetornoEValido()) {
 			processingWhatcherReturnsThread();
 		}
@@ -332,6 +334,26 @@ public class MenuPrincipalController extends AbstractController{
 				   		
 				   		   btnRetorno.setGraphic(lblRetornos);
 			   		   }
+			       }
+			    });
+			}
+		},2000, 60000);
+	}
+	
+	public void configuracoesGeraisProjetoProcessingWatcherThread(){
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			    public void run() {
+			    Platform.runLater(new Runnable() {
+			       public void run() {
+			    	   try {
+			    		   ConfiguracoesGeraisProjetoApplication application = new ConfiguracoesGeraisProjetoApplication();
+			    		   if (!application.rotinaEstaAtualizada()){
+			    			   bloquearAplicacao(application.carregarMensagemBloqueio());
+						   }
+						} catch (JSONException e) {
+						}
 			       }
 			    });
 			}

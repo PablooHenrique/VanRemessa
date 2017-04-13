@@ -17,7 +17,7 @@ import br.com.netsuprema.dominio.parametros.Cooperativa;
 public class CooperativaWebService {
 	
 //	private final String Url = "http://sig5.netsuprema.com.br/col_cobrancateste/url_webservice.php";
-	private final String Url = "http://sig5.netsuprema.com.br/col_cobrancateste/cooperativa_webservice_remessa.php";
+	private final String Url = "http://sig5.netsuprema.com.br/aplication/cooperativaWebserviceRemessa.php";
 	
 	public List<Cooperativa> obterCooperativas() throws URISyntaxException, JSONException{
 		List<Cooperativa> cooperativas = new ArrayList<Cooperativa>(); 

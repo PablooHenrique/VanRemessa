@@ -1,45 +1,45 @@
 package br.com.netsuprema.application;
 
-import org.modelmapper.ModelMapper;
+import org.json.JSONException;
 
-import br.com.netsuprema.application.dto.ConfiguracoesGeraisProjetoDto;
-import br.com.netsuprema.dominio.parametros.ConfiguracoesGeraisProjeto;
 import br.com.netsuprema.service.parametros.ConfiguracoesGeraisProjetoService;
 
 public class ConfiguracoesGeraisProjetoApplication {
 	
 	private ConfiguracoesGeraisProjetoService service;
-	private ConfiguracoesGeraisProjetoDto configuracoesGeraisProjetoDto;
-	private ConfiguracoesGeraisProjeto config;
+	private String msgErrorProcessamento;
 	
-	public ConfiguracoesGeraisProjetoApplication() throws Exception {
+	public ConfiguracoesGeraisProjetoApplication() {
+		super();
 		setService(new ConfiguracoesGeraisProjetoService());
-		inicializarConfiguracoesGeraisProjeto();
 	}
 
-	private void inicializarConfiguracoesGeraisProjeto() throws Exception{
+	public boolean processarThreadsRotina() throws JSONException{
 		try {
-			config = getService().carregarConfiguracoesGeraisProjeto();
-			getService().inicializarVersao(config);
-			ModelMapper mapper = new ModelMapper();
-			ConfiguracoesGeraisProjetoDto configDto = mapper.map(config, ConfiguracoesGeraisProjetoDto.class);
-			this.configuracoesGeraisProjetoDto = configDto;
-		} catch (Exception e) {
+			boolean process = getService().processarThreadsRotina();
+			if (!process) {
+				this.msgErrorProcessamento = getService().carregarMensagemBloqueioRotina();
+			}
+			return process;
+		} catch (JSONException e) {
 			throw e;
 		}
 	}
 	
-	public void inicializarThreads() {
-		service.inicializarThreads();
-	}
-
-	public String carregarMensagemBloqueio() {
-		String msg = service.carregarMensagemBloqueio(config);
-		return msg;
+	public boolean rotinaEstaAtualizada() throws JSONException{
+		try {
+			boolean rotinaEstaAtualizada = getService().rotinaEstaAtualizada();
+			if (!rotinaEstaAtualizada) {
+				this.msgErrorProcessamento = getService().carregarMensagemBloqueioRotina();
+			}
+			return rotinaEstaAtualizada;
+		} catch (JSONException e) {
+			throw e;
+		}
 	}
 	
-	public boolean versaoEstaAtualizada(){
-		return this.configuracoesGeraisProjetoDto.getVersao().isVersaoEstaAtualizada();
+	public String carregarMensagemBloqueio(){
+		return this.msgErrorProcessamento;
 	}
 
 	public ConfiguracoesGeraisProjetoService getService() {

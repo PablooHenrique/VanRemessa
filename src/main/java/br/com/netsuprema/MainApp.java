@@ -64,14 +64,14 @@ public class MainApp extends Application{
 			initRootLayout();
 			
 			MainAppController controller = new MainAppController();
-			controller.inicializarServicos();
+			boolean threadsProcessadas = controller.processarThreadsRotina();
 			
 			String msgBloqueio = "";
-			if (controller.isBloquearAplicacao()) {
-				msgBloqueio = controller.getMensagemAlerta();
+			if (!threadsProcessadas) {
+				msgBloqueio = controller.getMsgErroProcessamento();
 			}
 			
-			showMenuPrincipal(this, getRootLayout(), controller.isBloquearAplicacao(), msgBloqueio);
+			showMenuPrincipal(this, getRootLayout(), !threadsProcessadas, msgBloqueio);
 			
 		} catch (Exception e) {
 			ViewUtils.exibirMensagemErro("Erro", "Falha no acesso ao banco", "Falha ao acessar o banco de dados, uma nova instancia do processo ja está iniciada");
@@ -118,6 +118,8 @@ public class MainApp extends Application{
 				controller.inicializarVerificacaoServicoEnvioRetorno();
 				controller.inicializarVerificacaoServicoProcessamentoRemessa();
 			}
+			
+			controller.configuracoesGeraisProjetoProcessingWatcherThread();
 			
 		} catch (IOException e) {
 			System.out.println(e.getCause().getMessage());

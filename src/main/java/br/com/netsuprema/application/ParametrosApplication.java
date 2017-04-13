@@ -140,4 +140,15 @@ public class ParametrosApplication {
 			throw e;
 		}
 	}
+
+	public void removerCooperativas() {
+		ParametrosService service = new ParametrosService();
+		service.removerCooperativas();
+		
+	}
+
+	public boolean codigoCooperativaEValido(long codigo) {
+		boolean result = new CooperativaService().codigoCooperativaEValido(codigo);
+		return result;
+	}
 }
