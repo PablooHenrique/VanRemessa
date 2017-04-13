@@ -34,8 +34,6 @@ public class Cooperativa {
 	@SerializedName("imagem")
 	private String imagem;
 	
-	private int codigoCooperativa;
-	
 	public long getId() {
 		return id;
 	}
@@ -71,11 +69,5 @@ public class Cooperativa {
 	}
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
-	}
-	public int getCodigoCooperativa() {
-		return codigoCooperativa;
-	}
-	public void setCodigoCooperativa(int codigoCooperativa) {
-		this.codigoCooperativa = codigoCooperativa;
 	}
 }

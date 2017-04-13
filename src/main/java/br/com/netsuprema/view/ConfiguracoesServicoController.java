@@ -3,7 +3,6 @@ package br.com.netsuprema.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -32,8 +31,8 @@ public class ConfiguracoesServicoController extends AbstractController{
 	
 	private ParametrosApplication application; 
 	
-	@FXML
-	private ComboBox<String> comboBoxCooperativas;
+//	@FXML
+//	private ComboBox<String> comboBoxCooperativas;
 	@FXML
 	private ComboBox<String> comboBoxFormatoRemessa;
 	@FXML
@@ -87,8 +86,9 @@ public class ConfiguracoesServicoController extends AbstractController{
 		edtEmail.setText(parametros.getEmail());
 		edtUsuario.setText(parametros.getLogin());
 		edtSenha.setText(parametros.getSenha());
+		edtCooperativa.setText(parametros.getCooperativa().getKeyCop() + "-" + parametros.getCooperativa().getNome());
 		
-		preencherInformacoesComboCooperativa(parametros);
+//		preencherInformacoesComboCooperativa(parametros);
 		preencherInformacoesComboFormatoRemessa(parametros);
 		preencherInformacoesComboFormatoRetorno(parametros);
 	}
@@ -108,20 +108,20 @@ public class ConfiguracoesServicoController extends AbstractController{
 		}
 	}
 
-	public void preencherInformacoesComboCooperativa(Parametros parametros) {
-		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
-		
-		for (int i = 0; i < cooperativas.size(); i++) {
-			if (!cooperativas.get(i).trim().isEmpty()) {
-				String[] itens = cooperativas.get(i).split("-");
-				
-				if (Integer.valueOf(itens[0]) == parametros.getCooperativa().getKeyCop()) {
-					selectionModel.select(cooperativas.get(i));
-					break;
-				}
-			}
-		}
-	}
+//	public void preencherInformacoesComboCooperativa(Parametros parametros) {
+//		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
+//		
+//		for (int i = 0; i < cooperativas.size(); i++) {
+//			if (!cooperativas.get(i).trim().isEmpty()) {
+//				String[] itens = cooperativas.get(i).split("-");
+//				
+//				if (Integer.valueOf(itens[0]) == parametros.getCooperativa().getKeyCop()) {
+//					selectionModel.select(cooperativas.get(i));
+//					break;
+//				}
+//			}
+//		}
+//	}
 	
 	public void preencherInformacoesComboFormatoRetorno(Parametros parametros) {
 		SingleSelectionModel<String> selectionModel = comboBoxFormatoRetorno.getSelectionModel();
@@ -140,11 +140,11 @@ public class ConfiguracoesServicoController extends AbstractController{
 
 	public void initializeComponents() throws Exception{
 		inicializarCooperativas();
-		carregarComboCooperativa();
+//		carregarComboCooperativa();
 		carregarComboFormatoRemessa();
 		carregarComboFormatoRetorno();
 		
-		addTextLimiter(edtCooperativa, 4);
+		addTextLimiter(edtCooperativa, 15);
 		
 		String url = ConfigUtils.PATH_RESOURCE_PADRAO + "imagens/voltar.png";
 		ImageView image = new ImageView(url);
@@ -169,7 +169,7 @@ public class ConfiguracoesServicoController extends AbstractController{
 		
 		cooperativas = obterCooperativasBanco();
 		
-		boolean anyMatch = cooperativas.stream().anyMatch(x->String.valueOf(x.getCodigoCooperativa()).length() < 4);
+		boolean anyMatch = cooperativas.stream().anyMatch(x->String.valueOf(x.getKeyCop()).length() < 4);
 		
 		if (anyMatch) {
 			removerCooperativas();
@@ -192,12 +192,12 @@ public class ConfiguracoesServicoController extends AbstractController{
 		return cooperativas;
 	}
 
-	public void carregarComboCooperativa() throws Exception{
+//	public void carregarComboCooperativa() throws Exception{
 //		List<Cooperativa> cooperativas = obterCooperativasViaWebService();
-		List<Cooperativa> cooperativas = obterCooperativasBanco();
-		cooperativas.stream().forEach(x-> this.cooperativas.add(x.getKeyCop() +"-"+x.getNome().toUpperCase()));
-		comboBoxCooperativas.setItems(this.cooperativas);
-	}
+//		List<Cooperativa> cooperativas = obterCooperativasBanco();
+//		cooperativas.stream().forEach(x-> this.cooperativas.add(x.getKeyCop() +"-"+x.getNome().toUpperCase()));
+//		comboBoxCooperativas.setItems(this.cooperativas);
+//	}
 	
 	public void carregarComboFormatoRemessa(){
 		List<FormatoRemessa> list = Arrays.asList(FormatoRemessa.values());
@@ -300,15 +300,9 @@ public class ConfiguracoesServicoController extends AbstractController{
 	}
 
 	public Cooperativa criarCooperativa() throws NumberFormatException, Exception {
-		for (String string : cooperativas) {
-			String[] itens = string.split("-");
-			if (itens[0].equals(edtCooperativa.getText())) {
-				Cooperativa cooperativa = getApplication().consultarCooperativaPorKey(Integer.valueOf(itens[0]));
-				return cooperativa;
-			}
-		}
 		
-		return null;
+		Cooperativa cooperativa = application.consultarCooperativaPorKey(Integer.valueOf(edtCooperativa.getText()));
+		return cooperativa;
 	}
 	
 	public void salvarCooperativas(List<Cooperativa> cooperativas) throws Exception{
@@ -316,13 +310,15 @@ public class ConfiguracoesServicoController extends AbstractController{
 	}
 	
 	public boolean dadosSaoValidos(){
-		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
-		int index = selectionModel.getSelectedIndex();
-		
-		if (index == -1) {
-			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "selecione uma cooperativa");
-			return false;
-		}
+		SingleSelectionModel<String> selectionModel;
+		int index;
+//		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
+//		int index = selectionModel.getSelectedIndex();
+//		
+//		if (index == -1) {
+//			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "selecione uma cooperativa");
+//			return false;
+//		}
 		
 		selectionModel = comboBoxFormatoRemessa.getSelectionModel();
 		index = selectionModel.getSelectedIndex();
