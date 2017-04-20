@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="VanRemessa.jar" size="193655" download="eager" />
+    <jar href="VanRemessa.jar" size="193652" download="eager" />
     <jar href="libs\antlr-2.7.7.jar" size="445288" download="eager" />
     <jar href="libs\aopalliance-1.0.jar" size="4467" download="eager" />
     <jar href="libs\axis.jar" size="1599570" download="eager" />
