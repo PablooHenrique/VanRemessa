@@ -11,7 +11,7 @@ public class AbstractController {
 	
 	@FXML
 	public void handleVoltar(){
-		getMainApp().showMenuPrincipal(getMainApp(), getMainApp().getRootLayout());
+		getMainApp().showMenuPrincipal(getMainApp(), getMainApp().getRootLayout(), false, "");
 	}
 	
 	protected void addTextLimiter(final TextField tf, final int maxLength) {

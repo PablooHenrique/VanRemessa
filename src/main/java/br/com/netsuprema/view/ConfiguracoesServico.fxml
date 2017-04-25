@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="670.0" prefWidth="1024.0" style="-fx-background-color: #f4f4f3;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.netsuprema.view.ConfiguracoesServicoController">
    <children>
-      <ComboBox fx:id="comboBoxCooperativas" layoutX="132.0" layoutY="309.0" prefHeight="39.0" prefWidth="360.0" promptText="Selecione" />
+      <TextField fx:id="edtCooperativa" layoutX="132.0" layoutY="309.0" prefHeight="39.0" prefWidth="360.0" />
       <TextField fx:id="edtEmail" layoutX="533.0" layoutY="309.0" prefHeight="39.0" prefWidth="360.0" />
       <TextField fx:id="edtUsuario" layoutX="132.0" layoutY="413.0" prefHeight="39.0" prefWidth="360.0" />
       <PasswordField fx:id="edtSenha" layoutX="533.0" layoutY="413.0" prefHeight="39.0" prefWidth="360.0" />

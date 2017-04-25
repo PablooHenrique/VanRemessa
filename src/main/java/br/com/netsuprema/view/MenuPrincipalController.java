@@ -3,8 +3,11 @@ package br.com.netsuprema.view;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.json.JSONException;
+
 import com.jfoenix.controls.JFXButton;
 
+import br.com.netsuprema.application.ConfiguracoesGeraisProjetoApplication;
 import br.com.netsuprema.application.ParametrosApplication;
 import br.com.netsuprema.application.RetornosApplication;
 import br.com.netsuprema.application.ServicosApplication;
@@ -47,15 +50,19 @@ public class MenuPrincipalController extends AbstractController{
 	@FXML
 	private Pane paneOnOffStatusServicoRemessa;
 	@FXML
+	private Pane paneOnOffStatusServicoProcessamentoRetorno;
+	@FXML
+	private Pane paneOnOffStatusServicoProcessamentoRemessa;
+	@FXML
 	private Label labelMsg;
 	@FXML
 	private Button btnTesteSpinner;
 	
+	private boolean applicacaoBloqueada;
+	
 	@FXML
 	private void initialize(){
 		imgLogo.setImage(new Image("file:resources/imagens/logo.png"));
-		inicializarVerificacaoServicoRemessa();
-		inicializarConfigurações();
 		inicializarImagensBtns();
 	}
 	
@@ -99,14 +106,15 @@ public class MenuPrincipalController extends AbstractController{
 		btnRetorno.setGraphic(lblRetornos);
 	}
 
-	private void inicializarConfigurações() {
-		
+	public void inicializarConfigurações() {
 		if (parametrosArquivoRetornoEValido()) {
 			processingWhatcherReturnsThread();
 		}
 		
 		if (parametrosSaoValidos()) {
 			processingWhatcherThread();
+			processingWhatcherThreadProcessamentoEnvioRemessa();
+			processingWhatcherThreadEnvioRetorno();
 		}else{
 			labelMsg.setText("Cadastre os parâmetros para inicializar o processamento dos dados");
 		}
@@ -133,12 +141,12 @@ public class MenuPrincipalController extends AbstractController{
 			Parametros parametros = parametrosApplication.consultarParametros();
 			
 			if (parametros == null) {
-				habilitarBtns(true);
+				desabilitarBtns(true, false);
 				
 				return false;
 			}
 			
-			habilitarBtns(false);
+			desabilitarBtns(false, false);
 			return true;
 		} catch (Exception e) {
 			StringBuilder exception = new StringBuilder();
@@ -151,14 +159,18 @@ public class MenuPrincipalController extends AbstractController{
 		return false;
 	}
 
-	private void habilitarBtns(boolean habiitar) {
+	private void desabilitarBtns(boolean habiitar, boolean todos) {
 		btnDiretoriosEnvio.setDisable(habiitar);
 		btnEnviosDetalhados.setDisable(habiitar);
 		btnResumoEnvio.setDisable(habiitar);
 		btnRetorno.setDisable(habiitar);
+		
+		if (todos) {
+			btnConfiguracoes.setDisable(habiitar);
+		}
 	}
 
-	private void inicializarVerificacaoServicoRemessa() {
+	public void inicializarVerificacaoServicoEnvioRemessa() {
 		boolean status = new ServicosApplication().verificarServicoRemessa();
 		if (status) {
 			paneOnOffStatusServicoRemessa.getStyleClass().remove("floatingOff");
@@ -166,6 +178,28 @@ public class MenuPrincipalController extends AbstractController{
 		}else{
 			paneOnOffStatusServicoRemessa.getStyleClass().remove("floatingOn");
 			paneOnOffStatusServicoRemessa.getStyleClass().add("floatingOff");
+		}
+	}
+	
+	public void inicializarVerificacaoServicoEnvioRetorno() {
+		boolean status = new ServicosApplication().verificarServicoEnvioRetorno();
+		if (status) {
+			paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().remove("floatingOff");
+			paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().add("floatingOn");
+		}else{
+			paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().remove("floatingOn");
+			paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().add("floatingOff");
+		}
+	}
+	
+	public void inicializarVerificacaoServicoProcessamentoRemessa() {
+		boolean status = new ServicosApplication().verificarServicoProcessamentoRemessa();
+		if (status) {
+			paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().remove("floatingOff");
+			paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().add("floatingOn");
+		}else{
+			paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().remove("floatingOn");
+			paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().add("floatingOff");
 		}
 	}
 	
@@ -229,13 +263,41 @@ public class MenuPrincipalController extends AbstractController{
 			    public void run() {
 			    Platform.runLater(new Runnable() {
 			       public void run() {
-			    	   inicializarVerificacaoServicoRemessa();
+			    	   inicializarVerificacaoServicoEnvioRemessa();
 			    	   String msg = verificarErrosProcessamento();
 			    	   if (msg.equals("")) {
 			    		   setMsg("Processando");
 			    	   }else{
 			    		   setMsg(msg);
 			    	   }
+			      }
+			    });
+			}
+		},2000, 60000);
+	}
+	
+	public void processingWhatcherThreadEnvioRetorno(){
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			    public void run() {
+			    Platform.runLater(new Runnable() {
+			       public void run() {
+			    	   inicializarVerificacaoServicoEnvioRetorno();
+			      }
+			    });
+			}
+		},2000, 60000);
+	}
+	
+	public void processingWhatcherThreadProcessamentoEnvioRemessa(){
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			    public void run() {
+			    Platform.runLater(new Runnable() {
+			       public void run() {
+			    	   inicializarVerificacaoServicoProcessamentoRemessa();
 			      }
 			    });
 			}
@@ -278,6 +340,26 @@ public class MenuPrincipalController extends AbstractController{
 		},2000, 60000);
 	}
 	
+	public void configuracoesGeraisProjetoProcessingWatcherThread(){
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			    public void run() {
+			    Platform.runLater(new Runnable() {
+			       public void run() {
+			    	   try {
+			    		   ConfiguracoesGeraisProjetoApplication application = new ConfiguracoesGeraisProjetoApplication();
+			    		   if (!application.rotinaEstaAtualizada()){
+			    			   bloquearAplicacao(application.carregarMensagemBloqueio());
+						   }
+						} catch (JSONException e) {
+						}
+			       }
+			    });
+			}
+		},2000, 60000);
+	}
+	
 	public void handleShowSippner(){
 		VBox bx = new VBox();
         bx.setAlignment(Pos.CENTER);
@@ -291,5 +373,31 @@ public class MenuPrincipalController extends AbstractController{
 				stackPane.getChildren().add(box);
 			}
 		});
+	}
+
+	public void bloquearAplicacao(String msgBloqueio) {
+		labelMsg.setText(msgBloqueio);
+		desabilitarBtns(true, true);
+		
+		desabilitarProcessamento();
+	}
+
+	private void desabilitarProcessamento() {
+		paneOnOffStatusServicoRemessa.getStyleClass().add("floatingOff");
+		paneOnOffStatusServicoRemessa.getStyleClass().remove("floatingOn");
+		
+		paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().add("floatingOff");
+		paneOnOffStatusServicoProcessamentoRetorno.getStyleClass().remove("floatingOn");
+		
+		paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().add("floatingOff");
+		paneOnOffStatusServicoProcessamentoRemessa.getStyleClass().remove("floatingOn");
+	}
+
+	public boolean isApplicacaoBloqueada() {
+		return applicacaoBloqueada;
+	}
+
+	public void setApplicacaoBloqueada(boolean applicacaoBloqueada) {
+		this.applicacaoBloqueada = applicacaoBloqueada;
 	}
 }

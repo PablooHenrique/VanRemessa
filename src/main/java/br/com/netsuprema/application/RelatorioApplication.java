@@ -12,7 +12,7 @@ public class RelatorioApplication {
 		ResumoEnvioDto resumo = new ResumoEnvioDto();
 		
 		ConfiguracoesGeraisProjeto config = new ConfiguracoesGeraisProjetoService().listarConfig();
-		resumo.setDataUltimaVerificacaoEnvio(config.getUltimaDataHoraEnvio());
+		resumo.setDataUltimaVerificacaoEnvio(config.getUltimaDataHoraEnvioRemessa());
 		
 		return resumo;
 	}
@@ -21,7 +21,7 @@ public class RelatorioApplication {
 		ResumoEnvioDto resumo = new ResumoEnvioDto();
 		
 		ConfiguracoesGeraisProjeto config = new ConfiguracoesGeraisProjetoService().listarConfig();
-		resumo.setDataUltimaVerificacaoEnvio(config.getUltimaDataHoraEnvio());
+		resumo.setDataUltimaVerificacaoEnvio(config.getUltimaDataHoraEnvioRemessa());
 		
 		return resumo;
 	}

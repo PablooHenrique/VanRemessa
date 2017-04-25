@@ -51,7 +51,6 @@ public class Parametros {
 		return hexString.toString();
 	}
 	
-	
 	public Cooperativa getCooperativa() {
 		return cooperativa;
 	}

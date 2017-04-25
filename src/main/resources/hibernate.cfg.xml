@@ -4,7 +4,6 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <!-- 
     <property name="connection.url">jdbc:mysql://localhost/vanremessa</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 
@@ -16,8 +15,8 @@
     <property name="hbm2ddl.auto">update</property>
     <property name="show_sql">false</property>
     <property name="format_sql">true</property> 
-    -->
     
+    <!-- 
     <property name="connection.url">jdbc:h2:~/vanremessa</property>
     <property name="connection.driver_class">org.h2.Driver</property>
 
@@ -29,6 +28,7 @@
     <property name="hbm2ddl.auto">update</property>
     <property name="show_sql">false</property>
     <property name="format_sql">true</property>
+    -->
 
     <!--Persistencia com o banco de dados-->
     <property name="javax.persistence.jdbc.driver">org.h2.Driver</property>
@@ -42,5 +42,7 @@
     <mapping class="br.com.netsuprema.dominio.remessa.LogEnvioRemessa"/>
     <mapping class="br.com.netsuprema.dominio.retornoliquidacao.RetornoLiquidacao"/>
     <mapping class="br.com.netsuprema.dominio.retornoliquidacao.LogEnvioRetornoLiquidacao"/>
+    <mapping class="br.com.netsuprema.dominio.Versao"/>
+    
   </session-factory>
 </hibernate-configuration>

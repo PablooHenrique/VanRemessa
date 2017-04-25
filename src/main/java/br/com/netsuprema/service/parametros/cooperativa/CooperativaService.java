@@ -1,6 +1,7 @@
 package br.com.netsuprema.service.parametros.cooperativa;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -81,5 +82,12 @@ public class CooperativaService {
 				session.close();
 			}
 		}
+	}
+
+	public boolean codigoCooperativaEValido(long codigo) {
+		List<Cooperativa> cooperativas = listarCooperativas();
+		List<Cooperativa> list = cooperativas.stream().filter(x->x.getKeyCop() == codigo).collect(Collectors.toList());
+		
+		return !list.isEmpty();
 	}
 }

@@ -30,11 +30,20 @@ public class ScannerFilesThread implements Runnable{
 				logErros.clear();
 				
 				try {
-					new ConfiguracoesGeraisProjetoService().atualizarDataHoraEnvio();
+					new ConfiguracoesGeraisProjetoService().atualizarDataHoraEnvioRemessa();
 					logErros.add("Vai Iniciar o processamento");
 					
 					try {
-						new RemessasDeTitulosService().processar();
+						
+						ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
+						boolean rotinaEstaAtualizada = config.rotinaEstaAtualizada();
+						
+						if(rotinaEstaAtualizada){
+							new RemessasDeTitulosService().processar();
+						}else{
+							logErros.add("Rotina não está atualizada.");
+						}
+						
 					} catch (Exception e) {
 						logErros.add("Processamento Falhou");
 					}
