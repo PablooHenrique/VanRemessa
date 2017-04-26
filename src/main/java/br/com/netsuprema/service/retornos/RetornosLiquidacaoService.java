@@ -63,7 +63,7 @@ public class RetornosLiquidacaoService {
 			try {
 				try {
 					
-					if (cedenteTeveArquivoProcessadoNaData(cedente.getCodigo(), conta.getNumeroConta(), DateUtils.getUltimoDiaUtil())) {
+					if (cedenteTeveArquivoProcessadoNaData(cedente.getCodigo(), conta.getNumeroConta(), LocalDate.now())) {
 						session = factory.openSession();
 						transaction = session.beginTransaction();
 						processarConta(cedente, conta, parametro, session);

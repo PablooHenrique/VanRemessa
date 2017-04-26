@@ -193,6 +193,8 @@ public class ConfiguracoesGeraisProjetoService {
 	public ConfiguracoesGeraisProjeto carregarConfiguracoesGeraisProjeto() {
 		Session session = null;
 		try {
+			try {
+				
 			session = factory.openSession();
 			ConfiguracoesGeraisProjetoRepository repository = new ConfiguracoesGeraisProjetoRepository(session);
 			List<ConfiguracoesGeraisProjeto> configs = repository.listar();
@@ -200,6 +202,10 @@ public class ConfiguracoesGeraisProjetoService {
 				return configs.get(0);
 			}
 			return new ConfiguracoesGeraisProjeto();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				session.close();
@@ -265,16 +271,18 @@ public class ConfiguracoesGeraisProjetoService {
 	
 
 	public boolean processarThreadsRotina() throws JSONException{
-		if (rotinaEstaAtualizada()) {
+		if (rotinaEstaAtualizada(false)) {
 			inicializarThreads();
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean rotinaEstaAtualizada() throws JSONException{
+	public boolean rotinaEstaAtualizada(boolean validarConfig) throws JSONException{
 		this.config = carregarConfiguracoesGeraisProjeto();
-		if(acessoEstaLiberadoParaConsultaVersao(config)){
+		boolean acessoParaConsultaEstaLiberado = acessoParaConsultaEstaLiberado(validarConfig);
+		
+		if(acessoParaConsultaEstaLiberado){
 			config.getAtualizacoesSistema();
 			atualizarUltimoResultadoVersao(config);
 			return config.isVersaoEstaAtualizada();
@@ -286,6 +294,14 @@ public class ConfiguracoesGeraisProjetoService {
 				atualizarUltimoResultadoVersao(config);
 				return config.isVersaoEstaAtualizada();
 			}
+		}
+	}
+
+	private boolean acessoParaConsultaEstaLiberado(boolean validarConfig) {
+		if (validarConfig) {
+			return acessoEstaLiberadoParaConsultaVersao(this.config);
+		}else{
+			return true;
 		}
 	}
 
@@ -312,8 +328,7 @@ public class ConfiguracoesGeraisProjetoService {
 	public String carregarMensagemBloqueioRotina() {
 		if (config != null) {
 			String numeroUltimaVersaoLiberada = config.getAutalizacao().getVersaoAtualSistemaRemoto().getNumero();
-			String linkPadraoDownloadVersao = config.getAutalizacao().getLinkAtualizacao();
-			String msg = "Sua versão do sistema esta desatualizada .\nAcesse o link: " + linkPadraoDownloadVersao + " \npara baixar a nova versão: " + numeroUltimaVersaoLiberada;
+			String msg = "Sua versão do sistema esta desatualizada .\nAcesse o link abaixo, para baixar a nova versão: " + numeroUltimaVersaoLiberada;
 			
 			return msg;
 		}

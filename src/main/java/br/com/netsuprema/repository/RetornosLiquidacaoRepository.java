@@ -42,7 +42,7 @@ public class RetornosLiquidacaoRepository extends AbstractRepository<RetornoLiqu
 			jpql.append("select a from retornoliquidacao a ")
 			.append(" inner join a.logEnvioRetornoLiquidacao l on a.logEnvioRetornoLiquidacao.id = l.id ")
 			.append(" inner join a.cedente c on a.cedente.id = c.id ")
-			.append(" where l.dataRetorno = :dataRetorno ")
+			.append(" where trunc(l.dataHoraProcessamento) = :dataRetorno ")
 			.append(" and ((l.situacao = :situacaoOk) OR (l.situacao = :situacaoSemArquivo)) ")
 			.append(" and c.codigo = :codigoCedente ")
 			.append(" and a.numeroConta = :numeroConta");
@@ -61,7 +61,6 @@ public class RetornosLiquidacaoRepository extends AbstractRepository<RetornoLiqu
 			e.printStackTrace();
 		}
 		return false;
-		
 	}
 	
 	

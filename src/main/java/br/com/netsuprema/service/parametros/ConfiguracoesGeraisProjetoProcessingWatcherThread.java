@@ -13,7 +13,7 @@ public class ConfiguracoesGeraisProjetoProcessingWatcherThread implements Runnab
 			@Override
 			public void run() {
 				try {
-					if(!new ConfiguracoesGeraisProjetoService().rotinaEstaAtualizada()){
+					if(!new ConfiguracoesGeraisProjetoService().rotinaEstaAtualizada(true)){
 						
 					}
 				} catch (JSONException e) {

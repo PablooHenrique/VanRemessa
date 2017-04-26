@@ -64,7 +64,13 @@ public class MainApp extends Application{
 			initRootLayout();
 			
 			MainAppController controller = new MainAppController();
-			boolean threadsProcessadas = controller.processarThreadsRotina();
+			
+			boolean threadsProcessadas = false;
+			try {
+				threadsProcessadas = controller.processarThreadsRotina();
+			} catch (Exception e) {
+				ViewUtils.exibirMensagemErro("Erro", "Falha ao acessar WebService", "Falha ao acessar o WebService de validação da versão, verifique sua conexão com a internet");
+			}
 			
 			String msgBloqueio = "";
 			if (!threadsProcessadas) {

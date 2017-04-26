@@ -15,7 +15,7 @@ public class ReturnProcessWatcherThread implements Runnable{
 			public void run() {
 				try {
 					ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
-					boolean rotinaEstaAtualizada = config.rotinaEstaAtualizada();
+					boolean rotinaEstaAtualizada = config.rotinaEstaAtualizada(true);
 					
 					if(rotinaEstaAtualizada){
 						config.atualizarDataHoraEnvioRetorno();

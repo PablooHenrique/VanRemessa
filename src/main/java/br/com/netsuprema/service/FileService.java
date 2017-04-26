@@ -156,11 +156,16 @@ public class FileService {
 	}
 	
 	public void salvarArquivoRetorno(String diretorio, String nomeArquivo, String conteudo) throws IOException{
-		Date data = new Date(System.currentTimeMillis());  
-		SimpleDateFormat formatarDate = new SimpleDateFormat("yyyy-MM-dd"); 
-		String format = formatarDate.format(data);
+		DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		LocalDateTime dataHoraEnvio = LocalDateTime.now();
+		String date = dataHoraEnvio.format(pattern);
+		date = date.replace("/", "");
+		date = date.replace(" ", "-");
+		date = date.replace(":", "");
 		
-		File file = new File(diretorio + "/" +nomeArquivo+"-"+format+ ".txt");
+		String path = diretorio + "/" +nomeArquivo+"-"+date+ ".txt";
+		
+		File file = new File(path);
 		
 		FileService fileService = new FileService();
 		

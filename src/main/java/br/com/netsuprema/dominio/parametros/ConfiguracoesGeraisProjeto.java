@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,14 +29,15 @@ import br.com.netsuprema.dominio.Versao;
 public class ConfiguracoesGeraisProjeto {
 	
 	@Transient
-	private static final String VERSAO = "1.0.15";
+	private static final String VERSAO = "1.2.0";
 	
 	public static String getVersao(){
 		return VERSAO;
 	}
 	
 	@Transient
-	private final String url = "http://192.168.7.205/geovany/aplication/sigvan_consultar_atualizacao_rotina.php?&versao=";
+//	private final String url = "http://192.168.7.205/geovany/aplication/sigvan_consultar_atualizacao_rotina.php?&versao=";
+	private final String url = "http://sig5.netsuprema.com.br/aplication/sigvan_consultar_atualizacao_rotina.php?&versao=";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -46,6 +48,7 @@ public class ConfiguracoesGeraisProjeto {
 	private LocalDateTime ultimaDataHoraProcessamentoRemessa;
 	private LocalDateTime ultimaDataHoraEnvioRetorno;
 	
+	@Column(nullable = true, columnDefinition = "boolean default true")
 	private boolean versaoEstaAtualizada;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -63,7 +66,6 @@ public class ConfiguracoesGeraisProjeto {
 	}
 
 	public void getAtualizacoesSistema() throws JSONException{
-		System.out.println("");
 		RestTemplate restTemplate = new RestTemplate();
 		String url = getUrl() + getVersao();
 		ResponseEntity<String> json = restTemplate.getForEntity(url, String.class);

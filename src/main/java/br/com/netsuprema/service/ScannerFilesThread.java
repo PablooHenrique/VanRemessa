@@ -36,7 +36,7 @@ public class ScannerFilesThread implements Runnable{
 					try {
 						
 						ConfiguracoesGeraisProjetoService config = new ConfiguracoesGeraisProjetoService();
-						boolean rotinaEstaAtualizada = config.rotinaEstaAtualizada();
+						boolean rotinaEstaAtualizada = config.rotinaEstaAtualizada(true);
 						
 						if(rotinaEstaAtualizada){
 							new RemessasDeTitulosService().processar();

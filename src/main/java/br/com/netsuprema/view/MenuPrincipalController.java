@@ -20,6 +20,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
@@ -38,11 +39,19 @@ public class MenuPrincipalController extends AbstractController{
 	@FXML
 	private JFXButton btnConfiguracoes;
 	@FXML
+	private Label labelBtnConfiguracoes;
+	@FXML
 	private JFXButton btnResumoEnvio;
+	@FXML
+	private Label labelBtnResumo;
 	@FXML
 	private JFXButton btnEnviosDetalhados;
 	@FXML
+	private Label labelBtnEnvioDetalhados;
+	@FXML
 	private JFXButton btnDiretoriosEnvio;
+	@FXML
+	private Label labelBtnDiretoriosEnvio;
 	@FXML
 	private JFXButton btnRetorno;
 	@FXML
@@ -50,9 +59,18 @@ public class MenuPrincipalController extends AbstractController{
 	@FXML
 	private Pane paneOnOffStatusServicoRemessa;
 	@FXML
+	private Label labelPaneOnOffStatusServicoRemessa;
+	@FXML
 	private Pane paneOnOffStatusServicoProcessamentoRetorno;
 	@FXML
+	private Label labelPaneOnOffStatusServicoProcessamentoRetorno;
+	@FXML
 	private Pane paneOnOffStatusServicoProcessamentoRemessa;
+	@FXML
+	private Label labelPaneOnOffStatusServicoProcessamentoRemessa;
+	
+	@FXML
+	private Hyperlink hyperLinkSigVan;
 	@FXML
 	private Label labelMsg;
 	@FXML
@@ -64,6 +82,16 @@ public class MenuPrincipalController extends AbstractController{
 	private void initialize(){
 		imgLogo.setImage(new Image("file:resources/imagens/logo.png"));
 		inicializarImagensBtns();
+		inicializarHyperLinkDownloadVersao();
+	}
+
+	private void inicializarHyperLinkDownloadVersao() {
+		hyperLinkSigVan.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				getMainApp().getHostServices().showDocument("www.netsuprema.com.br/media/SigVan.exe");
+			}
+		});
 	}
 	
 	private void inicializarImagensBtns() {
@@ -161,15 +189,34 @@ public class MenuPrincipalController extends AbstractController{
 
 	private void desabilitarBtns(boolean habiitar, boolean todos) {
 		btnDiretoriosEnvio.setDisable(habiitar);
-		btnEnviosDetalhados.setDisable(habiitar);
-		btnResumoEnvio.setDisable(habiitar);
-		btnRetorno.setDisable(habiitar);
+		labelBtnDiretoriosEnvio.setDisable(habiitar);
 		
+		btnEnviosDetalhados.setDisable(habiitar);
+		labelBtnEnvioDetalhados.setDisable(habiitar);
+		
+		btnResumoEnvio.setDisable(habiitar);
+		labelBtnResumo.setDisable(habiitar);
+		
+		btnRetorno.setDisable(habiitar);
 		if (todos) {
 			btnConfiguracoes.setDisable(habiitar);
+			labelBtnConfiguracoes.setDisable(habiitar);
+			
+			hyperLinkSigVan.setVisible(true);
 		}
 	}
-
+	
+	private void desabilitarStatusServicos(boolean desabilitar){
+		paneOnOffStatusServicoProcessamentoRemessa.setDisable(desabilitar);
+		labelPaneOnOffStatusServicoProcessamentoRemessa.setDisable(desabilitar);
+		
+		paneOnOffStatusServicoProcessamentoRetorno.setDisable(desabilitar);
+		labelPaneOnOffStatusServicoProcessamentoRetorno.setDisable(desabilitar);
+		
+		paneOnOffStatusServicoRemessa.setDisable(desabilitar);
+		labelPaneOnOffStatusServicoRemessa.setDisable(desabilitar);
+	}
+	
 	public void inicializarVerificacaoServicoEnvioRemessa() {
 		boolean status = new ServicosApplication().verificarServicoRemessa();
 		if (status) {
@@ -378,6 +425,7 @@ public class MenuPrincipalController extends AbstractController{
 	public void bloquearAplicacao(String msgBloqueio) {
 		labelMsg.setText(msgBloqueio);
 		desabilitarBtns(true, true);
+		desabilitarStatusServicos(true);
 		
 		desabilitarProcessamento();
 	}
