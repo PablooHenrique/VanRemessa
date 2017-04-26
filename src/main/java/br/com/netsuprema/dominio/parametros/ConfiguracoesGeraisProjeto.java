@@ -29,15 +29,17 @@ import br.com.netsuprema.dominio.Versao;
 public class ConfiguracoesGeraisProjeto {
 	
 	@Transient
-	private static final String VERSAO = "1.2.0";
+	private static final String VERSAO = "1.2.1";
 	
 	public static String getVersao(){
 		return VERSAO;
 	}
 	
 	@Transient
-//	private final String url = "http://192.168.7.205/geovany/aplication/sigvan_consultar_atualizacao_rotina.php?&versao=";
 	private final String url = "http://sig5.netsuprema.com.br/aplication/sigvan_consultar_atualizacao_rotina.php?&versao=";
+	/***********
+	private final String url = "http://192.168.7.205/geovany/aplication/sigvan_consultar_atualizacao_rotina.php?&versao=";
+	***********/
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

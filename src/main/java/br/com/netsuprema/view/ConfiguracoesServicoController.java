@@ -31,8 +31,6 @@ public class ConfiguracoesServicoController extends AbstractController{
 	
 	private ParametrosApplication application; 
 	
-//	@FXML
-//	private ComboBox<String> comboBoxCooperativas;
 	@FXML
 	private ComboBox<String> comboBoxFormatoRemessa;
 	@FXML
@@ -108,20 +106,6 @@ public class ConfiguracoesServicoController extends AbstractController{
 		}
 	}
 
-//	public void preencherInformacoesComboCooperativa(Parametros parametros) {
-//		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
-//		
-//		for (int i = 0; i < cooperativas.size(); i++) {
-//			if (!cooperativas.get(i).trim().isEmpty()) {
-//				String[] itens = cooperativas.get(i).split("-");
-//				
-//				if (Integer.valueOf(itens[0]) == parametros.getCooperativa().getKeyCop()) {
-//					selectionModel.select(cooperativas.get(i));
-//					break;
-//				}
-//			}
-//		}
-//	}
 	
 	public void preencherInformacoesComboFormatoRetorno(Parametros parametros) {
 		SingleSelectionModel<String> selectionModel = comboBoxFormatoRetorno.getSelectionModel();
@@ -140,7 +124,6 @@ public class ConfiguracoesServicoController extends AbstractController{
 
 	public void initializeComponents() throws Exception{
 		inicializarCooperativas();
-//		carregarComboCooperativa();
 		carregarComboFormatoRemessa();
 		carregarComboFormatoRetorno();
 		
@@ -168,23 +151,12 @@ public class ConfiguracoesServicoController extends AbstractController{
 		List<Cooperativa> cooperativas;
 		
 		cooperativas = obterCooperativasBanco();
-		
 		boolean anyMatch = cooperativas.stream().anyMatch(x->String.valueOf(x.getKeyCop()).length() < 4);
 		
-		if (anyMatch) {
-			removerCooperativas();
+		if (anyMatch || cooperativas.isEmpty()) {
 			cooperativas = obterCooperativasViaWebService();
 			application.salvarCooperativas(cooperativas);
 		}
-		
-		if (cooperativas.isEmpty()) {
-			cooperativas = obterCooperativasViaWebService();
-			application.salvarCooperativas(cooperativas);
-		}
-	}
-
-	private void removerCooperativas() {
-		application.removerCooperativas();
 	}
 
 	public List<Cooperativa> obterCooperativasBanco() throws Exception {
@@ -192,13 +164,6 @@ public class ConfiguracoesServicoController extends AbstractController{
 		return cooperativas;
 	}
 
-//	public void carregarComboCooperativa() throws Exception{
-//		List<Cooperativa> cooperativas = obterCooperativasViaWebService();
-//		List<Cooperativa> cooperativas = obterCooperativasBanco();
-//		cooperativas.stream().forEach(x-> this.cooperativas.add(x.getKeyCop() +"-"+x.getNome().toUpperCase()));
-//		comboBoxCooperativas.setItems(this.cooperativas);
-//	}
-	
 	public void carregarComboFormatoRemessa(){
 		List<FormatoRemessa> list = Arrays.asList(FormatoRemessa.values());
 		list.stream().forEach(x-> this.formatoRemessa.add(x.getCodigo() + "-" +x.getDescricao().toUpperCase()));
@@ -301,7 +266,27 @@ public class ConfiguracoesServicoController extends AbstractController{
 
 	public Cooperativa criarCooperativa() throws NumberFormatException, Exception {
 		
-		Cooperativa cooperativa = application.consultarCooperativaPorKey(Integer.valueOf(edtCooperativa.getText()));
+		Integer codigoCooperativa;
+		
+		try {
+			codigoCooperativa = Integer.valueOf(edtCooperativa.getText());
+		} catch (Exception e) {
+			String cooperativa  = edtCooperativa.getText();
+			if(cooperativa.indexOf("-") != -1){
+				String[] dadosCooperaiva = cooperativa.split("-");
+				try {
+					codigoCooperativa = Integer.valueOf(dadosCooperaiva[0]);
+				} catch (Exception e2) {
+					ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um código de cooperativa valido");
+					throw e2;
+				}
+			}else{
+				ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um código de cooperativa valido");
+				throw e;
+			}
+		}
+		
+		Cooperativa cooperativa = application.consultarCooperativaPorKey(codigoCooperativa);
 		return cooperativa;
 	}
 	
@@ -312,13 +297,6 @@ public class ConfiguracoesServicoController extends AbstractController{
 	public boolean dadosSaoValidos(){
 		SingleSelectionModel<String> selectionModel;
 		int index;
-//		SingleSelectionModel<String> selectionModel = comboBoxCooperativas.getSelectionModel();
-//		int index = selectionModel.getSelectedIndex();
-//		
-//		if (index == -1) {
-//			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "selecione uma cooperativa");
-//			return false;
-//		}
 		
 		selectionModel = comboBoxFormatoRemessa.getSelectionModel();
 		index = selectionModel.getSelectedIndex();
@@ -356,7 +334,27 @@ public class ConfiguracoesServicoController extends AbstractController{
 			return false;
 		}
 		
-		if(!application.codigoCooperativaEValido(Long.valueOf(String.valueOf(edtCooperativa.getText())))){
+		Long codigoCooperativa;
+		
+		try {
+			codigoCooperativa = Long.valueOf(edtCooperativa.getText());
+		} catch (Exception e) {
+			String cooperativa  = edtCooperativa.getText();
+			if(cooperativa.indexOf("-") != -1){
+				String[] dadosCooperaiva = cooperativa.split("-");
+				try {
+					codigoCooperativa = Long.valueOf(dadosCooperaiva[0]);
+				} catch (Exception e2) {
+					ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um código de cooperativa valido");
+					return false;
+				}
+			}else{
+				ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um código de cooperativa valido");
+				return false;
+			}
+		}
+		
+		if(!application.codigoCooperativaEValido(codigoCooperativa)){
 			ViewUtils.exibirMensagemAlerta("Dados Invalidos", "", "Digite um código de cooperativa valido");
 			return false;
 		}
