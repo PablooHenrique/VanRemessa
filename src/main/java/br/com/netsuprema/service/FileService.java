@@ -163,7 +163,7 @@ public class FileService {
 		date = date.replace(" ", "-");
 		date = date.replace(":", "");
 		
-		String path = diretorio + "/" +nomeArquivo+"-"+date+ ".txt";
+		String path = diretorio + "/" +nomeArquivo+"-"+date+ ".RET";
 		
 		File file = new File(path);
 		

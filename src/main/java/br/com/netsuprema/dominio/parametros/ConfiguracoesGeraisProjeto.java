@@ -29,7 +29,7 @@ import br.com.netsuprema.dominio.Versao;
 public class ConfiguracoesGeraisProjeto {
 	
 	@Transient
-	private static final String VERSAO = "1.2.1";
+	private static final String VERSAO = "1.2.2";
 	
 	public static String getVersao(){
 		return VERSAO;

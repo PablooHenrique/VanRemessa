@@ -28,8 +28,7 @@ public class ConfiguracoesGeraisProjetoApplication {
 	
 	public boolean rotinaEstaAtualizada() throws JSONException{
 		try {
-			boolean rotinaEstaAtualizada = getService().rotinaEstaAtualizada(false);
-			//TODO: Voltar esse metodo para validar o config, colocando a variavel como true, vai ficar assim para fins de teste
+			boolean rotinaEstaAtualizada = getService().rotinaEstaAtualizada(true);
 			if (!rotinaEstaAtualizada) {
 				this.msgErrorProcessamento = getService().carregarMensagemBloqueioRotina();
 			}
