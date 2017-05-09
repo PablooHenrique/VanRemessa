@@ -22,7 +22,7 @@
       <TextField fx:id="edtNome" layoutX="420.0" layoutY="104.0" prefHeight="39.0" prefWidth="358.0" />
       <TextField fx:id="edtNumeroConta" layoutX="41.0" layoutY="188.0" prefHeight="39.0" prefWidth="265.0" />
       <TextField fx:id="edtDigitoVerificador" layoutX="318.0" layoutY="188.0" prefHeight="39.0" prefWidth="83.0" />
-      <TextField fx:id="edtDiretorio" layoutX="420.0" layoutY="188.0" prefHeight="39.0" prefWidth="358.0" />
+      <TextField fx:id="edtDiretorio" editable="false" layoutX="420.0" layoutY="188.0" prefHeight="39.0" prefWidth="307.0" />
       <Label layoutX="41.0" layoutY="69.0" prefHeight="25.0" prefWidth="194.0" text="CÓDIGO CEDENTE" textFill="#575757">
          <font>
             <Font name="Arial" size="15.0" />
@@ -63,5 +63,10 @@
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
+      <JFXButton fx:id="btnSelecionarDiretorio" buttonType="RAISED" layoutX="733.0" layoutY="189.0" onAction="#handleAbrirDiretorio" prefHeight="37.0" prefWidth="42.0" style="-fx-background-color: E5B250;" text="..." textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

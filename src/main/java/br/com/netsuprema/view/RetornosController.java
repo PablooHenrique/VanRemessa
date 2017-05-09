@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.DirectoryChooser;
 
 public class RetornosController extends AbstractController{
 
@@ -155,6 +156,17 @@ public class RetornosController extends AbstractController{
 		RetornosApplication application = new RetornosApplication();
 		List<RetornoLiquidacaoDto> retornos = application.consultarRetornosPorPeriodo(dataInicial, dataFinal);
 		return retornos;
+	}
+	
+	@FXML
+	public void handleAbrirDiretorio(){
+		DirectoryChooser dirChoser = new DirectoryChooser();
+		dirChoser.setTitle("Selecione o diretorio");
+		File file = dirChoser.showDialog(null);
+		
+		if (file != null) {
+			this.edtDiretorio.setText(file.getAbsolutePath());
+		}
 	}
 	
 	public void preencherTableRetornos(){

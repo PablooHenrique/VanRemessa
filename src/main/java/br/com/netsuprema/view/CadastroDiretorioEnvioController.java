@@ -12,6 +12,7 @@ import br.com.netsuprema.application.dto.ContaDto;
 import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 public class CadastroDiretorioEnvioController extends AbstractController{
@@ -226,6 +227,17 @@ public class CadastroDiretorioEnvioController extends AbstractController{
 		}
 		
 		return true;
+	}
+	
+	@FXML
+	public void handleAbrirDiretorio(){
+		DirectoryChooser dirChoser = new DirectoryChooser();
+		dirChoser.setTitle("Selecione o diretorio");
+		File file = dirChoser.showDialog(null);
+		
+		if (file != null) {
+			this.edtDiretorio.setText(file.getAbsolutePath());
+		}
 	}
 
 	public Stage getDialogStage() {

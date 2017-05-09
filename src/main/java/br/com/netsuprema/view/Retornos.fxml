@@ -39,12 +39,12 @@
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btnsalvar" buttonType="RAISED" layoutX="484.0" layoutY="279.0" onAction="#handleSalvar" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="GRAVAR" textFill="#323031">
+      <JFXButton fx:id="btnsalvar" buttonType="RAISED" layoutX="533.0" layoutY="280.0" onAction="#handleSalvar" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="GRAVAR" textFill="#323031">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
       </JFXButton>
-      <TextField fx:id="edtDiretorio" layoutX="113.0" layoutY="279.0" prefHeight="39.0" prefWidth="360.0" />
+      <TextField fx:id="edtDiretorio" editable="false" layoutX="113.0" layoutY="279.0" prefHeight="39.0" prefWidth="360.0" />
       <Label layoutX="717.0" layoutY="156.0" text="á" />
       <Label layoutX="533.0" layoutY="126.0" prefHeight="17.0" prefWidth="48.0" text="Período" />
       <JFXButton buttonType="RAISED" layoutX="735.0" layoutY="195.0" onAction="#handlePesquisar" prefHeight="17.0" prefWidth="170.0" style="-fx-background-color: E5B250;" text="Buscar" textFill="#323031">
@@ -54,5 +54,10 @@
       </JFXButton>
       <DatePicker fx:id="edtDataFinal" layoutX="731.0" layoutY="152.0" />
       <DatePicker fx:id="edtDataInicial" layoutX="533.0" layoutY="152.0" />
+      <JFXButton fx:id="btnSelecionarDiretorio" buttonType="RAISED" layoutX="479.0" layoutY="280.0" onAction="#handleAbrirDiretorio" prefHeight="37.0" prefWidth="39.0" style="-fx-background-color: E5B250;" text="..." textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>
