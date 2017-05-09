@@ -250,6 +250,13 @@ public class ConfiguracoesGeraisProjetoService {
 		inicializarThreadProcessamentoRemessa();	
 		inicializarThreadConsultaProcessamentoRemessa();
 		inicializarThreadRetorno();
+		inicializarThreadSeparadorArquivo();
+	}
+
+	private void inicializarThreadSeparadorArquivo() {
+		ProcessingSeparadorArquivosThread processing = new ProcessingSeparadorArquivosThread();
+		Thread td = new Thread(processing);
+		td.start();
 	}
 
 	private void inicializarThreadRetorno() {

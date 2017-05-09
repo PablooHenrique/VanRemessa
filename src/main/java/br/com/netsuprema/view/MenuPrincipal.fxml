@@ -22,33 +22,34 @@
             <Font name="Arial" size="22.0" />
          </font>
       </Label>
-      <Label fx:id="labelPaneOnOffStatusServicoRemessa" layoutX="629.0" layoutY="70.0" prefHeight="26.0" prefWidth="302.0" text="SERVIÇO ENVIO REMESSA:" textFill="#323031">
+      <Label fx:id="labelPaneOnOffStatusServicoRemessa" layoutX="634.0" layoutY="48.0" prefHeight="17.0" prefWidth="206.0" text="SERVIÇO ENVIO REMESSA:" textFill="#323031">
          <font>
-            <Font name="Arial" size="22.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Label>
       <Label fx:id="labelBtnDiretoriosEnvio" layoutX="649.0" layoutY="357.0" text="DIRETÓRIOS ENVIO" />
       <Label fx:id="labelBtnEnvioDetalhados" layoutX="447.0" layoutY="357.0" text="ENVIOS DETALHADOS" />
       <Label fx:id="labelBtnResumo" layoutX="256.0" layoutY="357.0" text="RESUMO DE ENVIOS" />
-      <Pane fx:id="paneOnOffStatusServicoRemessa" layoutX="931.0" layoutY="66.0" prefHeight="34.0" prefWidth="55.0" />
+      <Pane fx:id="paneOnOffStatusServicoRemessa" layoutX="938.0" layoutY="45.0" prefHeight="23.0" prefWidth="25.0" />
       <ImageView fx:id="imgLogo" fitHeight="82.0" fitWidth="217.0" layoutX="116.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="25.0" />
       <Label fx:id="labelBtnConfiguracoes" layoutX="69.0" layoutY="357.0" text="CONFIGURAÇÔES" />
-      <Pane fx:id="paneOnOffStatusServicoProcessamentoRemessa" layoutX="931.0" layoutY="102.0" prefHeight="34.0" prefWidth="55.0" />
-      <Label fx:id="labelPaneOnOffStatusServicoProcessamentoRemessa" layoutX="498.0" layoutY="106.0" prefHeight="26.0" prefWidth="433.0" text="SERVIÇO PROCESSAMENTO REMESSA:" textFill="#323031">
+      <Pane fx:id="paneOnOffStatusServicoProcessamentoRemessa" layoutX="938.0" layoutY="73.0" prefHeight="23.0" prefWidth="25.0" />
+      <Label fx:id="labelPaneOnOffStatusServicoProcessamentoRemessa" layoutX="634.0" layoutY="76.0" prefHeight="17.0" prefWidth="295.0" text="SERVIÇO PROCESSAMENTO REMESSA:" textFill="#323031">
          <font>
-            <Font name="Arial" size="22.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="labelPaneOnOffStatusServicoProcessamentoRetorno" layoutX="629.0" layoutY="142.0" prefHeight="26.0" prefWidth="302.0" text="SERVIÇO ENVIO RETORNO:" textFill="#323031">
+      <Label fx:id="labelPaneOnOffStatusServicoProcessamentoRetorno" layoutX="634.0" layoutY="105.0" prefHeight="17.0" prefWidth="206.0" text="SERVIÇO ENVIO RETORNO:" textFill="#323031">
          <font>
-            <Font name="Arial" size="22.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <Pane fx:id="paneOnOffStatusServicoProcessamentoRetorno" layoutX="931.0" layoutY="138.0" prefHeight="34.0" prefWidth="55.0" />
+      <Pane fx:id="paneOnOffStatusServicoProcessamentoRetorno" layoutX="938.0" layoutY="102.0" prefHeight="23.0" prefWidth="25.0" />
       <Hyperlink fx:id="hyperLinkSigVan" layoutX="26.0" layoutY="498.0" text="SigVan" visible="false">
          <font>
             <Font size="15.0" />
          </font></Hyperlink>
       <Label layoutX="972.0" layoutY="17.0" text="1. 2. 2" />
+      <Label fx:id="labelSeparadorArquivo" alignment="TOP_LEFT" layoutX="26.0" layoutY="171.0" prefHeight="49.0" prefWidth="217.0" />
    </children>
 </AnchorPane>

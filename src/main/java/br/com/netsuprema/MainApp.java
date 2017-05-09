@@ -22,6 +22,7 @@ import br.com.netsuprema.view.EnviosDetalhadosController;
 import br.com.netsuprema.view.MenuPrincipalController;
 import br.com.netsuprema.view.ResumoEnvioController;
 import br.com.netsuprema.view.RetornosController;
+import br.com.netsuprema.view.SeparadorArquivosController;
 import br.com.netsuprema.view.StatusServicoController;
 import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Application;
@@ -225,6 +226,34 @@ public class MainApp extends Application{
 	        dialogStage.showAndWait();
 	        
 	        return controller.isSalvarCedente();
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public boolean showCadastroSeparadorArquivosDialog(MainApp mainApp, BorderPane rootLayout){
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/SeparadorArquivos.fxml"));
+			AnchorPane cadastroSeparadorArquivo = loader.load();
+			
+			Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Cadastro Separador Arquivo");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(mainApp.getPrimaryStage());
+	        dialogStage.setResizable(false);
+	        Scene scene = new Scene(cadastroSeparadorArquivo);
+	        dialogStage.setScene(scene);
+	        
+	        SeparadorArquivosController controller = loader.getController();
+	        controller.setMainApp(mainApp);
+	        controller.setDialogStage(dialogStage);
+	        dialogStage.showAndWait();
+	        
+	        return true;
 	        
 		} catch (Exception e) {
 			e.printStackTrace();

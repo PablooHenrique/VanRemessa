@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,6 +39,9 @@ public class Parametros {
 	private FormatoRetornoLiquidacao formatoRetornoLiquidacao;
 	
 	private String diretorioRetornos;
+	
+	@Column(nullable = true, columnDefinition = "boolean default false")
+	private boolean utilizaSeparadorArquivoPorPastasCedentes;
 	
 	public String gerarMD5Senha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		MessageDigest algorithm = MessageDigest.getInstance("MD5");
@@ -96,5 +100,13 @@ public class Parametros {
 
 	public void setDiretorioRetornos(String diretorioRetornos) {
 		this.diretorioRetornos = diretorioRetornos;
+	}
+
+	public boolean isUtilizaSeparadorArquivoPorPastasCedentes() {
+		return utilizaSeparadorArquivoPorPastasCedentes;
+	}
+
+	public void setUtilizaSeparadorArquivoPorPastasCedentes(boolean utilizaSeparadorArquivoPorPastasCedentes) {
+		this.utilizaSeparadorArquivoPorPastasCedentes = utilizaSeparadorArquivoPorPastasCedentes;
 	}
 }

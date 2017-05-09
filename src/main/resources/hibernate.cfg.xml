@@ -38,6 +38,7 @@
     
     <mapping class="br.com.netsuprema.dominio.parametros.Cooperativa"/>
     <mapping class="br.com.netsuprema.dominio.parametros.Parametros"/>
+    <mapping class="br.com.netsuprema.dominio.parametros.SeparadorArquivos"/>
     <mapping class="br.com.netsuprema.dominio.parametros.ConfiguracoesGeraisProjeto"/>
     <mapping class="br.com.netsuprema.dominio.cedente.Cedente"/>
     <mapping class="br.com.netsuprema.dominio.cedente.Conta"/>

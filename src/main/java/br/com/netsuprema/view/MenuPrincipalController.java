@@ -10,9 +10,11 @@ import com.jfoenix.controls.JFXButton;
 import br.com.netsuprema.application.ConfiguracoesGeraisProjetoApplication;
 import br.com.netsuprema.application.ParametrosApplication;
 import br.com.netsuprema.application.RetornosApplication;
+import br.com.netsuprema.application.SeparadorArquivosApplication;
 import br.com.netsuprema.application.ServicosApplication;
 import br.com.netsuprema.dominio.DateUtils;
 import br.com.netsuprema.dominio.parametros.Parametros;
+import br.com.netsuprema.dominio.parametros.SeparadorArquivos;
 import br.com.netsuprema.view.utils.ViewUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -68,6 +70,8 @@ public class MenuPrincipalController extends AbstractController{
 	private Pane paneOnOffStatusServicoProcessamentoRemessa;
 	@FXML
 	private Label labelPaneOnOffStatusServicoProcessamentoRemessa;
+	@FXML
+	private Label labelSeparadorArquivo;
 	
 	@FXML
 	private Hyperlink hyperLinkSigVan;
@@ -140,6 +144,7 @@ public class MenuPrincipalController extends AbstractController{
 		}
 		
 		if (parametrosSaoValidos()) {
+			separadorArquivosProcessingWatcherThread();
 			processingWhatcherThread();
 			processingWhatcherThreadProcessamentoEnvioRemessa();
 			processingWhatcherThreadEnvioRetorno();
@@ -400,6 +405,29 @@ public class MenuPrincipalController extends AbstractController{
 			    			   bloquearAplicacao(application.carregarMensagemBloqueio());
 						   }
 						} catch (JSONException e) {
+						}
+			       }
+			    });
+			}
+		},2000, 60000);
+	}
+	
+	public void separadorArquivosProcessingWatcherThread(){
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			    public void run() {
+			    Platform.runLater(new Runnable() {
+			       public void run() {
+			    	   try {
+			    		   Parametros parametros = new ParametrosApplication().consultarParametros();
+			    		   if (parametros.isUtilizaSeparadorArquivoPorPastasCedentes()) {
+			    			   SeparadorArquivos separadorArquivo = new SeparadorArquivosApplication().listarSeparadorArquivo();
+			    			   labelSeparadorArquivo.setText("Serviço para separar arquivos ativo. \n" + separadorArquivo.getDiretorio());
+			    		   }else{
+			    			   labelSeparadorArquivo.setText("Serviço para separar arquivos inativo.");
+			    		   }
+						} catch (Exception e) {
 						}
 			       }
 			    });

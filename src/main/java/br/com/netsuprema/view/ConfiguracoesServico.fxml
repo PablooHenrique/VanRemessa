@@ -65,5 +65,10 @@
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
+      <JFXButton fx:id="btnSeparadorDeArquivos" buttonType="RAISED" layoutX="132.0" layoutY="575.0" onAction="#handleShowSeparadosArquivos" prefHeight="37.0" prefWidth="580.0" style="-fx-background-color: E5B250;" text="SEPARADOR DE ARQUIVOS POR PASTAS DE CEDENTES" textFill="#323031">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

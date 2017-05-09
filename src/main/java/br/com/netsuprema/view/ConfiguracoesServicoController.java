@@ -49,6 +49,8 @@ public class ConfiguracoesServicoController extends AbstractController{
 	private JFXButton btnsalvar;
 	@FXML
 	private ImageView imgLogo;
+	@FXML
+	private JFXButton btnSeparadorDeArquivos;
 	
 	ObservableList<String> cooperativas 	= FXCollections.observableArrayList();
 	ObservableList<String> formatoRemessa 	= FXCollections.observableArrayList();
@@ -197,6 +199,11 @@ public class ConfiguracoesServicoController extends AbstractController{
 		} catch (Exception e) {
 			ViewUtils.exibirMensagemErro("Falha ao salvar os parametros", e.getMessage(), e.getCause().getMessage());
 		}
+	}
+	
+	@FXML
+	public void handleShowSeparadosArquivos(){
+		mainApp.showCadastroSeparadorArquivosDialog(getMainApp(), mainApp.getRootLayout());
 	}
 
 	public void salvarParametros() throws Exception {
